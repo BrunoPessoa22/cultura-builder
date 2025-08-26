@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultura Builder - Como a IA Está Criando Mais Empregos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="livro-completo.css">
+</head>
+<body>
+    <!-- CAPA -->
+    <div class="page cover-page" id="cover">
+        <div class="cover-content">
+            <div class="cover-bestseller">
+                <span class="bestseller-badge">O FUTURO DO TRABALHO COMEÇA AGORA</span>
+                <span class="bestseller-copies">TRANSFORME SUA CARREIRA COM INTELIGÊNCIA ARTIFICIAL</span>
+            </div>
+            
+            <div class="cover-main">
+                <h1 class="book-title">
+                    <span class="title-cultura">CULTURA</span>
+                    <span class="title-builder">BUILDER</span>
+                </h1>
+                
+                <div class="subtitle">
+                    Como a IA Está Criando<br>
+                    Mais Empregos e Novas<br>
+                    Oportunidades para Empreender
+                </div>
+                
+                <div class="cover-tagline">
+                    O guia definitivo para prosperar na era da<br>
+                    Inteligência Artificial no Brasil
+                </div>
+            </div>
+            
+            <div class="cover-footer">
+                <div class="authors">
+                    <div class="author-names">
+                        <span class="author-highlight">CLAUDE AI</span> • <span class="author-highlight">BRUNO PESSOA</span><br>
+                        <span class="author-highlight">ARIEL ALEXANDRE</span> • <span class="author-highlight">CAIO VICENTINO</span><br>
+                        <span class="author-highlight">DECO MONTENEGRO</span>
+                    </div>
+                </div>
+                
+                <div class="endorsement">
+                    "A valorização do builder é uma das maiores<br>
+                    tendências do futuro do trabalho" — <strong>Época NEGÓCIOS</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA DE ROSTO -->
+    <div class="page title-page">
+        <div class="title-content">
+            <div class="publisher-logo">EDITORA CULTURA BUILDER</div>
+            
+            <h1 class="inner-title">
+                CULTURA BUILDER
+            </h1>
+            
+            <p class="inner-subtitle">
+                Como a IA Está Criando Mais Empregos<br>
+                e Como Você Pode Se Beneficiar Disso
+            </p>
+            
+            <div class="divider">◆ ◆ ◆</div>
+            
+            <div class="author-info">
+                <p class="author-label">Autores</p>
+                <p class="author-name">Claude AI</p>
+                <p class="author-name">Bruno Pessoa</p>
+                <p class="author-title">Country Manager Brasil - Chiliz/Socios.com</p>
+                <p class="author-name">Ariel Alexandre</p>
+                <p class="author-title">Fundador Cultura Builder</p>
+                <p class="author-name">Caio Vicentino</p>
+                <p class="author-title">Sócio Gotas.com e DeFi Station</p>
+                <p class="author-name">Deco Montenegro</p>
+                <p class="author-title">Cofundador Liqi, Empreendedor Serial</p>
+            </div>
+            
+            <div class="publication-info">
+                <p class="publisher-name">Editora Cultura Builder</p>
+                <p class="location">São Paulo • Brasil</p>
+                <p class="year">2025</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FICHA CATALOGRÁFICA -->
+    <div class="page copyright-page">
+        <div class="copyright-content">
+            <div class="copyright-box">
+                <p><strong>Copyright © 2025 por Cultura Builder e Autores</strong></p>
+                <p>Todos os direitos reservados. Nenhuma parte deste livro pode ser reproduzida, 
+                armazenada em sistema de recuperação ou transmitida de qualquer forma ou por 
+                qualquer meio — eletrônico, mecânico, fotocópia, gravação ou outro — sem a 
+                permissão prévia por escrito do editor.</p>
+                
+                <div class="cataloging-box">
+                    <p class="cataloging-header">Dados Internacionais de Catalogação na Publicação (CIP)</p>
+                    <div class="cataloging-data">
+                        <p>Pessoa, Bruno; Alexandre, Ariel; Vicentino, Caio; Montenegro, Deco; Claude AI</p>
+                        <p class="indent">Cultura Builder: Como a IA Está Criando Mais Empregos e Novas 
+                        Oportunidades para Empreender / Bruno Pessoa et al. — 
+                        1ª ed. — São Paulo: Editora Cultura Builder, 2025.</p>
+                        <p class="indent">400 p. : il. ; 21 x 29,7 cm</p>
+                        <p class="indent">ISBN 978-65-00000-00-0</p>
+                        <p class="indent">1. Inteligência Artificial. 2. Mercado de Trabalho. 
+                        3. Empreendedorismo. 4. Tecnologia. 5. Inovação. I. Título.</p>
+                        <p class="indent">CDD 006.3</p>
+                        <p class="indent">CDU 004.8</p>
+                    </div>
+                </div>
+                
+                <div class="legal-info">
+                    <p>Lei nº 10.753, de 30 de outubro de 2003</p>
+                    <p>Material didático de caráter técnico e educacional</p>
+                    <p>NCM: 4901.99.00</p>
+                </div>
+                
+                <div class="contact-info">
+                    <p><strong>Editora Cultura Builder</strong></p>
+                    <p>www.culturabuilder.com.br</p>
+                    <p>contato@culturabuilder.com.br</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DEDICATÓRIA -->
+    <div class="page dedication-page">
+        <div class="dedication-content">
+            <p class="dedication-text">
+                Para todos os brasileiros que sentem medo da tecnologia<br>
+                mas têm coragem de transformar esse medo em oportunidade.<br><br>
+                
+                Para todos os builders que já descobriram que<br>
+                o futuro não é algo que acontece com você,<br>
+                mas algo que você constrói.<br><br>
+                
+                E especialmente para você, que está prestes a descobrir<br>
+                que a IA não veio roubar seu emprego,<br>
+                mas multiplicar suas possibilidades.
+            </p>
+        </div>
+    </div>
+
+    <!-- SUMÁRIO -->
+    <div class="page toc-page">
+        <div class="toc-content">
+            <h2 class="toc-title">SUMÁRIO</h2>
+            
+            <div class="toc-section">
+                <div class="toc-part">PARTE I • A HISTÓRIA SE REPETE</div>
+                
+                <div class="toc-item">
+                    <span class="toc-chapter">Capítulo 1</span>
+                    <span class="toc-title-text">O Medo Que Sempre Existiu</span>
+                    <span class="toc-page">15</span>
+                </div>
+                
+                <div class="toc-item">
+                    <span class="toc-chapter">Capítulo 2</span>
+                    <span class="toc-title-text">Os 7 Modelos de Negócio com IA que Mais Faturam</span>
+                    <span class="toc-page">45</span>
+                </div>
+                
+                <div class="toc-item">
+                    <span class="toc-chapter">Capítulo 3</span>
+                    <span class="toc-title-text">Como Começar com R$ 150</span>
+                    <span class="toc-page">75</span>
+                </div>
+            </div>
+            
+            <div class="toc-section">
+                <div class="toc-part">PARTE II • O MOVIMENTO BUILDER</div>
+                
+                <div class="toc-item">
+                    <span class="toc-chapter">Capítulo 4</span>
+                    <span class="toc-title-text">A Mentalidade Builder</span>
+                    <span class="toc-page">105</span>
+                </div>
+                
+                <div class="toc-item">
+                    <span class="toc-chapter">Capítulo 5</span>
+                    <span class="toc-title-text">De CLT a CEO: A Transição Segura</span>
+                    <span class="toc-page">135</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CAPÍTULO 1 - PÁGINA DE ABERTURA -->
+    <div class="page chapter-opener" data-page="15">
+        <div class="opener-content">
+            <div class="part-indicator">PARTE I • A HISTÓRIA SE REPETE</div>
+            
+            <div class="chapter-number-large">01</div>
+            
+            <h1 class="chapter-title-large">
+                O Medo Que<br>
+                Sempre Existiu
+            </h1>
+            
+            <p class="chapter-subtitle-large">
+                Por que toda revolução tecnológica<br>
+                gera pânico inicial — e por que<br>
+                desta vez não é diferente
+            </p>
+            
+            <div class="chapter-meta">
+                <div class="meta-item">
+                    <span class="meta-icon">📚</span>
+                    <span class="meta-label">30 páginas</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-icon">⏱️</span>
+                    <span class="meta-label">45 min de leitura</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-icon">💡</span>
+                    <span class="meta-label">7 exercícios práticos</span>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">15</div>
+    </div>
+
+    <!-- CAPÍTULO 1 - CONTEÚDO -->
+    <div class="page" data-page="16">
+        <div class="page-content">
+            <p class="opening-paragraph">
+                <span class="drop-cap">N</span>a madrugada gelada de 11 de março de 1811, trabalhadores têxteis destruíram 63 máquinas em Nottingham. Hoje, seus descendentes dirigem Ubers, programam apps e faturam R$ 50 mil por mês com agências de automação. Esta é a história de como o medo se transforma em oportunidade — sempre.
+            </p>
+
+            <p>Você provavelmente está lendo este livro com uma mistura de esperança e medo. Esperança de que a Inteligência Artificial possa melhorar sua vida, e medo de que ela possa destruir seu emprego. Esse sentimento contraditório não é novo — ele se repete há séculos, sempre que uma nova tecnologia surge.</p>
+
+            <p>O que torna este momento único não é a tecnologia em si, mas a velocidade da mudança. Enquanto a Revolução Industrial levou décadas para transformar a sociedade, a revolução da IA está acontecendo em anos. Mas há uma boa notícia escondida nessa velocidade: as oportunidades também surgem mais rápido do que nunca.</p>
+
+            <div class="stat-highlight">
+                <div class="stat-main">
+                    <div class="stat-number">67%</div>
+                    <div class="stat-description">dos brasileiros temem a IA</div>
+                    <div class="stat-source">Fonte: Pesquisa DataFolha, Janeiro 2024</div>
+                </div>
+                <div class="stat-versus">VS</div>
+                <div class="stat-contrast">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-description">não sabem que podem abrir um negócio com R$ 150</div>
+                    <div class="stat-source">Fonte: SEBRAE DataSebrae, 2024</div>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">16</div>
+    </div>
+
+    <!-- PÁGINA 17 -->
+    <div class="page" data-page="17">
+        <div class="page-content">
+            <h2>A História Sempre Se Repete</h2>
+            
+            <p>Cada revolução tecnológica segue o mesmo padrão imutável: primeiro vem o pânico, depois a resistência, em seguida a adaptação, e finalmente a prosperidade. O que muda não é o padrão, mas a velocidade com que ele se desenrola.</p>
+
+            <div class="timeline-visual">
+                <h3>As Grandes Revoluções e Seus Medos</h3>
+                
+                <div class="timeline-entry">
+                    <div class="timeline-year">1450</div>
+                    <div class="timeline-content">
+                        <h4>Imprensa de Gutenberg</h4>
+                        <p class="fear">"Vai destruir a memória humana!"</p>
+                        <p class="reality">Criou milhões de empregos em educação, jornalismo e publicação</p>
+                    </div>
+                </div>
+
+                <div class="timeline-entry">
+                    <div class="timeline-year">1811</div>
+                    <div class="timeline-content">
+                        <h4>Tear Mecânico</h4>
+                        <p class="fear">"Tecelões ficarão sem trabalho!"</p>
+                        <p class="reality">Indústria têxtil empregou 30x mais pessoas em 50 anos</p>
+                    </div>
+                </div>
+
+                <div class="timeline-entry">
+                    <div class="timeline-year">1900</div>
+                    <div class="timeline-content">
+                        <h4>Linha de Montagem</h4>
+                        <p class="fear">"Artesãos serão extintos!"</p>
+                        <p class="reality">Criou a classe média moderna</p>
+                    </div>
+                </div>
+
+                <div class="timeline-entry highlight">
+                    <div class="timeline-year">2024</div>
+                    <div class="timeline-content">
+                        <h4>Inteligência Artificial</h4>
+                        <p class="fear">"Todos seremos substituídos!"</p>
+                        <p class="reality">Já está criando milhões de novas profissões</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">17</div>
+    </div>
+
+    <!-- PÁGINA 18 - O CASO BRASILEIRO -->
+    <div class="page" data-page="18">
+        <div class="page-content">
+            <h2>O Caso Brasileiro: Nossa Vantagem Única</h2>
+            
+            <p>O Brasil tem características únicas que nos posicionam perfeitamente para liderar a revolução da IA na América Latina e competir globalmente:</p>
+
+            <div class="brazil-advantages">
+                <div class="advantage-card">
+                    <h3>🧠 Criatividade Tropical</h3>
+                    <p>Nossa capacidade de improvisar e encontrar soluções criativas é incomparável. O "jeitinho brasileiro", quando aplicado à tecnologia, vira inovação.</p>
+                </div>
+
+                <div class="advantage-card">
+                    <h3>📱 Adoção Digital Recorde</h3>
+                    <p>PIX: 150 milhões de usuários em 3 anos. WhatsApp: 99% de penetração. Quando brasileiro abraça tecnologia, é tsunami.</p>
+                </div>
+
+                <div class="advantage-card">
+                    <h3>👥 População Jovem</h3>
+                    <p>Idade média: 33 anos (vs 48 no Japão). Temos a força de trabalho mais jovem e adaptável entre as grandes economias.</p>
+                </div>
+
+                <div class="advantage-card">
+                    <h3>🌎 Mercado Gigante</h3>
+                    <p>200 milhões de consumidores. 5º maior mercado digital do mundo. Escala para testar e validar qualquer ideia.</p>
+                </div>
+            </div>
+
+            <div class="transformation-box">
+                <h3>A Transformação em Números</h3>
+                <div class="transformation-stats">
+                    <div class="stat-item">
+                        <span class="label">MEIs em 2009:</span>
+                        <span class="value">44 mil</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">MEIs em 2024:</span>
+                        <span class="value">15.8 milhões</span>
+                    </div>
+                    <div class="stat-item highlight">
+                        <span class="label">Crescimento:</span>
+                        <span class="value">35.900%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">18</div>
+    </div>
+
+    <!-- PÁGINA 19 - A MATEMÁTICA DA OPORTUNIDADE -->
+    <div class="page" data-page="19">
+        <div class="page-content">
+            <h2>A Matemática da Oportunidade</h2>
+            
+            <div class="cost-comparison">
+                <h3>Custo de Abrir uma Empresa</h3>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-column old">
+                        <h4>2010 - Era Pré-IA</h4>
+                        <ul class="cost-list">
+                            <li>Sistema/Software: <span class="cost">R$ 50.000</span></li>
+                            <li>Equipe (3 pessoas): <span class="cost">R$ 180.000/ano</span></li>
+                            <li>Marketing: <span class="cost">R$ 30.000</span></li>
+                            <li>Escritório: <span class="cost">R$ 60.000/ano</span></li>
+                            <li class="total">Total Ano 1: <span class="cost">R$ 320.000</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="comparison-arrow">
+                        <div class="arrow-down">⬇</div>
+                        <div class="reduction">-99.4%</div>
+                    </div>
+                    
+                    <div class="comparison-column new">
+                        <h4>2024 - Era da IA</h4>
+                        <ul class="cost-list">
+                            <li>Claude/ChatGPT Pro: <span class="cost">R$ 1.200/ano</span></li>
+                            <li>Domínio + Hosting: <span class="cost">R$ 600/ano</span></li>
+                            <li>Marketing (orgânico): <span class="cost">R$ 0</span></li>
+                            <li>Escritório (remoto): <span class="cost">R$ 0</span></li>
+                            <li class="total highlight">Total Ano 1: <span class="cost">R$ 1.800</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <p><strong>Insight Crucial:</strong> A barreira financeira para empreender caiu 99.4%. Isso significa que 99% das pessoas que não podiam empreender antes, agora podem. Você é uma delas.</p>
+            </div>
+        </div>
+        <div class="page-number">19</div>
+    </div>
+
+    <!-- PÁGINA 20 - NOVAS PROFISSÕES -->
+    <div class="page" data-page="20">
+        <div class="page-content">
+            <h2>As Profissões Que Não Existiam e Agora Pagam Fortunas</h2>
+            
+            <div class="jobs-grid">
+                <div class="job-card">
+                    <h3>Prompt Engineer</h3>
+                    <div class="salary">R$ 12.000 - R$ 25.000/mês</div>
+                    <p>Especialista em "conversar" com IA para extrair resultados extraordinários</p>
+                    <div class="requirement">Não precisa saber programar</div>
+                </div>
+
+                <div class="job-card">
+                    <h3>AI Trainer</h3>
+                    <div class="salary">R$ 8.000 - R$ 18.000/mês</div>
+                    <p>Treina modelos de IA para tarefas específicas</p>
+                    <div class="requirement">Conhecimento do domínio > conhecimento técnico</div>
+                </div>
+
+                <div class="job-card">
+                    <h3>Automation Architect</h3>
+                    <div class="salary">R$ 18.000 - R$ 40.000/mês</div>
+                    <p>Desenha e implementa automações complexas com IA</p>
+                    <div class="requirement">Visão de processos + ferramentas no-code</div>
+                </div>
+
+                <div class="job-card highlight">
+                    <h3>AI Product Manager</h3>
+                    <div class="salary">R$ 20.000 - R$ 45.000/mês</div>
+                    <p>Gerencia produtos que incorporam IA</p>
+                    <div class="requirement">Experiência em produto + compreensão de IA</div>
+                </div>
+            </div>
+
+            <div class="market-data">
+                <h3>O Mercado Gritando por Talentos</h3>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <span class="number">15.000</span>
+                        <span class="label">vagas abertas com "IA" no LinkedIn Brasil</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="number">40%</span>
+                        <span class="label">não exigem graduação</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="number">65%</span>
+                        <span class="label">aceitam trabalho remoto</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">20</div>
+    </div>
+
+    <!-- PÁGINA 21 - CASOS DE SUCESSO -->
+    <div class="page" data-page="21">
+        <div class="page-content">
+            <h2>Histórias Reais de Transformação</h2>
+            
+            <div class="success-story">
+                <h3>De Analista a Líder de Inovação</h3>
+                <div class="story-timeline">
+                    <div class="timeline-point">
+                        <span class="date">Jan/2023</span>
+                        <span class="event">Analista RH, R$ 4.500, medo do ChatGPT</span>
+                    </div>
+                    <div class="timeline-point">
+                        <span class="date">Mar/2023</span>
+                        <span class="event">Começou a estudar IA 2h/dia no YouTube</span>
+                    </div>
+                    <div class="timeline-point">
+                        <span class="date">Jun/2023</span>
+                        <span class="event">Automatizou 60% do seu trabalho</span>
+                    </div>
+                    <div class="timeline-point highlight">
+                        <span class="date">Dez/2023</span>
+                        <span class="event">Promovida: Líder de Inovação, R$ 12.000</span>
+                    </div>
+                </div>
+                <blockquote>
+                    "A IA não roubou meu emprego. Ela me libertou para fazer trabalho estratégico que realmente importa."
+                </blockquote>
+            </div>
+
+            <div class="success-story">
+                <h3>De CLT a Empresário Digital</h3>
+                <div class="story-timeline">
+                    <div class="timeline-point">
+                        <span class="date">Jan/2023</span>
+                        <span class="event">Analista financeiro, R$ 5.000 CLT</span>
+                    </div>
+                    <div class="timeline-point">
+                        <span class="date">Abr/2023</span>
+                        <span class="event">Primeira automação vendida: R$ 500</span>
+                    </div>
+                    <div class="timeline-point">
+                        <span class="date">Set/2023</span>
+                        <span class="event">Pediu demissão com 5 clientes fixos</span>
+                    </div>
+                    <div class="timeline-point highlight">
+                        <span class="date">Jan/2024</span>
+                        <span class="event">Faturamento: R$ 45.000/mês</span>
+                    </div>
+                </div>
+                <blockquote>
+                    "Com R$ 150 construí o que custaria R$ 150 mil há 5 anos. A IA democratizou o empreendedorismo."
+                </blockquote>
+            </div>
+        </div>
+        <div class="page-number">21</div>
+    </div>
+
+    <!-- PÁGINA 22 - EXERCÍCIO PRÁTICO -->
+    <div class="page" data-page="22">
+        <div class="page-content">
+            <h2>Seu Primeiro Exercício Prático</h2>
+            
+            <div class="exercise-block">
+                <h3>Identificando Suas Oportunidades com IA</h3>
+                
+                <div class="exercise-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Liste 5 tarefas repetitivas do seu trabalho</h4>
+                            <p>Aquelas que você faz toda semana e consome horas do seu tempo.</p>
+                            <div class="blank-lines">
+                                <div class="line">1. _________________________________</div>
+                                <div class="line">2. _________________________________</div>
+                                <div class="line">3. _________________________________</div>
+                                <div class="line">4. _________________________________</div>
+                                <div class="line">5. _________________________________</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Para cada tarefa, estime o tempo gasto</h4>
+                            <p>Seja honesto: quanto tempo por semana cada uma consome?</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Calcule o valor</h4>
+                            <p>Se você cobra R$ 100/hora e gasta 10 horas/semana em tarefas repetitivas, está "perdendo" R$ 1.000/semana em trabalho de maior valor.</p>
+                        </div>
+                    </div>
+
+                    <div class="step highlight">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>A Revelação</h4>
+                            <p>Se você pode automatizar essas tarefas para você, pode vendê-las como serviço para outros. Cada problema seu é um produto em potencial.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-box">
+                <h3>Ação Imediata</h3>
+                <p>Acesse <strong>claude.ai</strong> ou <strong>chat.openai.com</strong> agora mesmo e pergunte:</p>
+                <div class="prompt-example">
+                    "Como posso automatizar [sua tarefa mais repetitiva] usando IA?"
+                </div>
+                <p>A resposta vai surpreender você.</p>
+            </div>
+        </div>
+        <div class="page-number">22</div>
+    </div>
+
+    <!-- PÁGINA 23 - O MOVIMENTO CULTURA BUILDER -->
+    <div class="page" data-page="23">
+        <div class="page-content">
+            <h2>O Movimento Cultura Builder</h2>
+            
+            <div class="movement-stats">
+                <div class="big-number">Milhares</div>
+                <div class="big-label">de Builders Ativos no Brasil</div>
+            </div>
+
+            <p>O Movimento Cultura Builder não é apenas sobre tecnologia — é sobre mentalidade. É sobre transformar o medo em combustível, problemas em produtos, e ideias em impacto.</p>
+
+            <div class="builder-principles">
+                <h3>Os 5 Princípios do Builder</h3>
+                
+                <div class="principle">
+                    <div class="principle-number">1</div>
+                    <div class="principle-content">
+                        <h4>Ação > Perfeição</h4>
+                        <p>Melhor lançar algo imperfeito hoje do que algo perfeito nunca.</p>
+                    </div>
+                </div>
+
+                <div class="principle">
+                    <div class="principle-number">2</div>
+                    <div class="principle-content">
+                        <h4>Aprender Fazendo</h4>
+                        <p>Não espere saber tudo. Comece, erre, ajuste, melhore.</p>
+                    </div>
+                </div>
+
+                <div class="principle">
+                    <div class="principle-number">3</div>
+                    <div class="principle-content">
+                        <h4>Compartilhar Conhecimento</h4>
+                        <p>Ensinar é a melhor forma de aprender. Seu progresso inspira outros.</p>
+                    </div>
+                </div>
+
+                <div class="principle">
+                    <div class="principle-number">4</div>
+                    <div class="principle-content">
+                        <h4>Resolver Problemas Reais</h4>
+                        <p>Não crie soluções procurando problemas. Encontre problemas que valem a pena resolver.</p>
+                    </div>
+                </div>
+
+                <div class="principle">
+                    <div class="principle-number">5</div>
+                    <div class="principle-content">
+                        <h4>Pensar em Abundância</h4>
+                        <p>Oportunidades são infinitas. Sucesso do outro não diminui o seu.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="join-movement">
+                <h3>Junte-se ao Movimento</h3>
+                <p>Comunidades, recursos e mentorias disponíveis para sua jornada builder.</p>
+            </div>
+        </div>
+        <div class="page-number">23</div>
+    </div>
+
+    <!-- PÁGINA 24 - CHECKLIST FINAL -->
+    <div class="page" data-page="24">
+        <div class="page-content">
+            <h2>Seu Plano de Ação para os Próximos 30 Dias</h2>
+            
+            <div class="action-checklist">
+                <h3>Semana 1: Exploração</h3>
+                <div class="checklist">
+                    <label><input type="checkbox"> Criar conta no Claude.ai e ChatGPT</label>
+                    <label><input type="checkbox"> Fazer 10 perguntas diferentes para entender as capacidades</label>
+                    <label><input type="checkbox"> Identificar 3 tarefas do trabalho para automatizar</label>
+                    <label><input type="checkbox"> Assistir 5 vídeos sobre IA no YouTube</label>
+                </div>
+
+                <h3>Semana 2: Experimentação</h3>
+                <div class="checklist">
+                    <label><input type="checkbox"> Automatizar primeira tarefa simples</label>
+                    <label><input type="checkbox"> Criar primeiro conteúdo com ajuda da IA</label>
+                    <label><input type="checkbox"> Testar 3 ferramentas diferentes de IA</label>
+                    <label><input type="checkbox"> Compartilhar aprendizado no LinkedIn</label>
+                </div>
+
+                <h3>Semana 3: Aplicação</h3>
+                <div class="checklist">
+                    <label><input type="checkbox"> Implementar automação no trabalho</label>
+                    <label><input type="checkbox"> Ajudar 1 colega com IA</label>
+                    <label><input type="checkbox"> Identificar 1 oportunidade de negócio</label>
+                    <label><input type="checkbox"> Criar protótipo simples de solução</label>
+                </div>
+
+                <h3>Semana 4: Validação</h3>
+                <div class="checklist">
+                    <label><input type="checkbox"> Apresentar resultados para chefe/equipe</label>
+                    <label><input type="checkbox"> Oferecer solução para 5 potenciais clientes</label>
+                    <label><input type="checkbox"> Conseguir primeiro feedback real</label>
+                    <label><input type="checkbox"> Decidir próximos passos com base em dados</label>
+                </div>
+            </div>
+
+            <div class="chapter-conclusion">
+                <p><strong>Lembre-se:</strong> Em 30 dias, você pode estar no mesmo lugar, reclamando dos mesmos problemas, ou pode estar construindo soluções e mudando sua vida. A escolha é sempre sua.</p>
+                
+                <p>Este foi apenas o primeiro capítulo. Nos próximos, vamos mergulhar fundo em estratégias específicas, ferramentas práticas e casos detalhados. Mas se você aplicar apenas o que aprendeu aqui, já estará à frente de 90% das pessoas.</p>
+                
+                <p class="final-thought">O futuro não está sendo escrito em Silicon Valley ou Shenzhen.<br>
+                Está sendo escrito aqui, agora, por você.</p>
+            </div>
+        </div>
+        <div class="page-number">24</div>
+    </div>
+
+    <!-- NOTAS DO CAPÍTULO -->
+    <div class="page" data-page="25">
+        <div class="page-content">
+            <h2>Notas e Referências do Capítulo 1</h2>
+            
+            <div class="references">
+                <h3>Dados e Estatísticas</h3>
+                <ul class="reference-list">
+                    <li>DataFolha (2024): "Percepção dos Brasileiros sobre IA" - Pesquisa com 2.000 respondentes</li>
+                    <li>SEBRAE DataSebrae (2024): "Empreendedorismo Digital no Brasil"</li>
+                    <li>Portal do Empreendedor (2024): Estatísticas oficiais de MEIs</li>
+                    <li>LinkedIn Economic Graph (2024): "Empregos em IA no Brasil"</li>
+                    <li>Glassdoor Brasil (2024): Levantamento salarial de profissões tech</li>
+                </ul>
+
+                <h3>Leituras Recomendadas</h3>
+                <ul class="reference-list">
+                    <li>Frey & Osborne (2013): "The Future of Employment" - Oxford University</li>
+                    <li>Brynjolfsson & McAfee (2014): "The Second Machine Age"</li>
+                    <li>Kai-Fu Lee (2018): "AI Superpowers"</li>
+                    <li>Andrew Ng: Cursos gratuitos em Coursera sobre IA</li>
+                </ul>
+
+                <h3>Recursos Práticos</h3>
+                <ul class="reference-list">
+                    <li><strong>claude.ai</strong> - IA conversacional da Anthropic</li>
+                    <li><strong>chat.openai.com</strong> - ChatGPT da OpenAI</li>
+                    <li><strong>coursera.org/ai</strong> - Cursos gratuitos de IA</li>
+                    <li><strong>fast.ai</strong> - Aprendizado prático de deep learning</li>
+                    <li><strong>culturabuilder.com.br</strong> - Comunidade brasileira de builders</li>
+                </ul>
+            </div>
+
+            <div class="next-chapter-preview">
+                <h3>Próximo Capítulo</h3>
+                <div class="preview-box">
+                    <h4>Capítulo 2: Os 7 Modelos de Negócio com IA que Mais Faturam</h4>
+                    <p>Descubra os blueprints exatos dos negócios que estão faturando de R$ 50k a R$ 500k/mês com menos de 3 horas de trabalho por dia. Casos reais, números abertos, passo a passo replicável.</p>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">25</div>
+    </div>
+
+    <!-- PÁGINA EM BRANCO PARA NOTAS -->
+    <div class="page notes-page" data-page="26">
+        <div class="page-content">
+            <h3>Suas Notas e Reflexões</h3>
+            <div class="notes-lines">
+                <!-- Linhas para anotações -->
+            </div>
+        </div>
+        <div class="page-number">26</div>
+    </div>
+
+    <!-- CONTRACAPA -->
+    <div class="page back-cover">
+        <div class="back-cover-content">
+            <div class="back-cover-text">
+                <h2>Sobre Este Livro</h2>
+                <p>
+                    Em um mundo onde 67% dos brasileiros temem perder o emprego para a IA, 
+                    este livro revela a verdade que poucos querem que você saiba: a Inteligência 
+                    Artificial está criando muito mais oportunidades do que destruindo empregos.
+                </p>
+                
+                <p>
+                    Com dados reais, casos práticos e um roteiro passo a passo, você descobrirá 
+                    como transformar o medo em vantagem competitiva e construir seu futuro na 
+                    era da IA — começando com apenas R$ 150.
+                </p>
+                
+                <div class="testimonials">
+                    <div class="testimonial">
+                        "Este livro mudou completamente minha perspectiva sobre IA. Em 3 meses, 
+                        saí de analista para consultor, triplicando minha renda."
+                        <span class="author">— Marina S., São Paulo</span>
+                    </div>
+                    
+                    <div class="testimonial">
+                        "Leitura obrigatória para qualquer profissional que queira prosperar 
+                        nos próximos anos. Prático, inspirador e transformador."
+                        <span class="author">— Carlos M., Rio de Janeiro</span>
+                    </div>
+                </div>
+                
+                <div class="back-cover-footer">
+                    <div class="barcode">
+                        ISBN 978-65-00000-00-0
+                    </div>
+                    <div class="price">
+                        R$ 69,90
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
