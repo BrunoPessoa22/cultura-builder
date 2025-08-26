@@ -440,6 +440,10 @@
                 --sidebar-width: 280px;
             }
             
+            .menu-toggle {
+                display: block !important;
+            }
+            
             .sidebar {
                 position: fixed;
                 left: -100%;
@@ -759,12 +763,50 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="reader-header">
-                <div class="reader-info">
+                <div class="reader-info" style="display: flex; align-items: center; gap: 16px;">
+                    <button class="menu-toggle" onclick="toggleSidebar()" style="display: none; background: transparent; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px;">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
                     <span id="currentChapter" style="color: var(--text-secondary); font-size: 14px;">
                         Carregando...
                     </span>
                 </div>
                 <div class="reader-controls">
+                    <!-- Voice Controls -->
+                    <button class="control-btn" onclick="toggleVoiceOver()">
+                        <i id="voiceIcon" data-lucide="volume-2" class="w-4 h-4"></i>
+                        <span>Ler</span>
+                    </button>
+                    <button class="control-btn" id="pauseBtn" onclick="pauseResumeVoice()" style="display: none;">
+                        <i id="pauseIcon" data-lucide="pause" class="w-4 h-4"></i>
+                        <span id="pauseText">Pausar</span>
+                    </button>
+                    <button class="control-btn" id="stopBtn" onclick="stopVoice()" style="display: none;">
+                        <i data-lucide="square" class="w-4 h-4"></i>
+                        <span>Parar</span>
+                    </button>
+                    <button class="control-btn" id="voiceSettings" onclick="toggleVoiceSettings()" style="display: none; position: relative;">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                        <div id="voiceDropdown" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 8px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 16px; min-width: 250px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); z-index: 200;">
+                            <label style="display: block; margin-bottom: 12px;">
+                                <span style="font-size: 12px; color: var(--text-tertiary); display: block; margin-bottom: 4px;">Voz:</span>
+                                <select id="voiceSelect" style="width: 100%; padding: 6px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 4px; color: var(--text-primary); font-size: 13px;"></select>
+                            </label>
+                            <label style="display: block; margin-bottom: 12px;">
+                                <span style="font-size: 12px; color: var(--text-tertiary); display: block; margin-bottom: 4px;">Velocidade: <span id="speedValue">1.0</span></span>
+                                <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1" style="width: 100%;" onchange="updateVoiceSettings()">
+                            </label>
+                            <label style="display: block;">
+                                <span style="font-size: 12px; color: var(--text-tertiary); display: block; margin-bottom: 4px;">Tom: <span id="pitchValue">1.0</span></span>
+                                <input type="range" id="pitchRange" min="0.5" max="2" step="0.1" value="1" style="width: 100%;" onchange="updateVoiceSettings()">
+                            </label>
+                        </div>
+                    </button>
+                    
+                    <!-- Navigation Controls -->
+                    <div style="border-left: 1px solid var(--border); margin: 0 8px; height: 24px;"></div>
+                    
+                    <!-- Font Controls -->
                     <button class="control-btn" onclick="decreaseFontSize()">
                         <i data-lucide="zoom-out" class="w-4 h-4"></i>
                         <span>A-</span>
@@ -773,6 +815,8 @@
                         <i data-lucide="zoom-in" class="w-4 h-4"></i>
                         <span>A+</span>
                     </button>
+                    
+                    <!-- Theme Toggle -->
                     <button class="control-btn" id="themeToggle" onclick="toggleTheme()">
                         <i data-lucide="moon" class="w-4 h-4 theme-icon-dark"></i>
                         <i data-lucide="sun" class="w-4 h-4 theme-icon-light" style="display: none;"></i>
@@ -1101,67 +1145,67 @@
         
         // Chapter data - Complete list with all 33 chapters
         const chapters = [
-            { part: "INÍCIO", chapters: [
-                { id: "capa", number: "", title: "📖 Capa do Livro", file: "capa.md" },
+            { part: "INÍCIO", icon: "home", chapters: [
+                { id: "capa", number: "", title: "Capa do Livro", icon: "book-open", file: "capa.md" },
             ]},
-            { part: "PARTE I - O DESPERTAR", chapters: [
-                { id: "cap1", number: "1", title: "O Dia em que o ChatGPT Mudou Tudo", file: "parte-01/capitulo-01.md" },
-                { id: "cap2", number: "2", title: "O Espelho da História", file: "parte-01/capitulo-02.md" },
-                { id: "cap3", number: "3", title: "A Psicologia do Medo Tecnológico", file: "parte-01/capitulo-03.md" }
+            { part: "PARTE I - O DESPERTAR", icon: "sunrise", chapters: [
+                { id: "cap1", number: "1", title: "O Dia em que o ChatGPT Mudou Tudo", icon: "sparkles", file: "parte-01/capitulo-01.md" },
+                { id: "cap2", number: "2", title: "O Espelho da História", icon: "history", file: "parte-01/capitulo-02.md" },
+                { id: "cap3", number: "3", title: "A Psicologia do Medo Tecnológico", icon: "brain", file: "parte-01/capitulo-03.md" }
             ]},
-            { part: "PARTE II - ENTENDENDO O JOGO", chapters: [
-                { id: "cap4", number: "4", title: "IA para Humanos", file: "parte-02/capitulo-04.md" },
-                { id: "cap5", number: "5", title: "Os Arquitetos do Futuro", file: "parte-02/capitulo-05.md" },
-                { id: "cap6", number: "6", title: "O Novo Contrato Social", file: "parte-02/capitulo-06.md" }
+            { part: "PARTE II - ENTENDENDO O JOGO", icon: "gamepad-2", chapters: [
+                { id: "cap4", number: "4", title: "IA para Humanos", icon: "cpu", file: "parte-02/capitulo-04.md" },
+                { id: "cap5", number: "5", title: "Os Arquitetos do Futuro", icon: "building-2", file: "parte-02/capitulo-05.md" },
+                { id: "cap6", number: "6", title: "O Novo Contrato Social", icon: "handshake", file: "parte-02/capitulo-06.md" }
             ]},
-            { part: "PARTE III - MINDSET BUILDER", chapters: [
-                { id: "cap7", number: "7", title: "De Consumidor a Criador", file: "parte-03/capitulo-07.md" },
-                { id: "cap8", number: "8", title: "Pensamento Computacional", file: "parte-03/capitulo-08.md" },
-                { id: "cap9", number: "9", title: "O Arsenal do Builder", file: "parte-03/capitulo-09.md" }
+            { part: "PARTE III - MINDSET BUILDER", icon: "lightbulb", chapters: [
+                { id: "cap7", number: "7", title: "De Consumidor a Criador", icon: "palette", file: "parte-03/capitulo-07.md" },
+                { id: "cap8", number: "8", title: "Pensamento Computacional", icon: "binary", file: "parte-03/capitulo-08.md" },
+                { id: "cap9", number: "9", title: "O Arsenal do Builder", icon: "package", file: "parte-03/capitulo-09.md" }
             ]},
-            { part: "PARTE IV - MÃOS À OBRA", chapters: [
-                { id: "cap10", number: "10", title: "Seu Primeiro Projeto com IA", file: "parte-04/capitulo-10.md" },
-                { id: "cap11", number: "11", title: "10 Projetos em 30 Dias", file: "parte-04/capitulo-11.md" },
-                { id: "cap12", number: "12", title: "De Projeto a Produto", file: "parte-04/capitulo-12.md" }
+            { part: "PARTE IV - MÃOS À OBRA", icon: "hammer", chapters: [
+                { id: "cap10", number: "10", title: "Seu Primeiro Projeto com IA", icon: "rocket", file: "parte-04/capitulo-10.md" },
+                { id: "cap11", number: "11", title: "10 Projetos em 30 Dias", icon: "calendar", file: "parte-04/capitulo-11.md" },
+                { id: "cap12", number: "12", title: "De Projeto a Produto", icon: "package-check", file: "parte-04/capitulo-12.md" }
             ]},
-            { part: "PARTE V - HABILIDADES HUMANAS", chapters: [
-                { id: "cap13", number: "13", title: "Criatividade na Era da IA", file: "parte-05/capitulo-13.md" },
-                { id: "cap14", number: "14", title: "Pensamento Crítico", file: "parte-05/capitulo-14.md" },
-                { id: "cap15", number: "15", title: "Inteligência Emocional", file: "parte-05/capitulo-15.md" }
+            { part: "PARTE V - HABILIDADES HUMANAS", icon: "users", chapters: [
+                { id: "cap13", number: "13", title: "Criatividade na Era da IA", icon: "sparkle", file: "parte-05/capitulo-13.md" },
+                { id: "cap14", number: "14", title: "Pensamento Crítico", icon: "eye", file: "parte-05/capitulo-14.md" },
+                { id: "cap15", number: "15", title: "Inteligência Emocional", icon: "heart", file: "parte-05/capitulo-15.md" }
             ]},
-            { part: "PARTE VI - CARREIRA BUILDER", chapters: [
-                { id: "cap16", number: "16", title: "Profissões do Futuro", file: "parte-06/capitulo-16.md" },
-                { id: "cap17", number: "17", title: "Portfolio e Marca Pessoal", file: "parte-06/capitulo-17.md" },
-                { id: "cap18", number: "18", title: "Aprendizado Contínuo", file: "parte-06/capitulo-18.md" }
+            { part: "PARTE VI - CARREIRA BUILDER", icon: "briefcase", chapters: [
+                { id: "cap16", number: "16", title: "Profissões do Futuro", icon: "trending-up", file: "parte-06/capitulo-16.md" },
+                { id: "cap17", number: "17", title: "Portfolio e Marca Pessoal", icon: "user-check", file: "parte-06/capitulo-17.md" },
+                { id: "cap18", number: "18", title: "Aprendizado Contínuo", icon: "graduation-cap", file: "parte-06/capitulo-18.md" }
             ]},
-            { part: "PARTE VII - EMPRESAS BUILDERS", chapters: [
-                { id: "cap19", number: "19", title: "Cultura de Experimentação", file: "parte-07/capitulo-19.md" },
-                { id: "cap20", number: "20", title: "Lideranças que Multiplicam", file: "parte-07/capitulo-20.md" },
-                { id: "cap21", number: "21", title: "Estruturas Antifrágeis", file: "parte-07/capitulo-21.md" }
+            { part: "PARTE VII - EMPRESAS BUILDERS", icon: "building", chapters: [
+                { id: "cap19", number: "19", title: "Cultura de Experimentação", icon: "flask", file: "parte-07/capitulo-19.md" },
+                { id: "cap20", number: "20", title: "Lideranças que Multiplicam", icon: "users-2", file: "parte-07/capitulo-20.md" },
+                { id: "cap21", number: "21", title: "Estruturas Antifrágeis", icon: "shield", file: "parte-07/capitulo-21.md" }
             ]},
-            { part: "PARTE VIII - ÉTICA E RESPONSABILIDADE", chapters: [
-                { id: "cap22", number: "22", title: "Ética do Builder", file: "parte-08/capitulo-22.md" },
-                { id: "cap23", number: "23", title: "Privacidade e Dados", file: "parte-08/capitulo-23.md" },
-                { id: "cap24", number: "24", title: "Construção Responsável", file: "parte-08/capitulo-24.md" }
+            { part: "PARTE VIII - ÉTICA E RESPONSABILIDADE", icon: "scale", chapters: [
+                { id: "cap22", number: "22", title: "Ética do Builder", icon: "gavel", file: "parte-08/capitulo-22.md" },
+                { id: "cap23", number: "23", title: "Privacidade e Dados", icon: "lock", file: "parte-08/capitulo-23.md" },
+                { id: "cap24", number: "24", title: "Construção Responsável", icon: "shield-check", file: "parte-08/capitulo-24.md" }
             ]},
-            { part: "PARTE IX - CASES REAIS", chapters: [
-                { id: "cap25", number: "25", title: "Do Zero ao Código", file: "parte-09/capitulo-25.md" },
-                { id: "cap26", number: "26", title: "Transformação de Carreiras", file: "parte-09/capitulo-26.md" },
-                { id: "cap27", number: "27", title: "Impacto Social com IA", file: "parte-09/capitulo-27.md" }
+            { part: "PARTE IX - CASES REAIS", icon: "award", chapters: [
+                { id: "cap25", number: "25", title: "Do Zero ao Código", icon: "code", file: "parte-09/capitulo-25.md" },
+                { id: "cap26", number: "26", title: "Transformação de Carreiras", icon: "refresh-cw", file: "parte-09/capitulo-26.md" },
+                { id: "cap27", number: "27", title: "Impacto Social com IA", icon: "globe", file: "parte-09/capitulo-27.md" }
             ]},
-            { part: "PARTE X - BRASIL BUILDER", chapters: [
-                { id: "cap28", number: "28", title: "O Vale do São Francisco", file: "parte-10/capitulo-28.md" },
-                { id: "cap29", number: "29", title: "Empresas Brasileiras", file: "parte-10/capitulo-29.md" },
-                { id: "cap30", number: "30", title: "Políticas Públicas", file: "parte-10/capitulo-30.md" }
+            { part: "PARTE X - BRASIL BUILDER", icon: "flag", chapters: [
+                { id: "cap28", number: "28", title: "O Vale do São Francisco", icon: "map-pin", file: "parte-10/capitulo-28.md" },
+                { id: "cap29", number: "29", title: "Empresas Brasileiras", icon: "landmark", file: "parte-10/capitulo-29.md" },
+                { id: "cap30", number: "30", title: "Políticas Públicas", icon: "file-text", file: "parte-10/capitulo-30.md" }
             ]},
-            { part: "PARTE XI - SEU FUTURO", chapters: [
-                { id: "cap31", number: "31", title: "Seu Roadmap Pessoal", file: "parte-11/capitulo-31.md" },
-                { id: "cap32", number: "32", title: "Ferramentas Essenciais", file: "parte-11/capitulo-32.md" },
-                { id: "cap33", number: "33", title: "O Chamado à Ação", file: "parte-11/capitulo-33.md" }
+            { part: "PARTE XI - SEU FUTURO", icon: "compass", chapters: [
+                { id: "cap31", number: "31", title: "Seu Roadmap Pessoal", icon: "map", file: "parte-11/capitulo-31.md" },
+                { id: "cap32", number: "32", title: "Ferramentas Essenciais", icon: "wrench", file: "parte-11/capitulo-32.md" },
+                { id: "cap33", number: "33", title: "O Chamado à Ação", icon: "megaphone", file: "parte-11/capitulo-33.md" }
             ]},
-            { part: "CONCLUSÃO", chapters: [
-                { id: "epilogo", number: "", title: "Epílogo", file: "epilogo.md" },
-                { id: "referencias", number: "", title: "Referências e Fontes", file: "referencias.md" }
+            { part: "CONCLUSÃO", icon: "check-circle", chapters: [
+                { id: "epilogo", number: "", title: "Epílogo", icon: "book-marked", file: "epilogo.md" },
+                { id: "referencias", number: "", title: "Referências e Fontes", icon: "library", file: "referencias.md" }
             ]}
         ];
         
@@ -1202,13 +1246,13 @@
             let html = '';
             
             chapters.forEach((part, partIndex) => {
-                html += `<div class="part-header">${part.part}</div>`;
+                html += `<div class="part-header">${part.icon ? '<i data-lucide="' + part.icon + '" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i>' : ''}${part.part}</div>`;
                 part.chapters.forEach((chapter, chapterIndex) => {
                     html += `
                         <div class="chapter-item" 
                              id="chapter-${chapter.id}"
                              onclick="loadChapter(${JSON.stringify(chapter).replace(/"/g, '&quot;')})">
-                            ${chapter.number ? `<div class="chapter-number">Capítulo ${chapter.number}</div>` : ''}
+                            ${chapter.number ? `<div class="chapter-number">${chapter.icon ? '<i data-lucide="' + chapter.icon + '" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i>' : '<i data-lucide="file-text" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i>'}Capítulo ${chapter.number}</div>` : (chapter.icon ? '<div class="chapter-number"><i data-lucide="' + chapter.icon + '" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i></div>' : '')}
                             <div class="chapter-title">${chapter.title}</div>
                             <div class="search-preview" id="preview-${chapter.id}" style="display: none; font-size: 12px; color: var(--text-tertiary); margin-top: 8px; padding: 8px; background: var(--bg-tertiary); border-radius: 4px;"></div>
                         </div>
@@ -1217,6 +1261,9 @@
             });
             
             chapterList.innerHTML = html;
+            
+            // Initialize Lucide icons
+            if (window.lucide) lucide.createIcons();
         }
         
         // Load single chapter
@@ -1239,7 +1286,7 @@
             
             // Show loading
             contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            currentChapterEl.textContent = `Capítulo ${chapter.number}: ${chapter.title}`;
+            currentChapterEl.innerHTML = `${chapter.icon ? '<i data-lucide="' + chapter.icon + '" class="w-4 h-4" style="display: inline-block; margin-right: 8px; vertical-align: middle;"></i>' : ''}${chapter.number ? 'Capítulo ' + chapter.number + ': ' : ''}${chapter.title}`;
             
             try {
                 const response = await fetch(`/manuscrito/${chapter.file}`);
@@ -1348,6 +1395,8 @@
                     updateActiveChapter(chapter.id);
                     document.getElementById('currentChapter').textContent = 
                         chapter.number ? `Capítulo ${chapter.number}: ${chapter.title}` : chapter.title;
+                    // Re-initialize Lucide icons after content update
+                    if (window.lucide) lucide.createIcons();
                 }
             } catch (error) {
                 console.error('Error loading chapter:', error);
@@ -1723,7 +1772,7 @@
                 <div class="search-summary">
                     <strong>${results.length}</strong> capítulo${results.length > 1 ? 's' : ''} 
                     com "<strong>${searchTerm}</strong>"
-                    <button onclick="clearSearch()" class="clear-search">✕ Limpar</button>
+                    <button onclick="clearSearch()" class="clear-search"><i data-lucide="x" class="w-3 h-3" style="display: inline-block; margin-right: 4px; vertical-align: middle;"></i>Limpar</button>
                 </div>
             `;
             
