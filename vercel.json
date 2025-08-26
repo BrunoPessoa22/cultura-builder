@@ -5,6 +5,10 @@
     {
       "source": "/",
       "destination": "/landing-page.html"
+    },
+    {
+      "source": "/reader-pro.html",
+      "destination": "/reader-v2.html"
     }
   ],
   "headers": [

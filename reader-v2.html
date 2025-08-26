@@ -1,0 +1,1950 @@
+<!-- Version 2.0 - Updated with Lucide Icons - August 26, 2025 -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultura Builder - Leitor (v2.0 - Lucide Icons)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons v3 - Updated 2025 -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js?v=20250822"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Dark Theme (Default) */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-tertiary: #666666;
+            --accent: #ffffff;
+            --border: rgba(255, 255, 255, 0.1);
+            --sidebar-width: 320px;
+            --code-bg: #1a1a1a;
+        }
+        
+        /* Light Theme */
+        body.light-mode {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-tertiary: #9ca3af;
+            --accent: #111827;
+            --border: rgba(0, 0, 0, 0.1);
+            --code-bg: #f3f4f6;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        /* Layout */
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+        
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--text-tertiary);
+            background: var(--bg-tertiary);
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+        }
+        
+        /* Chapter List */
+        .chapter-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+        
+        .chapter-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chapter-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .chapter-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        
+        .chapter-list::-webkit-scrollbar-thumb:hover {
+            background: var(--text-tertiary);
+        }
+        
+        .part-header {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-tertiary);
+            padding: 16px 12px 8px;
+            margin-top: 8px;
+        }
+        
+        .chapter-item {
+            padding: 12px 16px;
+            margin: 2px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        
+        .chapter-item:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .chapter-item.active {
+            background: var(--bg-tertiary);
+            border-color: var(--border);
+        }
+        
+        .chapter-number {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .chapter-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        .chapter-item.active .chapter-title {
+            color: var(--text-primary);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Reader Header */
+        .reader-header {
+            padding: 24px 40px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-secondary);
+            transition: background 0.3s;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .reader-controls {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .control-btn {
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .control-btn:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+        
+        .control-btn.active {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+        
+        /* Content Area with Infinite Scroll */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 60px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .content-area::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .content-area::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        .content-area::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 5px;
+        }
+        
+        .content-area::-webkit-scrollbar-thumb:hover {
+            background: var(--text-tertiary);
+        }
+        
+        /* Chapter Container for Infinite Scroll */
+        .chapter-container {
+            min-height: 100vh;
+            padding-bottom: 150px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .chapter-container:last-child {
+            border-bottom: none;
+            padding-bottom: 200px;
+        }
+        
+        /* Typography */
+        .content-area h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 24px;
+            line-height: 1.2;
+            letter-spacing: -2px;
+        }
+        
+        .content-area h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 48px 0 24px;
+            line-height: 1.3;
+            letter-spacing: -1px;
+        }
+        
+        .content-area h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 36px 0 16px;
+            line-height: 1.4;
+        }
+        
+        .content-area h4 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 28px 0 14px;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+        
+        .content-area h5 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 24px 0 12px;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+        
+        .content-area h6 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 20px 0 10px;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+        
+        .content-area p {
+            font-size: 17px;
+            line-height: 1.8;
+            margin-bottom: 24px;
+            color: var(--text-secondary);
+        }
+        
+        .content-area blockquote {
+            border-left: 3px solid var(--border);
+            padding-left: 24px;
+            margin: 32px 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+        
+        .content-area code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        .content-area pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 24px 0;
+        }
+        
+        .content-area pre code {
+            background: transparent;
+            padding: 0;
+        }
+        
+        .content-area ul, .content-area ol {
+            margin: 24px 0;
+            padding-left: 24px;
+        }
+        
+        .content-area li {
+            margin: 8px 0;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        
+        .content-area strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .content-area em {
+            color: var(--text-secondary);
+        }
+        
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-tertiary);
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--text-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: 1000;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        /* Loading more indicator */
+        .loading-more {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .content-area {
+                padding: 40px;
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 280px;
+            }
+            
+            .menu-toggle {
+                display: block !important;
+            }
+            
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                z-index: 1000;
+                transition: left 0.3s;
+                width: var(--sidebar-width);
+                height: 100vh;
+                box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 999;
+                backdrop-filter: blur(4px);
+            }
+            
+            .sidebar-overlay.active {
+                display: block;
+            }
+            
+            .main-content {
+                width: 100%;
+            }
+            
+            .reader-header {
+                padding: 16px 20px;
+            }
+            
+            .content-area {
+                padding: 20px;
+                max-width: 100%;
+            }
+            
+            .chapter-container {
+                padding-bottom: 100px;
+            }
+            
+            .content-area h1 {
+                font-size: 28px;
+                letter-spacing: -1px;
+            }
+            
+            .content-area h2 {
+                font-size: 22px;
+                margin: 32px 0 16px;
+            }
+            
+            .content-area h3 {
+                font-size: 18px;
+                margin: 24px 0 12px;
+            }
+            
+            .content-area p {
+                font-size: 16px;
+                line-height: 1.7;
+                margin-bottom: 20px;
+            }
+            
+            .reader-controls {
+                gap: 8px;
+            }
+            
+            .control-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            :root {
+                --sidebar-width: 100%;
+            }
+            
+            .sidebar-header {
+                padding: 20px;
+            }
+            
+            .sidebar-title {
+                font-size: 18px;
+            }
+            
+            .content-area {
+                padding: 16px;
+            }
+            
+            .content-area h1 {
+                font-size: 24px;
+            }
+            
+            .content-area h2 {
+                font-size: 20px;
+            }
+            
+            .content-area h3 {
+                font-size: 17px;
+            }
+            
+            .content-area p {
+                font-size: 15px;
+            }
+            
+            .reader-info span {
+                font-size: 12px !important;
+            }
+        }
+        
+        /* Mobile Menu Removed - Sidebar always visible on desktop */
+        
+        @media (max-width: 768px) {
+            
+            .sidebar-header {
+                padding-top: 24px;
+            }
+            
+            .reader-header {
+                padding: 16px 20px;
+            }
+        }
+        
+        /* Scroll Mode Toggle */
+        .scroll-mode-toggle {
+            display: flex;
+            gap: 8px;
+            background: var(--bg-tertiary);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        .scroll-mode-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .scroll-mode-btn.active {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+        
+        /* Search Results Styles */
+        .search-results {
+            padding: 12px;
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 6px;
+            margin: 12px 0;
+        }
+        
+        .search-results.no-results {
+            background: rgba(239, 68, 68, 0.05);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+        
+        .search-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .clear-search {
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .clear-search:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+        }
+        
+        .chapter-item.search-match {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+        
+        .search-count {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 2px 6px;
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        mark {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.4), rgba(255, 215, 0, 0.6));
+            color: var(--text-primary);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+            animation: highlight-pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes highlight-pulse {
+            0%, 100% { background: linear-gradient(90deg, rgba(255, 215, 0, 0.4), rgba(255, 215, 0, 0.6)); }
+            50% { background: linear-gradient(90deg, rgba(255, 215, 0, 0.6), rgba(255, 215, 0, 0.8)); }
+        }
+        
+        .search-highlight {
+            background: rgba(255, 215, 0, 0.3);
+            padding: 2px 0;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 500;
+        }
+        
+        /* Loading indicator for search */
+        .search-loading {
+            padding: 8px;
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 12px;
+        }
+        
+        .search-loading::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+        
+        /* Lucide Icon Styles */
+        .control-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .control-btn svg,
+        .search-icon svg,
+        .menu-toggle svg {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2;
+        }
+        
+        .search-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .menu-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .w-4 { width: 16px; }
+        .h-4 { height: 16px; }
+        .w-5 { width: 20px; }
+        .h-5 { height: 20px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
+    </div>
+    
+    
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1 class="sidebar-title">Cultura Builder</h1>
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        placeholder="Buscar no livro..."
+                        id="searchInput"
+                        onkeyup="searchChapters()"
+                    >
+                    <span class="search-icon">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="chapter-list" id="chapterList">
+                <!-- Chapters will be dynamically loaded here -->
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="reader-header">
+                <div class="reader-info" style="display: flex; align-items: center; gap: 16px;">
+                    <button class="menu-toggle" onclick="toggleSidebar()" style="display: none; background: transparent; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px;">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                    <span id="currentChapter" style="color: var(--text-secondary); font-size: 14px;">
+                        Carregando...
+                    </span>
+                </div>
+                <div class="reader-controls">
+                    <!-- Voice Controls -->
+                    <button class="control-btn" onclick="toggleVoiceOver()">
+                        <i id="voiceIcon" data-lucide="volume-2" class="w-4 h-4"></i>
+                        <span>Ler</span>
+                    </button>
+                    <button class="control-btn" id="pauseBtn" onclick="pauseResumeVoice()" style="display: none;">
+                        <i id="pauseIcon" data-lucide="pause" class="w-4 h-4"></i>
+                        <span id="pauseText">Pausar</span>
+                    </button>
+                    <button class="control-btn" id="stopBtn" onclick="stopVoice()" style="display: none;">
+                        <i data-lucide="square" class="w-4 h-4"></i>
+                        <span>Parar</span>
+                    </button>
+                    <button class="control-btn" id="voiceSettings" onclick="toggleVoiceSettings()" style="display: none; position: relative;">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                        <div id="voiceDropdown" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 8px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 16px; min-width: 250px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); z-index: 200;">
+                            <label style="display: block; margin-bottom: 12px;">
+                                <span style="font-size: 12px; color: var(--text-tertiary); display: block; margin-bottom: 4px;">Voz:</span>
+                                <select id="voiceSelect" style="width: 100%; padding: 6px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 4px; color: var(--text-primary); font-size: 13px;"></select>
+                            </label>
+                            <label style="display: block; margin-bottom: 12px;">
+                                <span style="font-size: 12px; color: var(--text-tertiary); display: block; margin-bottom: 4px;">Velocidade: <span id="speedValue">1.0</span></span>
+                                <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1" style="width: 100%;" onchange="updateVoiceSettings()">
+                            </label>
+                            <label style="display: block;">
+                                <span style="font-size: 12px; color: var(--text-tertiary); display: block; margin-bottom: 4px;">Tom: <span id="pitchValue">1.0</span></span>
+                                <input type="range" id="pitchRange" min="0.5" max="2" step="0.1" value="1" style="width: 100%;" onchange="updateVoiceSettings()">
+                            </label>
+                        </div>
+                    </button>
+                    
+                    <!-- Navigation Controls -->
+                    <div style="border-left: 1px solid var(--border); margin: 0 8px; height: 24px;"></div>
+                    
+                    <!-- Font Controls -->
+                    <button class="control-btn" onclick="decreaseFontSize()">
+                        <i data-lucide="zoom-out" class="w-4 h-4"></i>
+                        <span>A-</span>
+                    </button>
+                    <button class="control-btn" onclick="increaseFontSize()">
+                        <i data-lucide="zoom-in" class="w-4 h-4"></i>
+                        <span>A+</span>
+                    </button>
+                    
+                    <!-- Theme Toggle -->
+                    <button class="control-btn" id="themeToggle" onclick="toggleTheme()">
+                        <i data-lucide="moon" class="w-4 h-4 theme-icon-dark"></i>
+                        <i data-lucide="sun" class="w-4 h-4 theme-icon-light" style="display: none;"></i>
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content-area" id="contentArea" onscroll="handleScroll()">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Voice Over System
+        let speechSynthesis = window.speechSynthesis;
+        let currentUtterance = null;
+        let isPaused = false;
+        let isReading = false;
+        let voices = [];
+        let selectedVoice = null;
+        let speechRate = 1.0;
+        let speechPitch = 1.0;
+        let currentSentenceIndex = 0;
+        let sentences = [];
+        
+        // Initialize voices
+        function loadVoices() {
+            voices = speechSynthesis.getVoices();
+            const voiceSelect = document.getElementById('voiceSelect');
+            if (voiceSelect && voices.length > 0) {
+                voiceSelect.innerHTML = '';
+                
+                // Filter Portuguese and English voices
+                const ptVoices = voices.filter(voice => voice.lang.includes('pt'));
+                const enVoices = voices.filter(voice => voice.lang.includes('en'));
+                
+                // Add Portuguese voices first
+                if (ptVoices.length > 0) {
+                    const ptGroup = document.createElement('optgroup');
+                    ptGroup.label = 'Português';
+                    ptVoices.forEach((voice, index) => {
+                        const option = document.createElement('option');
+                        option.value = voices.indexOf(voice);
+                        option.textContent = `${voice.name} (${voice.lang})`;
+                        if (index === 0) option.selected = true;
+                        ptGroup.appendChild(option);
+                    });
+                    voiceSelect.appendChild(ptGroup);
+                    selectedVoice = ptVoices[0];
+                }
+                
+                // Add English voices as fallback
+                if (enVoices.length > 0) {
+                    const enGroup = document.createElement('optgroup');
+                    enGroup.label = 'English';
+                    enVoices.forEach(voice => {
+                        const option = document.createElement('option');
+                        option.value = voices.indexOf(voice);
+                        option.textContent = `${voice.name} (${voice.lang})`;
+                        enGroup.appendChild(option);
+                    });
+                    voiceSelect.appendChild(enGroup);
+                    
+                    if (!selectedVoice) selectedVoice = enVoices[0];
+                }
+                
+                // Add other voices
+                const otherVoices = voices.filter(voice => !voice.lang.includes('pt') && !voice.lang.includes('en'));
+                if (otherVoices.length > 0) {
+                    const otherGroup = document.createElement('optgroup');
+                    otherGroup.label = 'Outros';
+                    otherVoices.forEach(voice => {
+                        const option = document.createElement('option');
+                        option.value = voices.indexOf(voice);
+                        option.textContent = `${voice.name} (${voice.lang})`;
+                        otherGroup.appendChild(option);
+                    });
+                    voiceSelect.appendChild(otherGroup);
+                }
+            }
+        }
+        
+        // Load voices when available
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+        setTimeout(loadVoices, 100);
+        
+        // Toggle voice over on/off
+        function toggleVoiceOver() {
+            if (!isReading) {
+                startReading();
+            } else {
+                stopVoice();
+            }
+        }
+        
+        // Start reading the current chapter
+        function startReading() {
+            const contentArea = document.getElementById('contentArea');
+            if (!contentArea) return;
+            
+            // Get all text content from the current view
+            let textToRead = '';
+            
+            // Get visible chapter content
+            const visibleChapters = contentArea.querySelectorAll('.chapter-container');
+            visibleChapters.forEach(chapter => {
+                // Extract text from different elements
+                const elements = chapter.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, blockquote');
+                elements.forEach(el => {
+                    // Skip if element is not visible
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        textToRead += el.textContent + '. ';
+                    }
+                });
+            });
+            
+            if (!textToRead) {
+                alert('Nenhum texto disponível para narração.');
+                return;
+            }
+            
+            // Split into sentences for better control
+            sentences = textToRead.match(/[^.!?]+[.!?]+/g) || [textToRead];
+            currentSentenceIndex = 0;
+            
+            isReading = true;
+            updateVoiceControls();
+            
+            // Start reading from the beginning
+            readNextSentence();
+        }
+        
+        // Read next sentence
+        function readNextSentence() {
+            if (currentSentenceIndex >= sentences.length) {
+                stopVoice();
+                return;
+            }
+            
+            const text = sentences[currentSentenceIndex];
+            currentUtterance = new SpeechSynthesisUtterance(text);
+            
+            // Set voice and properties
+            if (selectedVoice) {
+                currentUtterance.voice = selectedVoice;
+            }
+            currentUtterance.rate = speechRate;
+            currentUtterance.pitch = speechPitch;
+            currentUtterance.volume = 1.0;
+            
+            // Handle events
+            currentUtterance.onend = () => {
+                currentSentenceIndex++;
+                if (isReading && !isPaused) {
+                    readNextSentence();
+                }
+            };
+            
+            currentUtterance.onerror = (event) => {
+                console.error('Speech synthesis error:', event);
+                if (event.error === 'interrupted' || event.error === 'canceled') return;
+                stopVoice();
+            };
+            
+            speechSynthesis.speak(currentUtterance);
+        }
+        
+        // Pause or resume reading
+        function pauseResumeVoice() {
+            if (!isReading) return;
+            
+            if (isPaused) {
+                speechSynthesis.resume();
+                isPaused = false;
+                document.getElementById('pauseText').textContent = 'Pausar';
+                document.getElementById('pauseIcon').setAttribute('data-lucide', 'pause');
+            } else {
+                speechSynthesis.pause();
+                isPaused = true;
+                document.getElementById('pauseText').textContent = 'Retomar';
+                document.getElementById('pauseIcon').setAttribute('data-lucide', 'play');
+            }
+            lucide.createIcons();
+        }
+        
+        // Stop reading
+        function stopVoice() {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+            isReading = false;
+            isPaused = false;
+            currentSentenceIndex = 0;
+            sentences = [];
+            updateVoiceControls();
+        }
+        
+        // Update voice controls visibility
+        function updateVoiceControls() {
+            const voiceBtn = document.querySelector('button[onclick="toggleVoiceOver()"]');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const voiceSettings = document.getElementById('voiceSettings');
+            const voiceIcon = document.getElementById('voiceIcon');
+            
+            if (isReading) {
+                if (voiceBtn) {
+                    voiceBtn.classList.add('active');
+                    voiceIcon.setAttribute('data-lucide', 'volume-x');
+                }
+                pauseBtn.style.display = 'inline-flex';
+                stopBtn.style.display = 'inline-flex';
+                voiceSettings.style.display = 'inline-block';
+            } else {
+                if (voiceBtn) {
+                    voiceBtn.classList.remove('active');
+                    voiceIcon.setAttribute('data-lucide', 'volume-2');
+                }
+                pauseBtn.style.display = 'none';
+                stopBtn.style.display = 'none';
+                voiceSettings.style.display = 'none';
+                document.getElementById('voiceDropdown').style.display = 'none';
+            }
+            
+            lucide.createIcons();
+        }
+        
+        // Toggle voice settings dropdown
+        function toggleVoiceSettings() {
+            const dropdown = document.getElementById('voiceDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Update voice settings
+        function updateVoiceSettings() {
+            const voiceSelect = document.getElementById('voiceSelect');
+            const speedRange = document.getElementById('speedRange');
+            const pitchRange = document.getElementById('pitchRange');
+            const speedValue = document.getElementById('speedValue');
+            const pitchValue = document.getElementById('pitchValue');
+            
+            if (voiceSelect && voices.length > 0) {
+                selectedVoice = voices[voiceSelect.value];
+            }
+            
+            speechRate = parseFloat(speedRange.value);
+            speechPitch = parseFloat(pitchRange.value);
+            
+            speedValue.textContent = speechRate.toFixed(1) + 'x';
+            pitchValue.textContent = speechPitch.toFixed(1);
+            
+            // Save preferences
+            localStorage.setItem('voiceSettings', JSON.stringify({
+                voiceIndex: voiceSelect ? voiceSelect.value : 0,
+                rate: speechRate,
+                pitch: speechPitch
+            }));
+            
+            // If currently reading, restart with new settings
+            if (isReading && currentUtterance) {
+                speechSynthesis.cancel();
+                readNextSentence();
+            }
+        }
+        
+        // Load saved voice settings
+        function loadVoiceSettings() {
+            const saved = localStorage.getItem('voiceSettings');
+            if (saved) {
+                try {
+                    const settings = JSON.parse(saved);
+                    
+                    setTimeout(() => {
+                        const voiceSelect = document.getElementById('voiceSelect');
+                        const speedRange = document.getElementById('speedRange');
+                        const pitchRange = document.getElementById('pitchRange');
+                        
+                        if (voiceSelect && voices.length > 0) {
+                            voiceSelect.value = settings.voiceIndex;
+                            selectedVoice = voices[settings.voiceIndex];
+                        }
+                        
+                        if (speedRange) {
+                            speedRange.value = settings.rate;
+                            speechRate = settings.rate;
+                        }
+                        
+                        if (pitchRange) {
+                            pitchRange.value = settings.pitch;
+                            speechPitch = settings.pitch;
+                        }
+                        
+                        updateVoiceSettings();
+                    }, 500);
+                } catch (e) {
+                    console.error('Error loading voice settings:', e);
+                }
+            }
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('voiceDropdown');
+            const settingsBtn = e.target.closest('button[onclick="toggleVoiceSettings()"]');
+            
+            if (dropdown && dropdown.style.display === 'block' && !settingsBtn && !dropdown.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+        
+        // Stop reading when page unloads
+        window.addEventListener('beforeunload', () => {
+            if (isReading) {
+                stopVoice();
+            }
+        });
+        
+        // Load voice settings on page load
+        setTimeout(loadVoiceSettings, 1000);
+        
+        // Chapter data - Complete list with all 33 chapters
+        const chapters = [
+            { part: "INÍCIO", icon: "home", chapters: [
+                { id: "capa", number: "", title: "Capa do Livro", icon: "book-open", file: "capa.md" },
+            ]},
+            { part: "PARTE I - O DESPERTAR", icon: "sunrise", chapters: [
+                { id: "cap1", number: "1", title: "O Dia em que o ChatGPT Mudou Tudo", icon: "sparkles", file: "parte-01/capitulo-01.md" },
+                { id: "cap2", number: "2", title: "O Espelho da História", icon: "history", file: "parte-01/capitulo-02.md" },
+                { id: "cap3", number: "3", title: "A Psicologia do Medo Tecnológico", icon: "brain", file: "parte-01/capitulo-03.md" }
+            ]},
+            { part: "PARTE II - ENTENDENDO O JOGO", icon: "gamepad-2", chapters: [
+                { id: "cap4", number: "4", title: "IA para Humanos", icon: "cpu", file: "parte-02/capitulo-04.md" },
+                { id: "cap5", number: "5", title: "Os Arquitetos do Futuro", icon: "building-2", file: "parte-02/capitulo-05.md" },
+                { id: "cap6", number: "6", title: "O Novo Contrato Social", icon: "handshake", file: "parte-02/capitulo-06.md" }
+            ]},
+            { part: "PARTE III - MINDSET BUILDER", icon: "lightbulb", chapters: [
+                { id: "cap7", number: "7", title: "De Consumidor a Criador", icon: "palette", file: "parte-03/capitulo-07.md" },
+                { id: "cap8", number: "8", title: "Pensamento Computacional", icon: "binary", file: "parte-03/capitulo-08.md" },
+                { id: "cap9", number: "9", title: "O Arsenal do Builder", icon: "package", file: "parte-03/capitulo-09.md" }
+            ]},
+            { part: "PARTE IV - MÃOS À OBRA", icon: "hammer", chapters: [
+                { id: "cap10", number: "10", title: "Seu Primeiro Projeto com IA", icon: "rocket", file: "parte-04/capitulo-10.md" },
+                { id: "cap11", number: "11", title: "10 Projetos em 30 Dias", icon: "calendar", file: "parte-04/capitulo-11.md" },
+                { id: "cap12", number: "12", title: "De Projeto a Produto", icon: "package-check", file: "parte-04/capitulo-12.md" }
+            ]},
+            { part: "PARTE V - HABILIDADES HUMANAS", icon: "users", chapters: [
+                { id: "cap13", number: "13", title: "Criatividade na Era da IA", icon: "sparkle", file: "parte-05/capitulo-13.md" },
+                { id: "cap14", number: "14", title: "Pensamento Crítico", icon: "eye", file: "parte-05/capitulo-14.md" },
+                { id: "cap15", number: "15", title: "Inteligência Emocional", icon: "heart", file: "parte-05/capitulo-15.md" }
+            ]},
+            { part: "PARTE VI - CARREIRA BUILDER", icon: "briefcase", chapters: [
+                { id: "cap16", number: "16", title: "Profissões do Futuro", icon: "trending-up", file: "parte-06/capitulo-16.md" },
+                { id: "cap17", number: "17", title: "Portfolio e Marca Pessoal", icon: "user-check", file: "parte-06/capitulo-17.md" },
+                { id: "cap18", number: "18", title: "Aprendizado Contínuo", icon: "graduation-cap", file: "parte-06/capitulo-18.md" }
+            ]},
+            { part: "PARTE VII - EMPRESAS BUILDERS", icon: "building", chapters: [
+                { id: "cap19", number: "19", title: "Cultura de Experimentação", icon: "flask", file: "parte-07/capitulo-19.md" },
+                { id: "cap20", number: "20", title: "Lideranças que Multiplicam", icon: "users-2", file: "parte-07/capitulo-20.md" },
+                { id: "cap21", number: "21", title: "Estruturas Antifrágeis", icon: "shield", file: "parte-07/capitulo-21.md" }
+            ]},
+            { part: "PARTE VIII - ÉTICA E RESPONSABILIDADE", icon: "scale", chapters: [
+                { id: "cap22", number: "22", title: "Ética do Builder", icon: "gavel", file: "parte-08/capitulo-22.md" },
+                { id: "cap23", number: "23", title: "Privacidade e Dados", icon: "lock", file: "parte-08/capitulo-23.md" },
+                { id: "cap24", number: "24", title: "Construção Responsável", icon: "shield-check", file: "parte-08/capitulo-24.md" }
+            ]},
+            { part: "PARTE IX - CASES REAIS", icon: "award", chapters: [
+                { id: "cap25", number: "25", title: "Do Zero ao Código", icon: "code", file: "parte-09/capitulo-25.md" },
+                { id: "cap26", number: "26", title: "Transformação de Carreiras", icon: "refresh-cw", file: "parte-09/capitulo-26.md" },
+                { id: "cap27", number: "27", title: "Impacto Social com IA", icon: "globe", file: "parte-09/capitulo-27.md" }
+            ]},
+            { part: "PARTE X - BRASIL BUILDER", icon: "flag", chapters: [
+                { id: "cap28", number: "28", title: "O Vale do São Francisco", icon: "map-pin", file: "parte-10/capitulo-28.md" },
+                { id: "cap29", number: "29", title: "Empresas Brasileiras", icon: "landmark", file: "parte-10/capitulo-29.md" },
+                { id: "cap30", number: "30", title: "Políticas Públicas", icon: "file-text", file: "parte-10/capitulo-30.md" }
+            ]},
+            { part: "PARTE XI - SEU FUTURO", icon: "compass", chapters: [
+                { id: "cap31", number: "31", title: "Seu Roadmap Pessoal", icon: "map", file: "parte-11/capitulo-31.md" },
+                { id: "cap32", number: "32", title: "Ferramentas Essenciais", icon: "wrench", file: "parte-11/capitulo-32.md" },
+                { id: "cap33", number: "33", title: "O Chamado à Ação", icon: "megaphone", file: "parte-11/capitulo-33.md" }
+            ]},
+            { part: "CONCLUSÃO", icon: "check-circle", chapters: [
+                { id: "epilogo", number: "", title: "Epílogo", icon: "book-marked", file: "epilogo.md" },
+                { id: "referencias", number: "", title: "Referências e Fontes", icon: "library", file: "referencias.md" }
+            ]}
+        ];
+        
+        // Flatten chapters for easier navigation
+        const allChapters = [];
+        chapters.forEach(part => {
+            part.chapters.forEach(chapter => {
+                allChapters.push(chapter);
+            });
+        });
+        
+        let currentFontSize = 17;
+        let currentChapterIndex = 0;
+        let scrollMode = 'infinite'; // Always infinite scroll
+        let loadedChapters = [];
+        let isLoadingMore = false;
+        let isDarkMode = true;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderChapterList();
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                isDarkMode = false;
+                updateThemeButton();
+            }
+            
+            // Always load in infinite scroll mode
+            loadInfiniteMode();
+        });
+        
+        // Render chapter list
+        function renderChapterList() {
+            const chapterList = document.getElementById('chapterList');
+            let html = '';
+            
+            chapters.forEach((part, partIndex) => {
+                html += `<div class="part-header">${part.icon ? '<i data-lucide="' + part.icon + '" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i>' : ''}${part.part}</div>`;
+                part.chapters.forEach((chapter, chapterIndex) => {
+                    html += `
+                        <div class="chapter-item" 
+                             id="chapter-${chapter.id}"
+                             onclick="loadChapter(${JSON.stringify(chapter).replace(/"/g, '&quot;')})">
+                            ${chapter.number ? `<div class="chapter-number">${chapter.icon ? '<i data-lucide="' + chapter.icon + '" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i>' : '<i data-lucide="file-text" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i>'}Capítulo ${chapter.number}</div>` : (chapter.icon ? '<div class="chapter-number"><i data-lucide="' + chapter.icon + '" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i></div>' : '')}
+                            <div class="chapter-title">${chapter.title}</div>
+                            <div class="search-preview" id="preview-${chapter.id}" style="display: none; font-size: 12px; color: var(--text-tertiary); margin-top: 8px; padding: 8px; background: var(--bg-tertiary); border-radius: 4px;"></div>
+                        </div>
+                    `;
+                });
+            });
+            
+            chapterList.innerHTML = html;
+            
+            // Initialize Lucide icons
+            if (window.lucide) lucide.createIcons();
+        }
+        
+        // Load single chapter
+        async function loadChapter(chapter) {
+            if (scrollMode === 'infinite') {
+                // In infinite mode, scroll to chapter if already loaded
+                const chapterElement = document.getElementById(`content-${chapter.id}`);
+                if (chapterElement) {
+                    chapterElement.scrollIntoView({ behavior: 'smooth' });
+                    updateActiveChapter(chapter.id);
+                    return;
+                }
+            }
+            
+            const contentArea = document.getElementById('contentArea');
+            const currentChapterEl = document.getElementById('currentChapter');
+            
+            // Update active state
+            updateActiveChapter(chapter.id);
+            
+            // Show loading
+            contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+            currentChapterEl.innerHTML = `${chapter.icon ? '<i data-lucide="' + chapter.icon + '" class="w-4 h-4" style="display: inline-block; margin-right: 8px; vertical-align: middle;"></i>' : ''}${chapter.number ? 'Capítulo ' + chapter.number + ': ' : ''}${chapter.title}`;
+            
+            try {
+                const response = await fetch(`/manuscrito/${chapter.file}`);
+                const markdown = await response.text();
+                let html = convertMarkdownToHTML(markdown);
+                
+                // Apply search highlighting if there's an active search
+                html = applySearchHighlighting(html);
+                
+                contentArea.innerHTML = `<div class="chapter-container">${html}</div>`;
+                contentArea.scrollTop = 0;
+                
+                // Apply saved font size
+                applyFontSize();
+                
+                // Update current chapter index
+                currentChapterIndex = allChapters.findIndex(ch => ch.id === chapter.id);
+                
+                // Close sidebar on mobile after selection
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            } catch (error) {
+                contentArea.innerHTML = '<p style="color: var(--text-tertiary); text-align: center;">Erro ao carregar capítulo</p>';
+            }
+        }
+        
+        // Load infinite scroll mode
+        async function loadInfiniteMode() {
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+            
+            loadedChapters = [];
+            
+            // Start with the cover (index 0)
+            currentChapterIndex = 0;
+            
+            // Load first 3 chapters sequentially
+            await appendChapter(allChapters[0], 'bottom');
+            if (allChapters.length > 1) {
+                await appendChapter(allChapters[1], 'bottom');
+            }
+            if (allChapters.length > 2) {
+                await appendChapter(allChapters[2], 'bottom');
+            }
+            
+            contentArea.scrollTop = 0;
+            updateActiveChapter(allChapters[0].id);
+        }
+        
+        // Append chapter for infinite scroll
+        async function appendChapter(chapter, position = 'bottom') {
+            if (loadedChapters.find(ch => ch.id === chapter.id)) {
+                return; // Already loaded
+            }
+            
+            const contentArea = document.getElementById('contentArea');
+            
+            try {
+                const response = await fetch(`/manuscrito/${chapter.file}`);
+                const markdown = await response.text();
+                let html = convertMarkdownToHTML(markdown);
+                
+                // Apply search highlighting if there's an active search
+                html = applySearchHighlighting(html);
+                
+                // Remove loading indicator if it exists
+                const loadingDiv = contentArea.querySelector('.loading');
+                if (loadingDiv) {
+                    loadingDiv.remove();
+                }
+                
+                // Create chapter container
+                const chapterDiv = document.createElement('div');
+                chapterDiv.className = 'chapter-container';
+                chapterDiv.id = `content-${chapter.id}`;
+                chapterDiv.dataset.chapterIndex = allChapters.findIndex(ch => ch.id === chapter.id);
+                chapterDiv.innerHTML = `
+                    ${html}
+                    <div style="position: absolute; bottom: 40px; right: 60px; color: var(--text-tertiary); font-size: 14px; font-weight: 500; opacity: 0.5;">
+                        ${chapter.number || ''}
+                    </div>
+                `;
+                
+                // Add to DOM based on position
+                if (position === 'top') {
+                    // Insert at beginning
+                    const firstChild = contentArea.firstElementChild;
+                    if (firstChild && !firstChild.classList.contains('loading')) {
+                        contentArea.insertBefore(chapterDiv, firstChild);
+                    } else {
+                        contentArea.appendChild(chapterDiv);
+                    }
+                    loadedChapters.unshift(chapter);
+                } else {
+                    // Append at end
+                    contentArea.appendChild(chapterDiv);
+                    loadedChapters.push(chapter);
+                }
+                
+                // Apply saved font size to new content
+                applyFontSize();
+                
+                // Update current chapter if this is the first one
+                if (loadedChapters.length === 1) {
+                    updateActiveChapter(chapter.id);
+                    document.getElementById('currentChapter').textContent = 
+                        chapter.number ? `Capítulo ${chapter.number}: ${chapter.title}` : chapter.title;
+                    // Re-initialize Lucide icons after content update
+                    if (window.lucide) lucide.createIcons();
+                }
+            } catch (error) {
+                console.error('Error loading chapter:', error);
+            }
+        }
+        
+        // Handle scroll for infinite mode
+        async function handleScroll() {
+            const contentArea = document.getElementById('contentArea');
+            
+            if (scrollMode === 'infinite') {
+                // Check which chapter is currently in view
+                const chapters = contentArea.querySelectorAll('.chapter-container');
+                let currentViewChapter = null;
+                
+                chapters.forEach(chapterEl => {
+                    const rect = chapterEl.getBoundingClientRect();
+                    const viewportMiddle = window.innerHeight / 3; // Use top third for better detection
+                    
+                    if (rect.top <= viewportMiddle && rect.bottom > viewportMiddle) {
+                        const chapterId = chapterEl.id.replace('content-', '');
+                        currentViewChapter = allChapters.find(ch => ch.id === chapterId);
+                    }
+                });
+                
+                if (currentViewChapter) {
+                    updateActiveChapter(currentViewChapter.id);
+                    const chapterText = currentViewChapter.number 
+                        ? `Capítulo ${currentViewChapter.number}: ${currentViewChapter.title}`
+                        : currentViewChapter.title;
+                    document.getElementById('currentChapter').textContent = chapterText;
+                    currentChapterIndex = allChapters.findIndex(ch => ch.id === currentViewChapter.id);
+                }
+                
+                // Load more chapters when near bottom
+                const scrollBottom = contentArea.scrollTop + contentArea.clientHeight;
+                const scrollHeight = contentArea.scrollHeight;
+                
+                if (scrollBottom > scrollHeight - 1500 && !isLoadingMore) {
+                    isLoadingMore = true;
+                    
+                    // Find the highest index in loaded chapters
+                    let maxLoadedIndex = -1;
+                    loadedChapters.forEach(ch => {
+                        const index = allChapters.findIndex(ach => ach.id === ch.id);
+                        if (index > maxLoadedIndex) maxLoadedIndex = index;
+                    });
+                    
+                    const nextIndex = maxLoadedIndex + 1;
+                    
+                    // Stop at the last chapter (referencias)
+                    if (nextIndex < allChapters.length && nextIndex <= allChapters.length - 1) {
+                        // Add loading indicator
+                        const loadingMore = document.createElement('div');
+                        loadingMore.className = 'loading-more';
+                        loadingMore.id = 'loading-bottom';
+                        loadingMore.innerHTML = 'Carregando próximo capítulo...';
+                        contentArea.appendChild(loadingMore);
+                        
+                        // Load next chapter
+                        await appendChapter(allChapters[nextIndex], 'bottom');
+                        
+                        // Remove loading indicator
+                        const loader = document.getElementById('loading-bottom');
+                        if (loader) loader.remove();
+                    }
+                    
+                    isLoadingMore = false;
+                }
+                
+                // Load chapters when scrolling up (near top) - but not if we're at chapter 1
+                if (contentArea.scrollTop < 1500 && !isLoadingMore && minLoadedIndex > 0) {
+                    isLoadingMore = true;
+                    
+                    // Find the lowest index in loaded chapters
+                    let minLoadedIndex = allChapters.length;
+                    loadedChapters.forEach(ch => {
+                        const index = allChapters.findIndex(ach => ach.id === ch.id);
+                        if (index < minLoadedIndex && index >= 0) minLoadedIndex = index;
+                    });
+                    
+                    const prevIndex = minLoadedIndex - 1;
+                    
+                    if (prevIndex >= 0) {
+                        // Store current scroll position
+                        const scrollBefore = contentArea.scrollHeight - contentArea.scrollTop;
+                        
+                        // Add loading indicator at top
+                        const loadingMore = document.createElement('div');
+                        loadingMore.className = 'loading-more';
+                        loadingMore.id = 'loading-top';
+                        loadingMore.innerHTML = 'Carregando capítulo anterior...';
+                        contentArea.insertBefore(loadingMore, contentArea.firstChild);
+                        
+                        // Load previous chapter
+                        await appendChapter(allChapters[prevIndex], 'top');
+                        
+                        // Remove loading indicator
+                        const loader = document.getElementById('loading-top');
+                        if (loader) loader.remove();
+                        
+                        // Restore scroll position
+                        contentArea.scrollTop = contentArea.scrollHeight - scrollBefore;
+                    }
+                    
+                    isLoadingMore = false;
+                }
+            }
+            
+            // Update progress bar based on total book progress
+            const totalChapters = allChapters.length;
+            const currentProgress = (currentChapterIndex / (totalChapters - 1)) * 100;
+            document.getElementById('progressBar').style.width = currentProgress + '%';
+        }
+        
+        // Update active chapter in sidebar
+        function updateActiveChapter(chapterId) {
+            document.querySelectorAll('.chapter-item').forEach(el => el.classList.remove('active'));
+            const activeItem = document.getElementById(`chapter-${chapterId}`);
+            if (activeItem) {
+                activeItem.classList.add('active');
+                // Scroll sidebar to show active item
+                activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        // Convert markdown to HTML
+        function convertMarkdownToHTML(markdown) {
+            let html = markdown
+                .replace(/^###### (.*$)/gim, '<h6>$1</h6>')
+                .replace(/^##### (.*$)/gim, '<h5>$1</h5>')
+                .replace(/^#### (.*$)/gim, '<h4>$1</h4>')
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                .replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>')
+                .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+                .replace(/```([^`]+)```/g, '<pre><code>$1</code></pre>')
+                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/^/g, '<p>')
+                .replace(/$/g, '</p>');
+            
+            return html;
+        }
+        
+        // Removed scroll mode functions - always infinite
+        
+        // Toggle theme
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            updateThemeButton();
+        }
+        
+        // Update theme button
+        function updateThemeButton() {
+            const themeBtn = document.getElementById('themeToggle');
+            const darkIcon = themeBtn.querySelector('.theme-icon-dark');
+            const lightIcon = themeBtn.querySelector('.theme-icon-light');
+            
+            if (isDarkMode) {
+                darkIcon.style.display = 'none';
+                lightIcon.style.display = 'block';
+            } else {
+                darkIcon.style.display = 'block';
+                lightIcon.style.display = 'none';
+            }
+        }
+        
+        // Full-text search cache
+        let searchIndex = null;
+        let isIndexing = false;
+        
+        // Build search index
+        async function buildSearchIndex() {
+            if (isIndexing || searchIndex) return;
+            
+            isIndexing = true;
+            searchIndex = [];
+            
+            // Index all chapters
+            for (const chapter of allChapters) {
+                try {
+                    const response = await fetch(`/manuscrito/${chapter.file}`);
+                    const content = await response.text();
+                    
+                    searchIndex.push({
+                        id: chapter.id,
+                        title: chapter.title,
+                        number: chapter.number,
+                        content: content.toLowerCase(),
+                        file: chapter.file
+                    });
+                } catch (error) {
+                    console.error(`Error indexing ${chapter.file}:`, error);
+                }
+            }
+            
+            isIndexing = false;
+            console.log('Search index built with', searchIndex.length, 'chapters');
+        }
+        
+        // Apply search highlighting to content
+        function applySearchHighlighting(html) {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            
+            if (!searchTerm || searchTerm.length === 0) {
+                // Return unmodified HTML if no search term
+                return html;
+            }
+            
+            // Create a temporary div to parse HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            
+            // Function to highlight text nodes
+            function highlightTextNode(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const text = node.textContent;
+                    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                    
+                    if (regex.test(text)) {
+                        const span = document.createElement('span');
+                        span.innerHTML = text.replace(regex, '<mark class="search-highlight">$1</mark>');
+                        node.parentNode.replaceChild(span, node);
+                    }
+                } else if (node.nodeType === Node.ELEMENT_NODE && 
+                          !['SCRIPT', 'STYLE', 'CODE', 'PRE'].includes(node.tagName)) {
+                    // Recursively process child nodes
+                    Array.from(node.childNodes).forEach(highlightTextNode);
+                }
+            }
+            
+            // Apply highlighting to all text nodes
+            Array.from(tempDiv.childNodes).forEach(highlightTextNode);
+            
+            return tempDiv.innerHTML;
+        }
+        
+        // Remove all highlights from content
+        function removeAllHighlights() {
+            const contentArea = document.getElementById('contentArea');
+            const marks = contentArea.querySelectorAll('mark.search-highlight');
+            
+            marks.forEach(mark => {
+                const parent = mark.parentNode;
+                while (mark.firstChild) {
+                    parent.insertBefore(mark.firstChild, mark);
+                }
+                parent.removeChild(mark);
+            });
+        }
+        
+        // Search chapters and content
+        async function searchChapters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                // Reset display if search is empty
+                document.querySelectorAll('.chapter-item').forEach(item => {
+                    item.style.display = 'block';
+                    item.classList.remove('search-match');
+                });
+                
+                // Remove all highlights from content
+                removeAllHighlights();
+                document.querySelectorAll('.search-results').forEach(el => el.remove());
+                return;
+            }
+            
+            // Build index if not ready
+            if (!searchIndex) {
+                await buildSearchIndex();
+            }
+            
+            // Search in both titles and content with better highlighting
+            const results = searchIndex.filter(chapter => chapter && chapter.content).map(chapter => {
+                const titleMatch = chapter.title.toLowerCase().includes(searchTerm);
+                const contentMatch = chapter.content.includes(searchTerm);
+                
+                if (!titleMatch && !contentMatch) return null;
+                
+                // Find context around the search term
+                let context = '';
+                if (contentMatch) {
+                    const index = chapter.content.indexOf(searchTerm);
+                    const start = Math.max(0, index - 100);
+                    const end = Math.min(chapter.content.length, index + 100);
+                    context = '...' + chapter.content.substring(start, end).replace(/\n/g, ' ') + '...';
+                    
+                    // Better highlight with stronger visibility
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    context = context.replace(regex, '<mark class="search-highlight">$1</mark>');
+                }
+                
+                // Count occurrences
+                const regex = new RegExp(searchTerm, 'gi');
+                const occurrences = (chapter.content.match(regex) || []).length;
+                
+                return {
+                    chapter,
+                    titleMatch,
+                    contentMatch,
+                    context,
+                    occurrences,
+                    relevance: (titleMatch ? 10 : 0) + occurrences
+                };
+            }).filter(r => r !== null);
+            
+            // Sort by relevance
+            results.sort((a, b) => b.relevance - a.relevance);
+            
+            // Update sidebar display
+            document.querySelectorAll('.chapter-item').forEach(item => {
+                const chapterId = item.id.replace('chapter-', '');
+                const result = results.find(r => r.chapter.id === chapterId);
+                
+                if (result) {
+                    item.style.display = 'block';
+                    item.classList.add('search-match');
+                    
+                    // Add occurrence count
+                    let countBadge = item.querySelector('.search-count');
+                    if (!countBadge) {
+                        countBadge = document.createElement('span');
+                        countBadge.className = 'search-count';
+                        item.appendChild(countBadge);
+                    }
+                    countBadge.textContent = `${result.occurrences} match${result.occurrences > 1 ? 'es' : ''}`;
+                    
+                    // Show search preview with context
+                    const preview = document.getElementById(`preview-${chapterId}`);
+                    if (preview && result.context) {
+                        preview.innerHTML = result.context;
+                        preview.style.display = 'block';
+                    }
+                } else {
+                    item.style.display = 'none';
+                    item.classList.remove('search-match');
+                    const preview = document.getElementById(`preview-${chapterId}`);
+                    if (preview) {
+                        preview.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Show search results summary
+            showSearchResults(results, searchTerm);
+        }
+        
+        // Show search results in content area
+        function showSearchResults(results, searchTerm) {
+            // Remove existing results
+            document.querySelectorAll('.search-results').forEach(el => el.remove());
+            
+            if (results.length === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'search-results no-results';
+                noResults.innerHTML = `
+                    <p>Nenhum resultado encontrado para "<strong>${searchTerm}</strong>"</p>
+                `;
+                document.querySelector('.sidebar-header').appendChild(noResults);
+                return;
+            }
+            
+            // Create results summary
+            const resultsDiv = document.createElement('div');
+            resultsDiv.className = 'search-results';
+            resultsDiv.innerHTML = `
+                <div class="search-summary">
+                    <strong>${results.length}</strong> capítulo${results.length > 1 ? 's' : ''} 
+                    com "<strong>${searchTerm}</strong>"
+                    <button onclick="clearSearch()" class="clear-search"><i data-lucide="x" class="w-3 h-3" style="display: inline-block; margin-right: 4px; vertical-align: middle;"></i>Limpar</button>
+                </div>
+            `;
+            
+            document.querySelector('.sidebar-header').appendChild(resultsDiv);
+        }
+        
+        // Clear search
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            removeAllHighlights();
+            searchChapters();
+        }
+        
+        // Initialize search index when page loads
+        setTimeout(buildSearchIndex, 1000);
+        
+        // Font size controls
+        function increaseFontSize() {
+            if (currentFontSize < 28) {
+                currentFontSize += 2;
+                applyFontSize();
+            }
+        }
+        
+        function decreaseFontSize() {
+            if (currentFontSize > 12) {
+                currentFontSize -= 2;
+                applyFontSize();
+            }
+        }
+        
+        function applyFontSize() {
+            const contentArea = document.getElementById('contentArea');
+            if (contentArea) {
+                // Apply to all paragraphs
+                const paragraphs = contentArea.querySelectorAll('p');
+                paragraphs.forEach(p => {
+                    p.style.fontSize = currentFontSize + 'px';
+                });
+                
+                // Apply to lists
+                const lists = contentArea.querySelectorAll('li');
+                lists.forEach(li => {
+                    li.style.fontSize = currentFontSize + 'px';
+                });
+                
+                // Apply to blockquotes
+                const quotes = contentArea.querySelectorAll('blockquote');
+                quotes.forEach(q => {
+                    q.style.fontSize = currentFontSize + 'px';
+                });
+                
+                // Scale headers proportionally
+                const h1s = contentArea.querySelectorAll('h1');
+                h1s.forEach(h => h.style.fontSize = (currentFontSize * 2.8) + 'px');
+                
+                const h2s = contentArea.querySelectorAll('h2');
+                h2s.forEach(h => h.style.fontSize = (currentFontSize * 2) + 'px');
+                
+                const h3s = contentArea.querySelectorAll('h3');
+                h3s.forEach(h => h.style.fontSize = (currentFontSize * 1.5) + 'px');
+                
+                const h4s = contentArea.querySelectorAll('h4');
+                h4s.forEach(h => h.style.fontSize = (currentFontSize * 1.3) + 'px');
+                
+                // Save preference
+                localStorage.setItem('fontSize', currentFontSize);
+                
+                // Update button states
+                updateFontSizeButtons();
+            }
+        }
+        
+        function updateFontSizeButtons() {
+            const decreaseBtn = document.querySelector('button[onclick="decreaseFontSize()"]');
+            const increaseBtn = document.querySelector('button[onclick="increaseFontSize()"]');
+            
+            if (decreaseBtn) {
+                decreaseBtn.disabled = currentFontSize <= 12;
+                decreaseBtn.style.opacity = currentFontSize <= 12 ? '0.5' : '1';
+            }
+            
+            if (increaseBtn) {
+                increaseBtn.disabled = currentFontSize >= 28;
+                increaseBtn.style.opacity = currentFontSize >= 28 ? '0.5' : '1';
+            }
+        }
+        
+        // Load saved font size
+        const savedFontSize = localStorage.getItem('fontSize');
+        if (savedFontSize) {
+            currentFontSize = parseInt(savedFontSize);
+            // Apply after content loads
+            setTimeout(() => {
+                applyFontSize();
+            }, 500);
+        }
+        
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            
+            // Prevent body scroll when sidebar is open
+            if (sidebar.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                const menuToggle = document.querySelector('.menu-toggle');
+                
+                if (!sidebar.contains(e.target) && !menuToggle.contains(e.target) && sidebar.classList.contains('open')) {
+                    toggleSidebar();
+                }
+            }
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Initialize Lucide icons with delay
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize menu functionality immediately
+            const menuToggle = document.querySelector('.menu-toggle');
+            if (menuToggle) {
+                console.log('Menu toggle button found');
+                menuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Menu button clicked');
+                    toggleSidebar();
+                });
+            }
+            
+            setTimeout(() => {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                    console.log('Lucide icons initialized');
+                } else {
+                    console.error('Lucide not loaded');
+                }
+            }, 100);
+        });
+        
+        // Re-initialize icons after dynamic content loads
+        const originalAppendChapter = appendChapter;
+        appendChapter = async function(...args) {
+            const result = await originalAppendChapter.apply(this, args);
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            return result;
+        };
+    </script>
+</body>
+</html>
