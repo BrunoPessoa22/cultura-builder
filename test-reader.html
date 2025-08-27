@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultura Builder - Test Reader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        h1 { text-align: center; }
+        .status { 
+            padding: 20px;
+            background: #333;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .error { background: #833; }
+        .success { background: #383; }
+    </style>
+</head>
+<body>
+    <h1>Cultura Builder - Test Reader</h1>
+    
+    <div class="status" id="status">Testing...</div>
+    
+    <div id="content"></div>
+    
+    <script>
+        const statusEl = document.getElementById('status');
+        const contentEl = document.getElementById('content');
+        
+        // Test 1: Check if we can fetch a simple file
+        async function testFetch() {
+            statusEl.innerHTML = 'Testing file fetch...';
+            
+            try {
+                // Try to fetch the capa.md file
+                const response = await fetch('/manuscrito/capa.md');
+                
+                if (response.ok) {
+                    const text = await response.text();
+                    statusEl.className = 'status success';
+                    statusEl.innerHTML = `✓ File loaded successfully! (${text.length} characters)`;
+                    contentEl.innerHTML = `<pre>${text.substring(0, 500)}...</pre>`;
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                statusEl.className = 'status error';
+                statusEl.innerHTML = `✗ Error: ${error.message}<br><br>
+                    Possible issues:<br>
+                    - Manuscript files not in correct location<br>
+                    - Server not configured to serve .md files<br>
+                    - CORS or routing issues`;
+                
+                // Try alternative path
+                try {
+                    const altResponse = await fetch('/capa.md');
+                    if (altResponse.ok) {
+                        statusEl.innerHTML += '<br><br>✓ Found file at root level!';
+                    }
+                } catch (e) {
+                    // Silent fail
+                }
+            }
+        }
+        
+        // Run test
+        testFetch();
+    </script>
+</body>
+</html>

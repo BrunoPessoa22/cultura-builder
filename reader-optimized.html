@@ -672,7 +672,7 @@
             currentChapterEl.textContent = chapter.title;
             
             try {
-                const response = await fetch(`/manuscrito/${chapter.file}`);
+                const response = await fetch(`/manuscrito-flat/${chapter.file}`);
                 const markdown = await response.text();
                 let html = convertMarkdownToHTML(markdown);
                 
