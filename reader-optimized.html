@@ -3,7 +3,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=5.0">
     <title>Cultura Builder - Manuscrito Digital</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -545,8 +545,60 @@
             to { opacity: 0; }
         }
         
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            padding: 10px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .mobile-menu-btn:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        /* Mobile Overlay */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .mobile-overlay.active {
+            opacity: 1;
+        }
+        
         /* Mobile Responsive */
         @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .mobile-overlay {
+                display: block;
+                pointer-events: none;
+            }
+            
+            .mobile-overlay.active {
+                pointer-events: auto;
+            }
+            
             .sidebar {
                 position: fixed;
                 left: -100%;
@@ -554,31 +606,103 @@
                 height: 100vh;
                 z-index: 1000;
                 transition: left 0.3s;
+                width: 85%;
+                max-width: 320px;
+                box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
             }
             
             .sidebar.open {
                 left: 0;
             }
             
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .content-header {
+                padding-left: 60px; /* Space for menu button */
+            }
+            
             .content-area {
-                padding: 40px 20px;
+                padding: 30px 20px;
             }
             
             .chapter-container h1 {
-                font-size: 32px;
+                font-size: 28px;
+                padding: 20px 0;
+            }
+            
+            .chapter-container h2 {
+                font-size: 24px;
+                margin-top: 32px;
+            }
+            
+            .chapter-container h3 {
+                font-size: 20px;
             }
             
             .chapter-container p {
                 font-size: 16px;
+                line-height: 1.7;
+            }
+            
+            .controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .control-btn span {
+                display: none; /* Hide text labels on mobile */
+            }
+            
+            .control-btn {
+                padding: 10px;
+            }
+            
+            .mobile-close-btn {
+                display: block !important;
+            }
+            
+            /* Code blocks on mobile */
+            .code-block-wrapper {
+                margin: 16px -10px;
+            }
+            
+            .code-block-wrapper pre {
+                font-size: 12px;
+                padding: 12px;
+            }
+            
+            /* Quiz and bonus sections */
+            #quiz-container {
+                margin: 20px 0;
+                padding: 20px !important;
+            }
+            
+            /* Exercise areas */
+            .exercise-area {
+                margin: 16px 0;
+                padding: 16px !important;
             }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+            <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+        </button>
+        
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+        
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
+                <button class="mobile-close-btn" onclick="closeMobileMenu()" style="display: none; position: absolute; right: 15px; top: 15px; background: transparent; border: none; color: var(--text-primary); cursor: pointer; padding: 5px;">
+                    <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+                </button>
                 <h1 class="sidebar-title">CULTURA BUILDER</h1>
                 <div class="search-container">
                     <input type="text" 
@@ -732,6 +856,35 @@
             { id: 'referencias', title: 'Referências', file: 'referencias.md' }
         ];
         
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            
+            // Update menu button icon
+            if (sidebar.classList.contains('open')) {
+                menuBtn.innerHTML = '<i data-lucide="x" style="width: 20px; height: 20px;"></i>';
+            } else {
+                menuBtn.innerHTML = '<i data-lucide="menu" style="width: 20px; height: 20px;"></i>';
+            }
+            lucide.createIcons();
+        }
+        
+        function closeMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            menuBtn.innerHTML = '<i data-lucide="menu" style="width: 20px; height: 20px;"></i>';
+            lucide.createIcons();
+        }
+        
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             loadChaptersList();
@@ -759,7 +912,13 @@
                         ${chapter.number ? `<span class="chapter-number">${chapter.number}</span>` : ''}
                         <span class="chapter-title">${chapter.title}</span>
                     `;
-                    item.onclick = () => loadChapter(chapter);
+                    item.onclick = () => {
+                        loadChapter(chapter);
+                        // Close mobile menu after selection
+                        if (window.innerWidth <= 768) {
+                            closeMobileMenu();
+                        }
+                    };
                     container.appendChild(item);
                 }
             });
