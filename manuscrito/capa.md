@@ -128,7 +128,6 @@ Transformar o Brasil em uma **Nação Builder** - onde cada brasileiro tem as fe
 ---
 
 > "O futuro não é algo que acontece conosco. É algo que nós criamos."
-> 
 > *— Os Autores*
 
 ---
