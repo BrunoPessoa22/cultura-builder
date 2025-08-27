@@ -1,10 +1,10 @@
-<!-- Version 2.2 - GitHub Connected - Lucide Icons - Deployed: 2025-08-26 15:00 UTC -->
+<!-- Version 3.0 - Content Protection + Emoji Replacement - Deployed: 2025-08-26 16:00 UTC -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cultura Builder - Leitor (v2.0 - Lucide Icons)</title>
+    <title>Cultura Builder - Leitor (v3.0 - Protected)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -241,6 +241,14 @@
             max-width: 900px;
             margin: 0 auto;
             width: 100%;
+            /* Copy Protection */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            /* Disable highlighting */
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .content-area::-webkit-scrollbar {
@@ -1239,6 +1247,9 @@
             
             // Always load in infinite scroll mode
             loadInfiniteMode();
+            
+            // Initialize content protection
+            initializeContentProtection();
         });
         
         // Render chapter list
@@ -1297,6 +1308,9 @@
                 // Apply search highlighting if there's an active search
                 html = applySearchHighlighting(html);
                 
+                // Replace emojis with Lucide icons in content
+                html = replaceEmojisWithIcons(html);
+                
                 contentArea.innerHTML = `<div class="chapter-container">${html}</div>`;
                 contentArea.scrollTop = 0;
                 
@@ -1353,6 +1367,9 @@
                 
                 // Apply search highlighting if there's an active search
                 html = applySearchHighlighting(html);
+                
+                // Replace emojis with Lucide icons
+                html = replaceEmojisWithIcons(html);
                 
                 // Remove loading indicator if it exists
                 const loadingDiv = contentArea.querySelector('.loading');
@@ -1936,7 +1953,7 @@
             }, 100);
         });
         
-        // Re-initialize icons after dynamic content loads
+        // Re-initialize icons after dynamic content loads  
         const originalAppendChapter = appendChapter;
         appendChapter = async function(...args) {
             const result = await originalAppendChapter.apply(this, args);
@@ -1945,6 +1962,114 @@
             }
             return result;
         };
+        
+        // Content Protection Functions
+        function initializeContentProtection() {
+            // Disable right-click
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showProtectionWarning('Conteúdo protegido por direitos autorais');
+                return false;
+            });
+            
+            // Disable text selection
+            document.addEventListener('selectstart', (e) => {
+                e.preventDefault();
+                return false;
+            });
+            
+            // Disable copy/cut
+            document.addEventListener('copy', (e) => {
+                e.preventDefault();
+                showProtectionWarning('Cópia não permitida');
+                return false;
+            });
+            
+            document.addEventListener('cut', (e) => {
+                e.preventDefault();
+                return false;
+            });
+            
+            // Disable print
+            document.addEventListener('beforeprint', (e) => {
+                e.preventDefault();
+                showProtectionWarning('Impressão não permitida');
+                return false;
+            });
+            
+            // Block developer tools shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.keyCode === 123 || // F12
+                    (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || // Ctrl+Shift+I/J/C
+                    (e.ctrlKey && e.keyCode === 85) || // Ctrl+U
+                    (e.ctrlKey && e.keyCode === 83)) { // Ctrl+S
+                    e.preventDefault();
+                    showProtectionWarning('Ação bloqueada');
+                    return false;
+                }
+            });
+        }
+        
+        function showProtectionWarning(message) {
+            const existing = document.querySelector('.protection-warning');
+            if (existing) existing.remove();
+            
+            const warning = document.createElement('div');
+            warning.className = 'protection-warning';
+            warning.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #ef4444;
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            `;
+            warning.textContent = '🔒 ' + message;
+            document.body.appendChild(warning);
+            
+            setTimeout(() => warning.remove(), 2500);
+        }
+        
+        function replaceEmojisWithIcons(html) {
+            const replacements = {
+                '📚': '<i data-lucide="book-open" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '📖': '<i data-lucide="book" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '✍️': '<i data-lucide="pen-tool" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '✍': '<i data-lucide="pen-tool" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '🌍': '<i data-lucide="globe" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '💡': '<i data-lucide="lightbulb" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '🚀': '<i data-lucide="rocket" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '🎯': '<i data-lucide="target" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '⚡': '<i data-lucide="zap" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '✨': '<i data-lucide="sparkles" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '📝': '<i data-lucide="file-text" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '👥': '<i data-lucide="users" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '🏆': '<i data-lucide="trophy" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '💎': '<i data-lucide="gem" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '🎨': '<i data-lucide="palette" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '⚙️': '<i data-lucide="settings" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '⚙': '<i data-lucide="settings" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '🔒': '<i data-lucide="lock" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '⏰': '<i data-lucide="clock" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '✅': '<i data-lucide="check-circle" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '❌': '<i data-lucide="x-circle" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '⚠️': '<i data-lucide="alert-triangle" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>',
+                '⚠': '<i data-lucide="alert-triangle" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"></i>'
+            };
+            
+            Object.entries(replacements).forEach(([emoji, icon]) => {
+                const regex = new RegExp(emoji.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                html = html.replace(regex, icon);
+            });
+            
+            return html;
+        }
     </script>
 </body>
 </html>
