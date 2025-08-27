@@ -1026,6 +1026,7 @@
             // Add quiz after Chapter 34
             if (markdown.includes('Claude Code') && markdown.includes('hub.culturabuilder.com')) {
                 html += createQuiz();
+                html += createBonusSection();
             }
                 
             return html;
@@ -1748,7 +1749,7 @@
             return `
                 <div id="quiz-container" style="background: var(--bg-secondary); border: 2px solid var(--accent); border-radius: 16px; padding: 32px; margin: 40px 0;">
                     <div style="text-align: center; margin-bottom: 24px;">
-                        <div style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, var(--accent), #00ff88); border-radius: 8px;">
+                        <div style="display: inline-block; padding: 12px 24px; background: var(--text-primary); border-radius: 8px;">
                             <span style="color: var(--bg-primary); font-weight: 800; font-size: 20px; letter-spacing: 2px;">CULTURA BUILDER</span>
                         </div>
                     </div>
@@ -1899,7 +1900,7 @@
             quizContent.innerHTML = `
                 <div style="text-align: center; padding: 40px;">
                     <div style="margin-bottom: 24px;">
-                        <div style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, var(--accent), #00ff88); border-radius: 8px;">
+                        <div style="display: inline-block; padding: 12px 24px; background: var(--text-primary); border-radius: 8px;">
                             <span style="color: var(--bg-primary); font-weight: 800; font-size: 20px; letter-spacing: 2px;">CULTURA BUILDER</span>
                         </div>
                     </div>
@@ -1971,6 +1972,486 @@
                 navigator.clipboard.writeText(text);
                 alert('Resultado copiado para a área de transferência!');
             }
+        }
+        
+        // Create bonus section
+        function createBonusSection() {
+            return `
+                <div style="margin-top: 80px; padding-top: 40px; border-top: 2px solid var(--border);">
+                    <div style="text-align: center; margin-bottom: 40px;">
+                        <h1 style="font-size: 36px; color: var(--accent); margin-bottom: 8px;">🎁 BÔNUS EXCLUSIVO</h1>
+                        <p style="color: var(--text-secondary); font-size: 16px;">Recursos extras para acelerar sua jornada Builder</p>
+                    </div>
+                    
+                    <div style="display: grid; gap: 24px; margin-bottom: 40px;">
+                        
+                        <!-- Templates de Prompts -->
+                        <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 24px;">
+                            <h3 style="color: var(--accent); margin-bottom: 16px; font-size: 20px;">
+                                <i data-lucide="file-text" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>
+                                100+ Templates de Prompts Profissionais
+                            </h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 16px;">
+                                Biblioteca completa de prompts testados e aprovados para diversas situações:
+                            </p>
+                            <ul style="color: var(--text-primary); margin-left: 20px; margin-bottom: 20px; line-height: 1.8;">
+                                <li>Criação de Landing Pages que convertem</li>
+                                <li>Desenvolvimento de APIs RESTful</li>
+                                <li>Geração de conteúdo para redes sociais</li>
+                                <li>Análise de dados e relatórios</li>
+                                <li>Automação de processos empresariais</li>
+                                <li>Criação de chatbots inteligentes</li>
+                            </ul>
+                            <button onclick="downloadPrompts()" style="padding: 12px 24px; background: var(--accent); color: var(--bg-primary); border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                <i data-lucide="download" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>
+                                Baixar Templates
+                            </button>
+                        </div>
+                        
+                        <!-- Checklist do Builder -->
+                        <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 24px;">
+                            <h3 style="color: var(--accent); margin-bottom: 16px; font-size: 20px;">
+                                <i data-lucide="check-square" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>
+                                Checklist: De Zero a Builder em 90 Dias
+                            </h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 16px;">
+                                Roadmap estruturado com marcos claros para sua evolução:
+                            </p>
+                            <div style="background: var(--bg-tertiary); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                                <h4 style="color: var(--text-primary); margin-bottom: 12px; font-size: 16px;">🚀 Primeiros 30 dias - Fundação</h4>
+                                <div style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Dominar ChatGPT e Claude
+                                    </label>
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Criar primeiro projeto com IA
+                                    </label>
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Configurar GitHub e portfolio
+                                    </label>
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Completar 5 mini-projetos
+                                    </label>
+                                </div>
+                            </div>
+                            <div style="background: var(--bg-tertiary); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                                <h4 style="color: var(--text-primary); margin-bottom: 12px; font-size: 16px;">💡 Dias 31-60 - Evolução</h4>
+                                <div style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Lançar primeiro produto
+                                    </label>
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Conseguir primeiro cliente
+                                    </label>
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Automatizar processo repetitivo
+                                    </label>
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Criar conteúdo sobre sua jornada
+                                    </label>
+                                </div>
+                            </div>
+                            <div style="background: var(--bg-tertiary); border-radius: 8px; padding: 16px;">
+                                <h4 style="color: var(--text-primary); margin-bottom: 12px; font-size: 16px;">🎯 Dias 61-90 - Consolidação</h4>
+                                <div style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Faturar R$ 5.000+
+                                    </label>
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Criar sistema recorrente
+                                    </label>
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Formar parcerias estratégicas
+                                    </label>
+                                    <label style="display: block; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 8px;"> Mentorar outro Builder
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ferramentas Essenciais -->
+                        <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 24px;">
+                            <h3 style="color: var(--accent); margin-bottom: 16px; font-size: 20px;">
+                                <i data-lucide="tool" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>
+                                Stack de Ferramentas do Builder 2025
+                            </h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                                As ferramentas essenciais que todo Builder precisa dominar:
+                            </p>
+                            <div style="display: grid; gap: 12px;">
+                                <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px;">
+                                    <h4 style="color: #00ff88; font-size: 14px; margin-bottom: 8px;">🤖 IA & Automação</h4>
+                                    <p style="color: var(--text-primary); font-size: 14px;">Claude Code, ChatGPT Plus, GitHub Copilot, Cursor, V0 by Vercel</p>
+                                </div>
+                                <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px;">
+                                    <h4 style="color: #00ff88; font-size: 14px; margin-bottom: 8px;">🛠️ Desenvolvimento</h4>
+                                    <p style="color: var(--text-primary); font-size: 14px;">VS Code, Git, Node.js, Next.js, Tailwind CSS</p>
+                                </div>
+                                <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px;">
+                                    <h4 style="color: #00ff88; font-size: 14px; margin-bottom: 8px;">☁️ Deploy & Hosting</h4>
+                                    <p style="color: var(--text-primary); font-size: 14px;">Vercel, Netlify, Railway, Supabase, Firebase</p>
+                                </div>
+                                <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px;">
+                                    <h4 style="color: #00ff88; font-size: 14px; margin-bottom: 8px;">💰 Monetização</h4>
+                                    <p style="color: var(--text-primary); font-size: 14px;">Stripe, Hotmart, Gumroad, Lemon Squeezy, PagSeguro</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Comunidade e Networking -->
+                        <div style="background: linear-gradient(135deg, var(--bg-secondary), rgba(0, 255, 136, 0.1)); border: 2px solid var(--accent); border-radius: 12px; padding: 24px;">
+                            <h3 style="color: var(--accent); margin-bottom: 16px; font-size: 20px;">
+                                <i data-lucide="users" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>
+                                Junte-se à Comunidade Builder
+                            </h3>
+                            <p style="color: var(--text-primary); margin-bottom: 20px;">
+                                Conecte-se com milhares de Builders que estão transformando o Brasil através da tecnologia:
+                            </p>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                                <a href="https://hub.culturabuilder.com" target="_blank" style="text-decoration: none;">
+                                    <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px; text-align: center; transition: transform 0.2s; cursor: pointer;">
+                                        <div style="font-size: 32px; margin-bottom: 8px;">🌐</div>
+                                        <p style="color: var(--text-primary); font-weight: 600;">Hub Oficial</p>
+                                        <p style="color: var(--text-secondary); font-size: 12px;">hub.culturabuilder.com</p>
+                                    </div>
+                                </a>
+                                <a href="https://www.linkedin.com/search/results/content/?keywords=%23CulturaBuilder" target="_blank" style="text-decoration: none;">
+                                    <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px; text-align: center; transition: transform 0.2s; cursor: pointer;">
+                                        <div style="font-size: 32px; margin-bottom: 8px;">💼</div>
+                                        <p style="color: var(--text-primary); font-weight: 600;">LinkedIn</p>
+                                        <p style="color: var(--text-secondary); font-size: 12px;">#CulturaBuilder</p>
+                                    </div>
+                                </a>
+                                <a href="https://github.com/topics/cultura-builder" target="_blank" style="text-decoration: none;">
+                                    <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px; text-align: center; transition: transform 0.2s; cursor: pointer;">
+                                        <div style="font-size: 32px; margin-bottom: 8px;">👨‍💻</div>
+                                        <p style="color: var(--text-primary); font-weight: 600;">GitHub</p>
+                                        <p style="color: var(--text-secondary); font-size: 12px;">Projetos Open Source</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div style="background: rgba(0, 255, 136, 0.1); border: 1px solid #00ff88; border-radius: 8px; padding: 16px; text-align: center;">
+                                <p style="color: #00ff88; font-size: 16px; font-weight: 600; margin-bottom: 8px;">
+                                    🎯 Desafio da Semana
+                                </p>
+                                <p style="color: var(--text-primary); font-size: 14px;">
+                                    Crie uma automação que economize 1 hora do seu dia e compartilhe com #CulturaBuilder
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Call to Action Final -->
+                        <div style="background: linear-gradient(135deg, #1a1a1a, #0a0a0a); border-radius: 16px; padding: 40px; text-align: center; margin-top: 40px;">
+                            <h2 style="color: var(--accent); font-size: 32px; margin-bottom: 16px;">
+                                Sua Jornada Builder Começa Agora
+                            </h2>
+                            <p style="color: var(--text-primary); font-size: 18px; margin-bottom: 24px; line-height: 1.6;">
+                                Você tem todo o conhecimento necessário.<br>
+                                As ferramentas estão disponíveis.<br>
+                                A comunidade está esperando por você.<br>
+                                <strong style="color: var(--accent);">O que você vai construir hoje?</strong>
+                            </p>
+                            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                                <button onclick="scrollToTop()" style="padding: 16px 32px; background: var(--accent); color: var(--bg-primary); border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                    Reler o Manuscrito
+                                </button>
+                                <button onclick="window.open('https://hub.culturabuilder.com', '_blank')" style="padding: 16px 32px; background: transparent; color: var(--accent); border: 2px solid var(--accent); border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                    Acessar o Hub
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Download prompts templates
+        function downloadPrompts() {
+            const prompts = \`# 100+ Templates de Prompts Profissionais - Cultura Builder
+
+## 🚀 Landing Pages que Convertem
+
+### Prompt 1: Landing Page Completa
+\\\`\\\`\\\`
+Crie uma landing page completa para [seu produto/serviço] com:
+- Headline que capture atenção em 3 segundos
+- Subheadline explicando o valor principal
+- 3 benefícios principais com ícones
+- Prova social (depoimentos/números)
+- CTA claro e urgente
+- FAQ com 5 perguntas comuns
+- Footer com links essenciais
+Use HTML5, CSS3 moderno e JavaScript vanilla
+\\\`\\\`\\\`
+
+### Prompt 2: Copy Persuasivo
+\\\`\\\`\\\`
+Escreva copy para landing page usando AIDA:
+Produto: [descreva]
+Público-alvo: [descreva]
+Dor principal: [descreva]
+Solução única: [descreva]
+Inclua: power words, gatilhos mentais, urgência
+\\\`\\\`\\\`
+
+## 💻 APIs RESTful Profissionais
+
+### Prompt 3: API CRUD Completa
+\\\`\\\`\\\`
+Crie uma API REST completa em Node.js/Express para [entidade] com:
+- CRUD completo (Create, Read, Update, Delete)
+- Validação de dados com Joi ou Zod
+- Tratamento de erros padronizado
+- Autenticação JWT
+- Rate limiting
+- Documentação Swagger
+- Testes com Jest
+\\\`\\\`\\\`
+
+### Prompt 4: Microserviços
+\\\`\\\`\\\`
+Arquitete um sistema de microserviços para [aplicação] com:
+- Separação de responsabilidades
+- Comunicação via REST e/ou mensageria
+- Service discovery
+- Circuit breaker
+- Logging centralizado
+- Docker compose para desenvolvimento
+\\\`\\\`\\\`
+
+## 📱 Redes Sociais & Conteúdo
+
+### Prompt 5: Calendário de Conteúdo
+\\\`\\\`\\\`
+Crie calendário de conteúdo para 30 dias:
+Nicho: [seu nicho]
+Objetivo: [engajamento/vendas/autoridade]
+Plataformas: [liste]
+Inclua: tipos de post, horários ideais, hashtags, CTAs
+\\\`\\\`\\\`
+
+### Prompt 6: Viral Hooks
+\\\`\\\`\\\`
+Gere 20 hooks virais para [plataforma] sobre [tópico]:
+- Primeiras 3 palavras que prendem atenção
+- Curiosity gap
+- Controverso mas respeitoso
+- Formato: pergunta/afirmação/estatística
+\\\`\\\`\\\`
+
+## 📊 Análise de Dados
+
+### Prompt 7: Dashboard Analytics
+\\\`\\\`\\\`
+Crie dashboard interativo para [tipo de dados] com:
+- KPIs principais em cards
+- Gráficos temporais (linha/barra)
+- Filtros dinâmicos
+- Export para PDF/Excel
+- Responsivo
+Use: React + Chart.js ou D3.js
+\\\`\\\`\\\`
+
+### Prompt 8: Relatório Automatizado
+\\\`\\\`\\\`
+Script Python para relatório automatizado:
+Fonte de dados: [CSV/API/Database]
+Análises: [liste métricas]
+Visualizações: [tipos de gráficos]
+Output: PDF profissional com insights
+Agendamento: diário/semanal/mensal
+\\\`\\\`\\\`
+
+## 🤖 Automação Inteligente
+
+### Prompt 9: Bot WhatsApp Business
+\\\`\\\`\\\`
+Crie bot WhatsApp para [negócio] que:
+- Responda FAQ automaticamente
+- Colete dados de leads
+- Agende atendimentos
+- Envie catálogo de produtos
+- Processe pedidos simples
+- Escale para atendimento humano
+\\\`\\\`\\\`
+
+### Prompt 10: Web Scraping Ético
+\\\`\\\`\\\`
+Script de web scraping para [site público] que:
+- Respeite robots.txt
+- Use delays apropriados
+- Trate erros gracefully
+- Salve em formato estruturado
+- Envie notificações de mudanças
+Linguagem: Python com BeautifulSoup/Scrapy
+\\\`\\\`\\\`
+
+## 🎯 E-commerce & Vendas
+
+### Prompt 11: Loja Virtual Completa
+\\\`\\\`\\\`
+Desenvolva e-commerce para [nicho] com:
+- Catálogo com filtros avançados
+- Carrinho persistente
+- Checkout simplificado
+- Múltiplos meios de pagamento
+- Cálculo de frete automático
+- Área do cliente
+- Painel administrativo
+Stack: Next.js + Stripe + Prisma
+\\\`\\\`\\\`
+
+### Prompt 12: Funil de Vendas
+\\\`\\\`\\\`
+Estruture funil completo para [produto]:
+1. Topo: conteúdo de atração
+2. Meio: nutrição por email
+3. Fundo: oferta irresistível
+Inclua: copy, automações, métricas
+\\\`\\\`\\\`
+
+## 🎨 Design & UX
+
+### Prompt 13: Design System
+\\\`\\\`\\\`
+Crie design system completo com:
+- Paleta de cores (principal/secundária/estados)
+- Tipografia (escalas e hierarquia)
+- Espaçamentos (grid 8px)
+- Componentes base (botões/inputs/cards)
+- Padrões de interação
+- Documentação de uso
+\\\`\\\`\\\`
+
+### Prompt 14: Prototipação Rápida
+\\\`\\\`\\\`
+Protótipo funcional de [app/site] com:
+- User flow principal
+- 5 telas essenciais
+- Micro-interações
+- Mobile-first
+- Acessibilidade básica
+Ferramenta: HTML/CSS/JS ou Figma
+\\\`\\\`\\\`
+
+## 📧 Email Marketing
+
+### Prompt 15: Sequência de Boas-Vindas
+\\\`\\\`\\\`
+Sequência de 5 emails para novos inscritos:
+Email 1: Boas-vindas + entrega prometida
+Email 2: Sua história/missão
+Email 3: Valor educacional
+Email 4: Prova social
+Email 5: Oferta especial
+Tom: [formal/casual]
+\\\`\\\`\\\`
+
+## 🔒 Segurança & Compliance
+
+### Prompt 16: LGPD Compliance
+\\\`\\\`\\\`
+Implemente LGPD compliance com:
+- Aviso de cookies
+- Política de privacidade
+- Termos de uso
+- Consentimento explícito
+- Direito ao esquecimento
+- Export de dados pessoais
+\\\`\\\`\\\`
+
+## 💡 Ideação & Estratégia
+
+### Prompt 17: Validação de Ideia
+\\\`\\\`\\\`
+Valide ideia de [produto/serviço]:
+1. Análise de mercado
+2. Personas detalhadas
+3. Proposta de valor única
+4. MVP features
+5. Métricas de validação
+6. Pivots possíveis
+\\\`\\\`\\\`
+
+### Prompt 18: Pitch Deck
+\\\`\\\`\\\`
+Estruture pitch deck de 10 slides:
+1. Problema
+2. Solução
+3. Mercado
+4. Produto
+5. Modelo de negócio
+6. Tração
+7. Competidores
+8. Time
+9. Financeiro
+10. Ask
+\\\`\\\`\\\`
+
+## 🏆 Produtividade & Gestão
+
+### Prompt 19: Sistema de Tarefas
+\\\`\\\`\\\`
+App de gestão de tarefas com:
+- Kanban board
+- Priorização (Eisenhower)
+- Pomodoro timer
+- Colaboração em equipe
+- Relatórios de produtividade
+- Sincronização multi-device
+\\\`\\\`\\\`
+
+### Prompt 20: Documentação Técnica
+\\\`\\\`\\\`
+Template de documentação para [projeto]:
+- README profissional
+- Guia de instalação
+- API reference
+- Exemplos de uso
+- Troubleshooting
+- Contributing guidelines
+\\\`\\\`\\\`
+
+---
+
+## 🚀 Como Usar Estes Prompts
+
+1. **Personalize**: Substitua os [placeholders] com suas informações
+2. **Itere**: Use follow-ups para refinar resultados
+3. **Combine**: Misture prompts para soluções complexas
+4. **Documente**: Salve os melhores resultados
+5. **Compartilhe**: Use #CulturaBuilder para ajudar outros
+
+## 💡 Dicas Pro
+
+- Seja específico nos detalhes
+- Forneça contexto do seu negócio
+- Peça variações para A/B testing
+- Solicite explicações do código
+- Sempre revise e adapte
+
+---
+
+Criado com ❤️ pela Comunidade Cultura Builder
+hub.culturabuilder.com
+#CulturaBuilder
+\`;
+            
+            const blob = new Blob([prompts], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cultura-builder-prompts-templates.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Scroll to top
+        function scrollToTop() {
+            document.getElementById('contentArea').scrollTop = 0;
         }
         
         // Generate certificate
