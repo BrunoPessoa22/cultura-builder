@@ -1,4 +1,4 @@
-<!-- Version 5.2 - Infinite Scroll Added - Deployed: 2025-08-27 -->
+<!-- Version 5.3 - Enhanced Voice & Always-On Infinite Scroll - Deployed: 2025-08-27 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -562,10 +562,7 @@
                     <button class="control-btn" onclick="increaseFontSize()">
                         <i data-lucide="plus" class="w-4 h-4"></i>
                     </button>
-                    <button class="control-btn" id="infiniteBtn" onclick="toggleInfiniteScroll()" title="Scroll Infinito">
-                        <i data-lucide="layers" class="w-4 h-4"></i>
-                    </button>
-                    <button class="control-btn" id="playBtn" onclick="toggleVoiceOver()" title="Opções de narração">
+                    <button class="control-btn" id="playBtn" onclick="toggleVoiceOver()" title="Narrador">
                         <i data-lucide="volume-2" class="w-4 h-4"></i>
                         <span style="margin-left: 8px; font-size: 13px;">Narrador</span>
                     </button>
@@ -599,11 +596,10 @@
             return html;
         }
         
-        // Infinite Scroll Variables
+        // Infinite Scroll Variables (Always On)
         let currentChapterIndex = 0;
         let loadedChapters = [];
         let isLoadingNext = false;
-        let infiniteScrollEnabled = true;
         
         // Chapter Data Structure
         const allChapters = [
@@ -727,10 +723,7 @@
             const contentArea = document.getElementById('contentArea');
             const currentChapterEl = document.getElementById('currentChapter');
             
-            // Disable infinite scroll temporarily
-            infiniteScrollEnabled = false;
-            
-            // Clear loaded chapters
+            // Clear loaded chapters for fresh start
             loadedChapters = [];
             
             // Update current chapter index
@@ -767,11 +760,6 @@
                 loadedChapters.push(chapter.id);
                 lucide.createIcons();
                 
-                // Re-enable infinite scroll after loading
-                setTimeout(() => {
-                    infiniteScrollEnabled = true;
-                }, 1000);
-                
             } catch (error) {
                 contentArea.innerHTML = '<p style="color: var(--text-tertiary); text-align: center;">Erro ao carregar capítulo</p>';
             }
@@ -779,7 +767,7 @@
         
         // Append next chapter for infinite scroll
         async function loadNextChapter() {
-            if (isLoadingNext || !infiniteScrollEnabled) return;
+            if (isLoadingNext) return;
             
             const nextIndex = currentChapterIndex + 1;
             
@@ -865,7 +853,7 @@
             const contentArea = document.getElementById('contentArea');
             
             contentArea.addEventListener('scroll', () => {
-                if (!infiniteScrollEnabled || isLoadingNext) return;
+                if (isLoadingNext) return;
                 
                 const scrollPosition = contentArea.scrollTop + contentArea.clientHeight;
                 const totalHeight = contentArea.scrollHeight;
@@ -956,36 +944,285 @@
             });
         }
         
-        // Toggle infinite scroll
-        function toggleInfiniteScroll() {
-            infiniteScrollEnabled = !infiniteScrollEnabled;
-            const btn = document.getElementById('infiniteBtn');
-            
-            if (infiniteScrollEnabled) {
-                btn.classList.add('active');
-                alert('Scroll infinito ativado! Os capítulos serão carregados automaticamente ao rolar.');
-            } else {
-                btn.classList.remove('active');
-                alert('Scroll infinito desativado.');
+        // Enhanced Voice Over with Better Controls
+        let currentUtterance = null;
+        let isReading = false;
+        let isPaused = false;
+        let speechRate = 0.85; // Slower default speed
+        let speechPitch = 1.0;
+        let speechVolume = 1.0;
+        let selectedVoice = null;
+        
+        // Toggle voice over with better controls
+        function toggleVoiceOver() {
+            if (!('speechSynthesis' in window)) {
+                alert('Narração não suportada neste navegador. Use Chrome ou Edge para melhor experiência.');
+                return;
             }
             
-            localStorage.setItem('infiniteScroll', infiniteScrollEnabled);
+            if (isReading) {
+                stopReading();
+            } else {
+                showVoiceOptions();
+            }
         }
         
-        // Simple voice over toggle
-        function toggleVoiceOver() {
-            if ('speechSynthesis' in window) {
-                if (speechSynthesis.speaking) {
-                    speechSynthesis.cancel();
-                } else {
-                    const text = document.getElementById('contentArea').innerText;
-                    const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.lang = 'pt-BR';
-                    speechSynthesis.speak(utterance);
-                }
-            } else {
-                alert('Narração não suportada neste navegador');
+        // Show voice options modal
+        function showVoiceOptions() {
+            const existingModal = document.getElementById('voiceModal');
+            if (existingModal) existingModal.remove();
+            
+            const modal = document.createElement('div');
+            modal.id = 'voiceModal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 24px;
+                z-index: 10000;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+                max-width: 500px;
+                width: 90%;
+            `;
+            
+            // Get available voices
+            const voices = speechSynthesis.getVoices();
+            const ptBRVoices = voices.filter(v => v.lang.includes('pt-BR') || v.lang.includes('pt_BR'));
+            const ptVoices = voices.filter(v => v.lang.includes('pt') && !v.lang.includes('pt-BR'));
+            const otherVoices = voices.filter(v => !v.lang.includes('pt'));
+            
+            modal.innerHTML = `
+                <h3 style="margin-bottom: 16px; font-size: 18px; font-weight: 600;">Configurações do Narrador</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary);">
+                        Voz (escolha uma voz brasileira para melhor qualidade):
+                    </label>
+                    <select id="voiceSelect" style="width: 100%; padding: 8px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); font-size: 14px;">
+                        ${ptBRVoices.length > 0 ? `
+                            <optgroup label="🇧🇷 Português Brasileiro (Recomendado)">
+                                ${ptBRVoices.map((v, i) => `
+                                    <option value="${voices.indexOf(v)}" ${i === 0 ? 'selected' : ''}>
+                                        ${v.name} ${v.localService ? '(Local)' : '(Online)'}
+                                    </option>
+                                `).join('')}
+                            </optgroup>
+                        ` : ''}
+                        ${ptVoices.length > 0 ? `
+                            <optgroup label="🇵🇹 Português">
+                                ${ptVoices.map(v => `
+                                    <option value="${voices.indexOf(v)}">
+                                        ${v.name}
+                                    </option>
+                                `).join('')}
+                            </optgroup>
+                        ` : ''}
+                        ${otherVoices.length > 0 ? `
+                            <optgroup label="🌐 Outras">
+                                ${otherVoices.slice(0, 5).map(v => `
+                                    <option value="${voices.indexOf(v)}">
+                                        ${v.name} (${v.lang})
+                                    </option>
+                                `).join('')}
+                            </optgroup>
+                        ` : ''}
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary);">
+                        Velocidade: <span id="speedValue">0.85x</span>
+                    </label>
+                    <input type="range" id="speedRange" min="0.5" max="1.5" step="0.05" value="0.85" 
+                           style="width: 100%; height: 6px; background: var(--bg-tertiary); border-radius: 3px; outline: none;">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary);">
+                        Tom de Voz: <span id="pitchValue">1.0</span>
+                    </label>
+                    <input type="range" id="pitchRange" min="0.5" max="2" step="0.1" value="1.0"
+                           style="width: 100%; height: 6px; background: var(--bg-tertiary); border-radius: 3px; outline: none;">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary);">
+                        Volume: <span id="volumeValue">100%</span>
+                    </label>
+                    <input type="range" id="volumeRange" min="0" max="1" step="0.1" value="1"
+                           style="width: 100%; height: 6px; background: var(--bg-tertiary); border-radius: 3px; outline: none;">
+                </div>
+                
+                <div style="display: flex; gap: 12px;">
+                    <button onclick="testVoice()" style="flex: 1; padding: 12px; background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); border-radius: 8px; cursor: pointer;">
+                        Testar Voz
+                    </button>
+                    <button onclick="startReadingWithSettings()" style="flex: 1; padding: 12px; background: var(--accent); color: var(--bg-primary); border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                        Iniciar Leitura
+                    </button>
+                    <button onclick="closeVoiceModal()" style="padding: 12px 20px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border); border-radius: 8px; cursor: pointer;">
+                        Cancelar
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add event listeners
+            document.getElementById('speedRange').addEventListener('input', (e) => {
+                speechRate = parseFloat(e.target.value);
+                document.getElementById('speedValue').textContent = speechRate.toFixed(2) + 'x';
+            });
+            
+            document.getElementById('pitchRange').addEventListener('input', (e) => {
+                speechPitch = parseFloat(e.target.value);
+                document.getElementById('pitchValue').textContent = speechPitch.toFixed(1);
+            });
+            
+            document.getElementById('volumeRange').addEventListener('input', (e) => {
+                speechVolume = parseFloat(e.target.value);
+                document.getElementById('volumeValue').textContent = Math.round(speechVolume * 100) + '%';
+            });
+            
+            // Set default voice
+            if (ptBRVoices.length > 0) {
+                selectedVoice = ptBRVoices[0];
             }
+        }
+        
+        // Test voice with sample text
+        function testVoice() {
+            speechSynthesis.cancel();
+            
+            const voiceSelect = document.getElementById('voiceSelect');
+            const voices = speechSynthesis.getVoices();
+            selectedVoice = voices[voiceSelect.value];
+            
+            const testText = "Olá! Esta é uma prévia da voz selecionada. Ajuste a velocidade, tom e volume conforme sua preferência para uma leitura confortável.";
+            const utterance = new SpeechSynthesisUtterance(testText);
+            
+            utterance.voice = selectedVoice;
+            utterance.rate = speechRate;
+            utterance.pitch = speechPitch;
+            utterance.volume = speechVolume;
+            utterance.lang = 'pt-BR';
+            
+            speechSynthesis.speak(utterance);
+        }
+        
+        // Start reading with selected settings
+        function startReadingWithSettings() {
+            const voiceSelect = document.getElementById('voiceSelect');
+            const voices = speechSynthesis.getVoices();
+            selectedVoice = voices[voiceSelect.value];
+            
+            closeVoiceModal();
+            startReading();
+        }
+        
+        // Close voice modal
+        function closeVoiceModal() {
+            const modal = document.getElementById('voiceModal');
+            if (modal) modal.remove();
+        }
+        
+        // Start reading
+        function startReading() {
+            const contentArea = document.getElementById('contentArea');
+            const text = contentArea.innerText;
+            
+            if (!text) {
+                alert('Nenhum conteúdo para ler.');
+                return;
+            }
+            
+            // Cancel any ongoing speech
+            speechSynthesis.cancel();
+            
+            // Split text into smaller chunks for better control
+            const chunks = text.match(/[^.!?]+[.!?]+/g) || [text];
+            let currentChunk = 0;
+            
+            function readNextChunk() {
+                if (currentChunk >= chunks.length) {
+                    isReading = false;
+                    updateVoiceButton();
+                    return;
+                }
+                
+                currentUtterance = new SpeechSynthesisUtterance(chunks[currentChunk]);
+                
+                if (selectedVoice) {
+                    currentUtterance.voice = selectedVoice;
+                }
+                
+                currentUtterance.rate = speechRate;
+                currentUtterance.pitch = speechPitch;
+                currentUtterance.volume = speechVolume;
+                currentUtterance.lang = 'pt-BR';
+                
+                currentUtterance.onend = () => {
+                    currentChunk++;
+                    if (isReading && !isPaused) {
+                        // Small pause between sentences
+                        setTimeout(readNextChunk, 200);
+                    }
+                };
+                
+                currentUtterance.onerror = (e) => {
+                    console.error('Speech error:', e);
+                    isReading = false;
+                    updateVoiceButton();
+                };
+                
+                speechSynthesis.speak(currentUtterance);
+            }
+            
+            isReading = true;
+            updateVoiceButton();
+            readNextChunk();
+        }
+        
+        // Stop reading
+        function stopReading() {
+            speechSynthesis.cancel();
+            isReading = false;
+            isPaused = false;
+            updateVoiceButton();
+        }
+        
+        // Update voice button appearance
+        function updateVoiceButton() {
+            const btn = document.getElementById('playBtn');
+            if (isReading) {
+                btn.classList.add('active');
+                btn.innerHTML = `
+                    <i data-lucide="volume-x" class="w-4 h-4"></i>
+                    <span style="margin-left: 8px; font-size: 13px;">Parar</span>
+                `;
+            } else {
+                btn.classList.remove('active');
+                btn.innerHTML = `
+                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                    <span style="margin-left: 8px; font-size: 13px;">Narrador</span>
+                `;
+            }
+            lucide.createIcons();
+        }
+        
+        // Load voices when available
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = () => {
+                const voices = speechSynthesis.getVoices();
+                const ptBRVoices = voices.filter(v => v.lang.includes('pt-BR'));
+                if (ptBRVoices.length > 0 && !selectedVoice) {
+                    selectedVoice = ptBRVoices[0];
+                }
+            };
         }
         
         // Load saved preferences
@@ -997,16 +1234,6 @@
         const savedFontSize = localStorage.getItem('fontSize');
         if (savedFontSize) {
             currentFontSize = parseInt(savedFontSize);
-        }
-        
-        const savedInfiniteScroll = localStorage.getItem('infiniteScroll');
-        if (savedInfiniteScroll !== null) {
-            infiniteScrollEnabled = savedInfiniteScroll === 'true';
-            if (infiniteScrollEnabled) {
-                setTimeout(() => {
-                    document.getElementById('infiniteBtn')?.classList.add('active');
-                }, 100);
-            }
         }
         
         // Content protection
