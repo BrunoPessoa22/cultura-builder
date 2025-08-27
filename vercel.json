@@ -1,16 +1,5 @@
 {
   "version": 2,
-  "public": true,
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/landing-page.html"
-    },
-    {
-      "source": "/reader",
-      "destination": "/reader-optimized.html"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
