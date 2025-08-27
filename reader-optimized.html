@@ -864,6 +864,9 @@
             
             if (!nextChapter || loadedChapters.includes(nextChapter.id)) return;
             
+            // Don't try to load quiz or bonus sections as files
+            if (nextChapter.isQuiz || nextChapter.isBonus) return;
+            
             isLoadingNext = true;
             const contentArea = document.getElementById('contentArea');
             
@@ -1794,19 +1797,19 @@
                                 </p>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 400px; margin: 0 auto;">
                                     <div style="text-align: left;">
-                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">📝 Questões</p>
+                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">Questões</p>
                                         <p style="color: var(--text-primary); font-size: 20px; font-weight: 600;">15</p>
                                     </div>
                                     <div style="text-align: left;">
-                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">🎯 Aprovação</p>
+                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">Aprovação</p>
                                         <p style="color: var(--text-primary); font-size: 20px; font-weight: 600;">70%</p>
                                     </div>
                                     <div style="text-align: left;">
-                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">⏱️ Tempo</p>
+                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">Tempo</p>
                                         <p style="color: var(--text-primary); font-size: 20px; font-weight: 600;">Livre</p>
                                     </div>
                                     <div style="text-align: left;">
-                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">🏆 Certificado</p>
+                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">Certificado</p>
                                         <p style="color: var(--text-primary); font-size: 20px; font-weight: 600;">Sim</p>
                                     </div>
                                 </div>
