@@ -1,10 +1,10 @@
-<!-- Version 3.0 - Content Protection + Emoji Replacement - Deployed: 2025-08-26 16:00 UTC -->
+<!-- Version 4.0 - Professional Book Layout - Deployed: 2025-08-26 17:00 UTC -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cultura Builder - Leitor (v3.0 - Protected)</title>
+    <title>Cultura Builder - Manuscrito Digital</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
             box-sizing: border-box;
         }
         
-        /* Dark Theme (Default) */
+        /* Dark Theme (Default) - Professional Book Style */
         :root {
             --bg-primary: #0a0a0a;
             --bg-secondary: #111111;
@@ -29,6 +29,16 @@
             --border: rgba(255, 255, 255, 0.1);
             --sidebar-width: 320px;
             --code-bg: #1a1a1a;
+            
+            /* Typography System */
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+            
+            /* Book-like spacing */
+            --paragraph-spacing: 1.5em;
+            --line-height-body: 1.8;
+            --letter-spacing-body: 0.01em;
         }
         
         /* Light Theme */
@@ -45,11 +55,14 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: var(--font-sans);
             background: var(--bg-primary);
             color: var(--text-primary);
             overflow: hidden;
             transition: background 0.3s, color 0.3s;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
         
         /* Layout */
@@ -138,13 +151,21 @@
         }
         
         .part-header {
-            font-size: 11px;
-            font-weight: 700;
+            font-size: 10px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             color: var(--text-tertiary);
-            padding: 16px 12px 8px;
-            margin-top: 8px;
+            padding: 20px 16px 12px;
+            margin-top: 12px;
+            border-top: 1px solid var(--border);
+            font-family: var(--font-sans);
+            opacity: 0.7;
+        }
+        
+        .part-header:first-child {
+            border-top: none;
+            margin-top: 0;
         }
         
         .chapter-item {
@@ -166,23 +187,32 @@
         }
         
         .chapter-number {
-            font-size: 10px;
-            font-weight: 600;
+            font-size: 9px;
+            font-weight: 500;
             color: var(--text-tertiary);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+            font-family: var(--font-sans);
+            opacity: 0.6;
         }
         
         .chapter-title {
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 400;
             color: var(--text-secondary);
-            line-height: 1.4;
+            line-height: 1.5;
+            font-family: var(--font-sans);
+            letter-spacing: 0.2px;
+        }
+        
+        .chapter-item:hover .chapter-title {
+            color: var(--text-primary);
         }
         
         .chapter-item.active .chapter-title {
             color: var(--text-primary);
+            font-weight: 500;
         }
         
         /* Main Content */
@@ -282,75 +312,142 @@
             padding-bottom: 200px;
         }
         
-        /* Typography */
+        /* Professional Book Typography */
         .content-area h1 {
-            font-size: 48px;
-            font-weight: 900;
-            margin-bottom: 24px;
+            font-family: var(--font-serif);
+            font-size: 42px;
+            font-weight: 700;
+            margin: 0 0 32px 0;
             line-height: 1.2;
-            letter-spacing: -2px;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 16px;
         }
         
         .content-area h2 {
-            font-size: 32px;
-            font-weight: 800;
+            font-family: var(--font-serif);
+            font-size: 28px;
+            font-weight: 600;
             margin: 48px 0 24px;
-            line-height: 1.3;
-            letter-spacing: -1px;
+            line-height: 1.35;
+            letter-spacing: 0;
+            color: var(--text-primary);
         }
         
         .content-area h3 {
-            font-size: 24px;
-            font-weight: 700;
-            margin: 36px 0 16px;
+            font-family: var(--font-sans);
+            font-size: 22px;
+            font-weight: 600;
+            margin: 36px 0 18px;
             line-height: 1.4;
+            letter-spacing: -0.2px;
+            color: var(--text-primary);
         }
         
         .content-area h4 {
-            font-size: 20px;
+            font-family: var(--font-sans);
+            font-size: 19px;
             font-weight: 600;
-            margin: 28px 0 14px;
-            line-height: 1.4;
+            margin: 28px 0 16px;
+            line-height: 1.45;
             color: var(--text-primary);
         }
         
         .content-area h5 {
-            font-size: 18px;
+            font-family: var(--font-sans);
+            font-size: 17px;
             font-weight: 600;
-            margin: 24px 0 12px;
-            line-height: 1.4;
+            margin: 24px 0 14px;
+            line-height: 1.5;
             color: var(--text-primary);
         }
         
         .content-area h6 {
+            font-family: var(--font-sans);
             font-size: 16px;
             font-weight: 600;
-            margin: 20px 0 10px;
-            line-height: 1.4;
+            margin: 20px 0 12px;
+            line-height: 1.5;
+            color: var(--text-primary);
+            font-style: italic;
+        }
+        
+        /* Book-style paragraph formatting */
+        .content-area p {
+            font-family: var(--font-serif);
+            font-size: 18px;
+            line-height: 1.85;
+            margin-bottom: var(--paragraph-spacing);
+            color: var(--text-secondary);
+            text-align: justify;
+            text-indent: 2em;
+            letter-spacing: var(--letter-spacing-body);
+            hyphens: auto;
+            word-spacing: 0.05em;
+        }
+        
+        /* First paragraph after heading - no indent */
+        .content-area h1 + p,
+        .content-area h2 + p,
+        .content-area h3 + p,
+        .content-area h4 + p,
+        .content-area h5 + p,
+        .content-area h6 + p {
+            text-indent: 0;
+        }
+        
+        /* Drop cap for chapter start */
+        .chapter-container > p:first-of-type:first-letter {
+            float: left;
+            font-family: var(--font-serif);
+            font-size: 80px;
+            line-height: 65px;
+            padding-right: 8px;
+            margin-top: 8px;
+            font-weight: 700;
             color: var(--text-primary);
         }
         
-        .content-area p {
-            font-size: 17px;
-            line-height: 1.8;
-            margin-bottom: 24px;
-            color: var(--text-secondary);
-        }
-        
         .content-area blockquote {
-            border-left: 3px solid var(--border);
-            padding-left: 24px;
+            font-family: var(--font-serif);
+            border-left: 4px solid var(--border);
+            padding: 20px 32px;
             margin: 32px 0;
             font-style: italic;
+            font-size: 17px;
+            line-height: 1.75;
             color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            quotes: """ """ "'" "'";
+        }
+        
+        .content-area blockquote::before {
+            content: open-quote;
+            font-size: 32px;
+            line-height: 0;
+            margin-right: 8px;
+            vertical-align: -8px;
+            color: var(--text-tertiary);
+        }
+        
+        .content-area blockquote p {
+            text-indent: 0;
+            margin-bottom: 0.5em;
+        }
+        
+        .content-area blockquote p:last-child {
+            margin-bottom: 0;
         }
         
         .content-area code {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             background: var(--code-bg);
-            padding: 2px 6px;
+            padding: 3px 6px;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-primary);
         }
         
@@ -358,34 +455,57 @@
             background: var(--bg-secondary);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 20px;
+            padding: 24px;
             overflow-x: auto;
-            margin: 24px 0;
+            margin: 28px 0;
+            font-size: 14px;
+            line-height: 1.6;
         }
         
         .content-area pre code {
             background: transparent;
             padding: 0;
+            font-size: 14px;
         }
         
         .content-area ul, .content-area ol {
             margin: 24px 0;
-            padding-left: 24px;
+            padding-left: 32px;
+            font-family: var(--font-serif);
         }
         
         .content-area li {
-            margin: 8px 0;
-            line-height: 1.8;
+            margin: 10px 0;
+            line-height: 1.85;
             color: var(--text-secondary);
+            font-size: 18px;
         }
         
         .content-area strong {
             color: var(--text-primary);
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: -0.2px;
         }
         
         .content-area em {
-            color: var(--text-secondary);
+            font-style: italic;
+            color: inherit;
+        }
+        
+        /* Horizontal rule - book style */
+        .content-area hr {
+            border: none;
+            text-align: center;
+            margin: 48px 0;
+            position: relative;
+        }
+        
+        .content-area hr::before {
+            content: "❦";
+            font-size: 20px;
+            color: var(--text-tertiary);
+            position: relative;
+            top: -10px;
         }
         
         /* Loading State */
@@ -1154,65 +1274,65 @@
         
         // Chapter data - Complete list with all 33 chapters
         const chapters = [
-            { part: "INÍCIO", icon: "home", chapters: [
-                { id: "capa", number: "", title: "Capa do Livro", icon: "book-open", file: "capa.md" },
+            { part: "INÍCIO", chapters: [
+                { id: "capa", number: "", title: "Capa do Livro", file: "capa.md" },
             ]},
-            { part: "PARTE I - O DESPERTAR", icon: "sunrise", chapters: [
+            { part: "PARTE I • O DESPERTAR", chapters: [
                 { id: "cap1", number: "1", title: "O Dia em que o ChatGPT Mudou Tudo", icon: "sparkles", file: "parte-01/capitulo-01.md" },
                 { id: "cap2", number: "2", title: "O Espelho da História", icon: "history", file: "parte-01/capitulo-02.md" },
                 { id: "cap3", number: "3", title: "A Psicologia do Medo Tecnológico", icon: "brain", file: "parte-01/capitulo-03.md" }
             ]},
-            { part: "PARTE II - ENTENDENDO O JOGO", icon: "gamepad-2", chapters: [
+            { part: "PARTE II • ENTENDENDO O JOGO", chapters: [
                 { id: "cap4", number: "4", title: "IA para Humanos", icon: "cpu", file: "parte-02/capitulo-04.md" },
                 { id: "cap5", number: "5", title: "Os Arquitetos do Futuro", icon: "building-2", file: "parte-02/capitulo-05.md" },
                 { id: "cap6", number: "6", title: "O Novo Contrato Social", icon: "handshake", file: "parte-02/capitulo-06.md" }
             ]},
-            { part: "PARTE III - MINDSET BUILDER", icon: "lightbulb", chapters: [
+            { part: "PARTE III • MINDSET BUILDER", chapters: [
                 { id: "cap7", number: "7", title: "De Consumidor a Criador", icon: "palette", file: "parte-03/capitulo-07.md" },
                 { id: "cap8", number: "8", title: "Pensamento Computacional", icon: "binary", file: "parte-03/capitulo-08.md" },
                 { id: "cap9", number: "9", title: "O Arsenal do Builder", icon: "package", file: "parte-03/capitulo-09.md" }
             ]},
-            { part: "PARTE IV - MÃOS À OBRA", icon: "hammer", chapters: [
+            { part: "PARTE IV • MÃOS À OBRA", chapters: [
                 { id: "cap10", number: "10", title: "Seu Primeiro Projeto com IA", icon: "rocket", file: "parte-04/capitulo-10.md" },
                 { id: "cap11", number: "11", title: "10 Projetos em 30 Dias", icon: "calendar", file: "parte-04/capitulo-11.md" },
                 { id: "cap12", number: "12", title: "De Projeto a Produto", icon: "package-check", file: "parte-04/capitulo-12.md" }
             ]},
-            { part: "PARTE V - HABILIDADES HUMANAS", icon: "users", chapters: [
+            { part: "PARTE V • HABILIDADES HUMANAS", chapters: [
                 { id: "cap13", number: "13", title: "Criatividade na Era da IA", icon: "sparkle", file: "parte-05/capitulo-13.md" },
                 { id: "cap14", number: "14", title: "Pensamento Crítico", icon: "eye", file: "parte-05/capitulo-14.md" },
                 { id: "cap15", number: "15", title: "Inteligência Emocional", icon: "heart", file: "parte-05/capitulo-15.md" }
             ]},
-            { part: "PARTE VI - CARREIRA BUILDER", icon: "briefcase", chapters: [
+            { part: "PARTE VI • CARREIRA BUILDER", chapters: [
                 { id: "cap16", number: "16", title: "Profissões do Futuro", icon: "trending-up", file: "parte-06/capitulo-16.md" },
                 { id: "cap17", number: "17", title: "Portfolio e Marca Pessoal", icon: "user-check", file: "parte-06/capitulo-17.md" },
                 { id: "cap18", number: "18", title: "Aprendizado Contínuo", icon: "graduation-cap", file: "parte-06/capitulo-18.md" }
             ]},
-            { part: "PARTE VII - EMPRESAS BUILDERS", icon: "building", chapters: [
+            { part: "PARTE VII • EMPRESAS BUILDERS", chapters: [
                 { id: "cap19", number: "19", title: "Cultura de Experimentação", icon: "flask", file: "parte-07/capitulo-19.md" },
                 { id: "cap20", number: "20", title: "Lideranças que Multiplicam", icon: "users-2", file: "parte-07/capitulo-20.md" },
                 { id: "cap21", number: "21", title: "Estruturas Antifrágeis", icon: "shield", file: "parte-07/capitulo-21.md" }
             ]},
-            { part: "PARTE VIII - ÉTICA E RESPONSABILIDADE", icon: "scale", chapters: [
+            { part: "PARTE VIII • ÉTICA E RESPONSABILIDADE", chapters: [
                 { id: "cap22", number: "22", title: "Ética do Builder", icon: "gavel", file: "parte-08/capitulo-22.md" },
                 { id: "cap23", number: "23", title: "Privacidade e Dados", icon: "lock", file: "parte-08/capitulo-23.md" },
                 { id: "cap24", number: "24", title: "Construção Responsável", icon: "shield-check", file: "parte-08/capitulo-24.md" }
             ]},
-            { part: "PARTE IX - CASES REAIS", icon: "award", chapters: [
+            { part: "PARTE IX • CASES REAIS", chapters: [
                 { id: "cap25", number: "25", title: "Do Zero ao Código", icon: "code", file: "parte-09/capitulo-25.md" },
                 { id: "cap26", number: "26", title: "Transformação de Carreiras", icon: "refresh-cw", file: "parte-09/capitulo-26.md" },
                 { id: "cap27", number: "27", title: "Impacto Social com IA", icon: "globe", file: "parte-09/capitulo-27.md" }
             ]},
-            { part: "PARTE X - BRASIL BUILDER", icon: "flag", chapters: [
+            { part: "PARTE X • BRASIL BUILDER", chapters: [
                 { id: "cap28", number: "28", title: "O Vale do São Francisco", icon: "map-pin", file: "parte-10/capitulo-28.md" },
                 { id: "cap29", number: "29", title: "Empresas Brasileiras", icon: "landmark", file: "parte-10/capitulo-29.md" },
                 { id: "cap30", number: "30", title: "Políticas Públicas", icon: "file-text", file: "parte-10/capitulo-30.md" }
             ]},
-            { part: "PARTE XI - SEU FUTURO", icon: "compass", chapters: [
+            { part: "PARTE XI • SEU FUTURO", chapters: [
                 { id: "cap31", number: "31", title: "Seu Roadmap Pessoal", icon: "map", file: "parte-11/capitulo-31.md" },
                 { id: "cap32", number: "32", title: "Ferramentas Essenciais", icon: "wrench", file: "parte-11/capitulo-32.md" },
                 { id: "cap33", number: "33", title: "O Chamado à Ação", icon: "megaphone", file: "parte-11/capitulo-33.md" }
             ]},
-            { part: "CONCLUSÃO", icon: "check-circle", chapters: [
+            { part: "CONCLUSÃO", chapters: [
                 { id: "epilogo", number: "", title: "Epílogo", icon: "book-marked", file: "epilogo.md" },
                 { id: "referencias", number: "", title: "Referências e Fontes", icon: "library", file: "referencias.md" }
             ]}
@@ -1258,13 +1378,13 @@
             let html = '';
             
             chapters.forEach((part, partIndex) => {
-                html += `<div class="part-header">${part.icon ? '<i data-lucide="' + part.icon + '" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i>' : ''}${part.part}</div>`;
+                html += `<div class="part-header">${part.part}</div>`;
                 part.chapters.forEach((chapter, chapterIndex) => {
                     html += `
                         <div class="chapter-item" 
                              id="chapter-${chapter.id}"
                              onclick="loadChapter(${JSON.stringify(chapter).replace(/"/g, '&quot;')})">
-                            ${chapter.number ? `<div class="chapter-number">${chapter.icon ? '<i data-lucide="' + chapter.icon + '" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i>' : '<i data-lucide="file-text" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i>'}Capítulo ${chapter.number}</div>` : (chapter.icon ? '<div class="chapter-number"><i data-lucide="' + chapter.icon + '" class="w-3 h-3" style="display: inline-block; margin-right: 6px; vertical-align: middle;"></i></div>' : '')}
+                            ${chapter.number ? `<div class="chapter-number">CAPÍTULO ${chapter.number}</div>` : ''}
                             <div class="chapter-title">${chapter.title}</div>
                             <div class="search-preview" id="preview-${chapter.id}" style="display: none; font-size: 12px; color: var(--text-tertiary); margin-top: 8px; padding: 8px; background: var(--bg-tertiary); border-radius: 4px;"></div>
                         </div>
@@ -1298,7 +1418,7 @@
             
             // Show loading
             contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            currentChapterEl.innerHTML = `${chapter.icon ? '<i data-lucide="' + chapter.icon + '" class="w-4 h-4" style="display: inline-block; margin-right: 8px; vertical-align: middle;"></i>' : ''}${chapter.number ? 'Capítulo ' + chapter.number + ': ' : ''}${chapter.title}`;
+            currentChapterEl.textContent = `${chapter.number ? 'Capítulo ' + chapter.number + ' • ' : ''}${chapter.title}`;
             
             try {
                 const response = await fetch(`/manuscrito/${chapter.file}`);
