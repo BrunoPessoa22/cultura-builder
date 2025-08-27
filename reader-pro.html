@@ -1,4 +1,4 @@
-<!-- Version 4.1 - Complete Emoji Replacement with Fallback - Deployed: 2025-08-27 -->
+<!-- Version 4.2 - Enhanced Audiobook with Continuous Reading - Deployed: 2025-08-27 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -530,6 +530,16 @@
             to { transform: rotate(360deg); }
         }
         
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
         /* Progress Bar */
         .progress-bar {
             position: fixed;
@@ -962,7 +972,7 @@
     </div>
     
     <script>
-        // Voice Over System
+        // Enhanced Voice Over System with Continuous Reading
         let speechSynthesis = window.speechSynthesis;
         let currentUtterance = null;
         let isPaused = false;
@@ -973,13 +983,23 @@
         let speechPitch = 1.0;
         let currentSentenceIndex = 0;
         let sentences = [];
+        let isReadingContinuously = false;
+        let chapterQueue = [];
+        let currentAudioChapterIndex = 0;
         
-        // Initialize voices
+        // Initialize voices with better compatibility
         function loadVoices() {
             voices = speechSynthesis.getVoices();
             const voiceSelect = document.getElementById('voiceSelect');
-            if (voiceSelect && voices.length > 0) {
-                voiceSelect.innerHTML = '';
+            
+            // Ensure we have voices before populating
+            if (!voiceSelect || voices.length === 0) {
+                setTimeout(loadVoices, 200);
+                return;
+            }
+            
+            const currentValue = voiceSelect.value;
+            voiceSelect.innerHTML = '';
                 
                 // Filter Portuguese and English voices
                 const ptVoices = voices.filter(voice => voice.lang.includes('pt'));
@@ -1031,19 +1051,159 @@
             }
         }
         
-        // Load voices when available
+        // Load voices when available with multiple attempts
         if (speechSynthesis.onvoiceschanged !== undefined) {
             speechSynthesis.onvoiceschanged = loadVoices;
         }
+        // Try loading voices multiple times for better compatibility
         setTimeout(loadVoices, 100);
+        setTimeout(loadVoices, 500);
+        setTimeout(loadVoices, 1000);
+        setTimeout(loadVoices, 2000);
         
-        // Toggle voice over on/off
+        // Toggle voice over with enhanced options
         function toggleVoiceOver() {
             if (!isReading) {
-                startReading();
+                showAudioOptions();
             } else {
                 stopVoice();
             }
+        }
+        
+        // Show audio options dialog
+        function showAudioOptions() {
+            const modal = document.createElement('div');
+            modal.id = 'audioModal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 24px;
+                z-index: 10000;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+                max-width: 400px;
+                width: 90%;
+            `;
+            
+            modal.innerHTML = `
+                <h3 style="margin-bottom: 16px; font-size: 18px; font-weight: 600;">Opções de Narração</h3>
+                <p style="margin-bottom: 20px; color: var(--text-secondary); font-size: 14px;">Escolha como deseja ouvir o conteúdo:</p>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <button onclick="closeAudioModal(); startReading();" style="padding: 12px; background: var(--accent); color: var(--bg-primary); border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+                        📄 Capítulo Atual
+                    </button>
+                    <button onclick="closeAudioModal(); startContinuousReading();" style="padding: 12px; background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-weight: 500;">
+                        📖 Livro Completo (Contínuo)
+                    </button>
+                    <button onclick="closeAudioModal()" style="padding: 12px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border); border-radius: 8px; cursor: pointer;">
+                        Cancelar
+                    </button>
+                </div>
+            `;
+            
+            const overlay = document.createElement('div');
+            overlay.id = 'audioOverlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 9999;
+            `;
+            overlay.onclick = closeAudioModal;
+            
+            document.body.appendChild(overlay);
+            document.body.appendChild(modal);
+        }
+        
+        // Close audio modal
+        function closeAudioModal() {
+            const modal = document.getElementById('audioModal');
+            const overlay = document.getElementById('audioOverlay');
+            if (modal) document.body.removeChild(modal);
+            if (overlay) document.body.removeChild(overlay);
+        }
+        
+        // Start continuous reading
+        async function startContinuousReading() {
+            isReadingContinuously = true;
+            currentAudioChapterIndex = currentChapterIndex || 0;
+            chapterQueue = allChapters.slice(currentAudioChapterIndex);
+            
+            console.log(`Starting continuous reading from chapter ${currentAudioChapterIndex + 1}`);
+            showNotification('Iniciando narração contínua...');
+            
+            await readNextChapterInQueue();
+        }
+        
+        // Read next chapter in queue
+        async function readNextChapterInQueue() {
+            if (!isReadingContinuously || chapterQueue.length === 0) {
+                if (isReadingContinuously) {
+                    showNotification('Narração completa!');
+                }
+                stopVoice();
+                return;
+            }
+            
+            const chapter = chapterQueue[0];
+            
+            // Load chapter if needed
+            if (scrollMode !== 'infinite') {
+                await loadChapter(chapter);
+            } else {
+                const chapterEl = document.getElementById(`content-${chapter.id}`);
+                if (!chapterEl) {
+                    await appendChapter(chapter, 'bottom');
+                }
+                chapterEl?.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Update UI
+            updateActiveChapter(chapter.id);
+            currentChapterIndex = allChapters.findIndex(ch => ch.id === chapter.id);
+            
+            // Start reading after content loads
+            setTimeout(() => {
+                if (isReadingContinuously) {
+                    startReading();
+                }
+            }, 800);
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            const existing = document.getElementById('notification');
+            if (existing) existing.remove();
+            
+            const notification = document.createElement('div');
+            notification.id = 'notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--bg-tertiary);
+                color: var(--text-primary);
+                padding: 12px 20px;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
         }
         
         // Start reading the current chapter
@@ -1105,8 +1265,13 @@
             // Handle events
             currentUtterance.onend = () => {
                 currentSentenceIndex++;
-                if (isReading && !isPaused) {
+                if (currentSentenceIndex < sentences.length && isReading && !isPaused) {
                     readNextSentence();
+                } else if (isReadingContinuously && currentSentenceIndex >= sentences.length) {
+                    // Move to next chapter
+                    handleContinuousReading();
+                } else if (!isReadingContinuously && currentSentenceIndex >= sentences.length) {
+                    stopVoice();
                 }
             };
             
@@ -1137,6 +1302,26 @@
             lucide.createIcons();
         }
         
+        // Handle continuous reading between chapters
+        function handleContinuousReading() {
+            if (!isReadingContinuously || chapterQueue.length <= 1) {
+                stopVoice();
+                showNotification('Leitura completa!');
+                return;
+            }
+            
+            // Remove current chapter from queue
+            chapterQueue.shift();
+            const nextChapter = chapterQueue[0];
+            
+            if (nextChapter) {
+                showNotification(`Próximo: ${nextChapter.title}`);
+                setTimeout(() => {
+                    readNextChapterInQueue();
+                }, 2000);
+            }
+        }
+        
         // Stop reading
         function stopVoice() {
             if (speechSynthesis.speaking) {
@@ -1144,8 +1329,10 @@
             }
             isReading = false;
             isPaused = false;
+            isReadingContinuously = false;
             currentSentenceIndex = 0;
             sentences = [];
+            chapterQueue = [];
             updateVoiceControls();
         }
         
