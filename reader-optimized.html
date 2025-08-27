@@ -1571,7 +1571,7 @@
             }
         }
         
-        // Quiz system
+        // Quiz system with advanced questions
         const quizQuestions = [
             {
                 question: "O que é Cultura Builder segundo o livro?",
@@ -1629,59 +1629,114 @@
                 explanation: "A IA derrubou a barreira do inglês e do código, permitindo que qualquer pessoa crie tecnologia em português."
             },
             {
-                question: "O que é o 'efeito ChatGPT' mencionado no livro?",
+                question: "Como o livro sugere lidar com a resistência à mudança tecnológica?",
                 options: [
-                    "Um bug no sistema",
-                    "A transformação radical causada pelo lançamento do ChatGPT",
-                    "Um plugin do navegador",
-                    "Uma técnica de programação"
-                ],
-                correct: 1,
-                explanation: "O efeito ChatGPT refere-se à transformação radical que começou em novembro de 2022 com o lançamento do ChatGPT."
-            },
-            {
-                question: "Qual é a abordagem recomendada para usar IA na criatividade?",
-                options: [
-                    "Substituir completamente a criatividade humana",
-                    "Não usar IA em processos criativos",
-                    "Usar IA como parceira para amplificar a criatividade humana",
-                    "Copiar exatamente o que a IA sugere"
+                    "Ignorar quem resiste e seguir em frente",
+                    "Forçar a adoção imediata de todas as tecnologias",
+                    "Demonstrar valor gradualmente e educar com paciência",
+                    "Desistir de tentar mudar"
                 ],
                 correct: 2,
-                explanation: "O livro recomenda usar IA como parceira criativa, combinando a criatividade humana com as capacidades da IA."
+                explanation: "O livro recomenda uma abordagem gradual, demonstrando valor e educando com paciência para superar resistências."
             },
             {
-                question: "O que é LGPD mencionada no capítulo sobre privacidade?",
+                question: "Qual é a estratégia recomendada para monetizar habilidades de IA?",
                 options: [
-                    "Lei Geral de Proteção de Dados",
-                    "Liga Geral de Programadores e Desenvolvedores",
-                    "Linguagem Geral de Programação Distribuída",
-                    "Lista Geral de Projetos Digitais"
+                    "Focar apenas em grandes empresas",
+                    "Começar com projetos pequenos e escalar gradualmente",
+                    "Esperar ter conhecimento perfeito antes de cobrar",
+                    "Trabalhar apenas de graça para ganhar experiência"
+                ],
+                correct: 1,
+                explanation: "O livro sugere começar com projetos menores (R$ 500-1.500) e escalar gradualmente conforme ganha experiência."
+            },
+            {
+                question: "O que é LGPD e por que é importante para Builders?",
+                options: [
+                    "Lei Geral de Proteção de Dados - fundamental para compliance",
+                    "Uma certificação opcional para desenvolvedores",
+                    "Um framework de programação",
+                    "Uma linguagem de programação brasileira"
                 ],
                 correct: 0,
-                explanation: "LGPD é a Lei Geral de Proteção de Dados, fundamental para quem trabalha com tecnologia no Brasil."
+                explanation: "LGPD é a Lei Geral de Proteção de Dados, essencial para qualquer Builder que trabalhe com dados de usuários."
             },
             {
-                question: "Qual é o conceito de 'Stack Overflow brasileiro'?",
+                question: "Qual é o conceito de 'Stack Overflow brasileiro' e sua importância?",
                 options: [
-                    "Um site de perguntas em português",
-                    "A ideia de criar soluções locais para problemas globais",
-                    "Um erro comum em programação",
-                    "Uma empresa de tecnologia"
+                    "Copiar soluções americanas sem adaptação",
+                    "Criar soluções locais adaptadas à realidade brasileira",
+                    "Um site de programação em português",
+                    "Traduzir conteúdo estrangeiro"
                 ],
                 correct: 1,
-                explanation: "Refere-se à oportunidade de criar versões brasileiras de sucessos globais, adaptadas à nossa realidade."
+                explanation: "Representa a oportunidade de criar versões brasileiras de sucessos globais, considerando nossa cultura e necessidades específicas."
             },
             {
-                question: "Segundo o livro, qual é o momento atual do Brasil em relação à tecnologia?",
+                question: "Segundo o livro, qual é a principal vantagem competitiva do Brasil na era da IA?",
                 options: [
-                    "Estamos muito atrasados e sem esperança",
-                    "Estamos no mesmo nível dos países desenvolvidos",
-                    "Estamos em um momento único de oportunidade e transformação",
-                    "Não há oportunidades no Brasil"
+                    "Mão de obra barata",
+                    "Infraestrutura tecnológica avançada",
+                    "Criatividade, adaptabilidade e o 'jeitinho brasileiro' aplicado à inovação",
+                    "Investimentos governamentais massivos"
                 ],
                 correct: 2,
-                explanation: "O livro enfatiza que o Brasil está em um momento único de oportunidade, onde podemos liderar a transformação tecnológica."
+                explanation: "O livro destaca nossa criatividade natural e capacidade de adaptação como diferenciais na era da IA."
+            },
+            {
+                question: "Como o livro sugere abordar a ética no desenvolvimento com IA?",
+                options: [
+                    "Ética não é relevante se o produto funciona",
+                    "Seguir apenas regulamentações legais mínimas",
+                    "Implementar avaliação contínua de impacto e valores",
+                    "Deixar a ética para depois do lançamento"
+                ],
+                correct: 2,
+                explanation: "O livro enfatiza a importância de avaliar continuamente o impacto ético e alinhar com valores humanos."
+            },
+            {
+                question: "Qual é a visão do livro sobre comunidades de Builders?",
+                options: [
+                    "Competição acirrada entre membros",
+                    "Colaboração e compartilhamento de conhecimento",
+                    "Isolamento para proteger ideias",
+                    "Apenas networking superficial"
+                ],
+                correct: 1,
+                explanation: "O livro promove comunidades colaborativas onde Builders compartilham conhecimento e crescem juntos."
+            },
+            {
+                question: "Como o Claude Code diferencia-se de outras ferramentas de IA para programação?",
+                options: [
+                    "É mais barato que as alternativas",
+                    "Cria projetos completos através de conversação em português",
+                    "Só funciona para Python",
+                    "Requer conhecimento avançado de programação"
+                ],
+                correct: 1,
+                explanation: "Claude Code permite criar projetos completos conversando em português, diferente de ferramentas que apenas sugerem código."
+            },
+            {
+                question: "Qual é a importância do 'Momento Sputnik' mencionado no livro?",
+                options: [
+                    "Marca o início da corrida espacial",
+                    "Representa um ponto de virada tecnológica irreversível",
+                    "É apenas uma metáfora sem importância",
+                    "Refere-se ao lançamento de um satélite brasileiro"
+                ],
+                correct: 1,
+                explanation: "O 'Momento Sputnik' representa pontos de virada tecnológica que mudam permanentemente o cenário competitivo."
+            },
+            {
+                question: "Segundo o livro, qual deve ser a postura de um Builder diante do fracasso?",
+                options: [
+                    "Evitar riscos para nunca fracassar",
+                    "Esconder fracassos da comunidade",
+                    "Ver fracassos como aprendizados essenciais para evolução",
+                    "Desistir após o primeiro fracasso"
+                ],
+                correct: 2,
+                explanation: "O livro promove uma mentalidade onde fracassos são vistos como aprendizados valiosos no caminho do Builder."
             }
         ];
         
@@ -1692,20 +1747,47 @@
         function createQuiz() {
             return `
                 <div id="quiz-container" style="background: var(--bg-secondary); border: 2px solid var(--accent); border-radius: 16px; padding: 32px; margin: 40px 0;">
-                    <h2 style="color: var(--accent); margin-bottom: 24px; text-align: center; font-size: 24px;">
-                        <i data-lucide="award" style="width: 28px; height: 28px; display: inline-block; vertical-align: middle; margin-right: 12px;"></i>
-                        Teste Seus Conhecimentos
+                    <div style="text-align: center; margin-bottom: 24px;">
+                        <div style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, var(--accent), #00ff88); border-radius: 8px;">
+                            <span style="color: var(--bg-primary); font-weight: 800; font-size: 20px; letter-spacing: 2px;">CULTURA BUILDER</span>
+                        </div>
+                    </div>
+                    <h2 style="color: var(--text-primary); margin-bottom: 8px; text-align: center; font-size: 28px; font-weight: 700;">
+                        Teste de Conhecimento Builder
                     </h2>
+                    <p style="text-align: center; color: var(--text-secondary); font-size: 14px; margin-bottom: 24px;">
+                        Avaliação Final do Manuscrito
+                    </p>
                     <div id="quiz-content">
-                        <div style="text-align: center; padding: 40px;">
-                            <p style="font-size: 18px; color: var(--text-primary); margin-bottom: 24px;">
-                                Pronto para testar o que aprendeu com o Manuscrito Cultura Builder?
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="background: var(--bg-tertiary); border-radius: 12px; padding: 24px; margin-bottom: 24px;">
+                                <p style="font-size: 16px; color: var(--text-primary); margin-bottom: 16px;">
+                                    <strong>Teste seu domínio dos conceitos fundamentais da Cultura Builder</strong>
+                                </p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 400px; margin: 0 auto;">
+                                    <div style="text-align: left;">
+                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">📝 Questões</p>
+                                        <p style="color: var(--text-primary); font-size: 20px; font-weight: 600;">15</p>
+                                    </div>
+                                    <div style="text-align: left;">
+                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">🎯 Aprovação</p>
+                                        <p style="color: var(--text-primary); font-size: 20px; font-weight: 600;">70%</p>
+                                    </div>
+                                    <div style="text-align: left;">
+                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">⏱️ Tempo</p>
+                                        <p style="color: var(--text-primary); font-size: 20px; font-weight: 600;">Livre</p>
+                                    </div>
+                                    <div style="text-align: left;">
+                                        <p style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">🏆 Certificado</p>
+                                        <p style="color: var(--text-primary); font-size: 20px; font-weight: 600;">Sim</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px;">
+                                Ao completar com 70% ou mais, você receberá um certificado de conclusão personalizado
                             </p>
-                            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 32px;">
-                                São 10 perguntas de múltipla escolha sobre os principais conceitos do livro.
-                            </p>
-                            <button onclick="startQuiz()" style="padding: 16px 32px; background: var(--accent); color: var(--bg-primary); border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;">
-                                Começar Quiz
+                            <button onclick="startQuiz()" style="padding: 16px 32px; background: linear-gradient(135deg, var(--accent), #00ff88); color: var(--bg-primary); border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s;">
+                                Iniciar Avaliação
                             </button>
                         </div>
                     </div>
@@ -1796,46 +1878,83 @@
         
         function showResults() {
             const percentage = (score / quizQuestions.length) * 100;
-            let message, emoji;
+            const passed = percentage >= 70; // 70% para passar
+            let message;
             
             if (percentage === 100) {
-                message = "Perfeito! Você domina os conceitos da Cultura Builder!";
-                emoji = "🏆";
+                message = "Perfeito! Você domina completamente os conceitos da Cultura Builder!";
+            } else if (percentage >= 90) {
+                message = "Excelente! Você tem um domínio excepcional do conteúdo!";
             } else if (percentage >= 80) {
-                message = "Excelente! Você entendeu muito bem o conteúdo!";
-                emoji = "🎉";
+                message = "Muito bom! Você entendeu muito bem os conceitos!";
+            } else if (percentage >= 70) {
+                message = "Parabéns! Você passou no teste e está pronto para ser um Builder!";
             } else if (percentage >= 60) {
-                message = "Bom trabalho! Você captou os principais conceitos!";
-                emoji = "👍";
-            } else if (percentage >= 40) {
-                message = "Legal! Considere reler alguns capítulos para fortalecer seu conhecimento.";
-                emoji = "📚";
+                message = "Quase lá! Revise alguns conceitos e tente novamente.";
             } else {
-                message = "Continue estudando! A jornada Builder está apenas começando.";
-                emoji = "🚀";
+                message = "Continue estudando! A jornada Builder requer dedicação.";
             }
             
             const quizContent = document.getElementById('quiz-content');
             quizContent.innerHTML = `
                 <div style="text-align: center; padding: 40px;">
-                    <div style="font-size: 72px; margin-bottom: 24px;">${emoji}</div>
+                    <div style="margin-bottom: 24px;">
+                        <div style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, var(--accent), #00ff88); border-radius: 8px;">
+                            <span style="color: var(--bg-primary); font-weight: 800; font-size: 20px; letter-spacing: 2px;">CULTURA BUILDER</span>
+                        </div>
+                    </div>
+                    
                     <h3 style="font-size: 32px; color: var(--accent); margin-bottom: 16px;">
                         ${score} de ${quizQuestions.length}
                     </h3>
+                    
                     <div style="background: var(--bg-tertiary); height: 20px; border-radius: 10px; margin: 24px auto; max-width: 300px; overflow: hidden;">
                         <div style="background: linear-gradient(90deg, var(--accent), #00ff88); height: 100%; width: ${percentage}%; transition: width 1s;"></div>
                     </div>
+                    
+                    <p style="font-size: 16px; color: var(--text-secondary); margin-bottom: 8px;">
+                        ${percentage.toFixed(0)}% de acerto
+                    </p>
+                    
                     <p style="font-size: 18px; color: var(--text-primary); margin-bottom: 32px;">${message}</p>
-                    <div style="display: flex; gap: 16px; justify-content: center;">
+                    
+                    ${passed ? `
+                        <div style="background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                            <p style="color: #00ff88; font-size: 20px; font-weight: 600; margin-bottom: 12px;">
+                                🎓 Parabéns, Builder!
+                            </p>
+                            <p style="color: var(--text-primary); font-size: 14px;">
+                                Você completou com sucesso o Quiz do Manuscrito Cultura Builder!
+                            </p>
+                        </div>
+                    ` : ''}
+                    
+                    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                        ${passed ? `
+                            <button onclick="generateCertificate()" style="padding: 12px 24px; background: linear-gradient(135deg, #00ff88, var(--accent)); color: var(--bg-primary); border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                <i data-lucide="download" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>
+                                Baixar Certificado
+                            </button>
+                        ` : ''}
                         <button onclick="startQuiz()" style="padding: 12px 24px; background: var(--accent); color: var(--bg-primary); border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
-                            Tentar Novamente
+                            ${passed ? 'Refazer Quiz' : 'Tentar Novamente'}
                         </button>
                         <button onclick="shareResults()" style="padding: 12px 24px; background: transparent; color: var(--accent); border: 2px solid var(--accent); border-radius: 8px; font-weight: 600; cursor: pointer;">
-                            Compartilhar Resultado
+                            Compartilhar
                         </button>
                     </div>
                 </div>
             `;
+            
+            // Update icons
+            lucide.createIcons();
+            
+            // Save completion if passed
+            if (passed) {
+                localStorage.setItem('quizCompleted', 'true');
+                localStorage.setItem('quizScore', score.toString());
+                localStorage.setItem('quizDate', new Date().toISOString());
+            }
         }
         
         function shareResults() {
@@ -1852,6 +1971,152 @@
                 navigator.clipboard.writeText(text);
                 alert('Resultado copiado para a área de transferência!');
             }
+        }
+        
+        // Generate certificate
+        function generateCertificate() {
+            const userName = prompt('Digite seu nome completo para o certificado:');
+            if (!userName) return;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = 1920;
+            canvas.height = 1080;
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#0a0a0a');
+            gradient.addColorStop(1, '#1a1a1a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Border with gradient
+            ctx.strokeStyle = '#00ff88';
+            ctx.lineWidth = 8;
+            ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+            
+            // Inner border
+            ctx.strokeStyle = '#00ff8830';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(60, 60, canvas.width - 120, canvas.height - 120);
+            
+            // Title - CERTIFICADO
+            ctx.fillStyle = '#00ff88';
+            ctx.font = 'bold 72px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('CERTIFICADO', canvas.width / 2, 200);
+            
+            // Subtitle - DE CONCLUSÃO
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '36px sans-serif';
+            ctx.fillText('DE CONCLUSÃO', canvas.width / 2, 260);
+            
+            // Culture Builder Logo/Text
+            ctx.fillStyle = '#00ff88';
+            ctx.font = 'bold 48px sans-serif';
+            ctx.fillText('CULTURA BUILDER', canvas.width / 2, 350);
+            
+            // Certificate text
+            ctx.fillStyle = '#cccccc';
+            ctx.font = '28px sans-serif';
+            ctx.fillText('Certificamos que', canvas.width / 2, 450);
+            
+            // User name
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 56px sans-serif';
+            ctx.fillText(userName.toUpperCase(), canvas.width / 2, 530);
+            
+            // Completion text
+            ctx.fillStyle = '#cccccc';
+            ctx.font = '28px sans-serif';
+            const lines = [
+                'completou com sucesso o Quiz do Manuscrito Cultura Builder',
+                `com ${((score / quizQuestions.length) * 100).toFixed(0)}% de aproveitamento,`,
+                'demonstrando domínio dos conceitos fundamentais',
+                'para se tornar um Builder na era da Inteligência Artificial.'
+            ];
+            
+            lines.forEach((line, index) => {
+                ctx.fillText(line, canvas.width / 2, 620 + (index * 50));
+            });
+            
+            // Date
+            const date = new Date();
+            const dateStr = date.toLocaleDateString('pt-BR', { 
+                day: '2-digit', 
+                month: 'long', 
+                year: 'numeric' 
+            });
+            ctx.fillStyle = '#888888';
+            ctx.font = '24px sans-serif';
+            ctx.fillText(dateStr, canvas.width / 2, 880);
+            
+            // Signature line
+            ctx.strokeStyle = '#444444';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 - 200, 950);
+            ctx.lineTo(canvas.width / 2 + 200, 950);
+            ctx.stroke();
+            
+            // Signature text
+            ctx.fillStyle = '#888888';
+            ctx.font = '20px sans-serif';
+            ctx.fillText('Bruno Pessôa', canvas.width / 2, 980);
+            ctx.fillText('Autor - Manuscrito Cultura Builder', canvas.width / 2, 1010);
+            
+            // Decorative elements
+            ctx.strokeStyle = '#00ff8820';
+            ctx.lineWidth = 1;
+            
+            // Top left corner decoration
+            ctx.beginPath();
+            ctx.moveTo(100, 100);
+            ctx.lineTo(200, 100);
+            ctx.moveTo(100, 100);
+            ctx.lineTo(100, 200);
+            ctx.stroke();
+            
+            // Top right corner
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 100, 100);
+            ctx.lineTo(canvas.width - 200, 100);
+            ctx.moveTo(canvas.width - 100, 100);
+            ctx.lineTo(canvas.width - 100, 200);
+            ctx.stroke();
+            
+            // Bottom left corner
+            ctx.beginPath();
+            ctx.moveTo(100, canvas.height - 100);
+            ctx.lineTo(200, canvas.height - 100);
+            ctx.moveTo(100, canvas.height - 100);
+            ctx.lineTo(100, canvas.height - 200);
+            ctx.stroke();
+            
+            // Bottom right corner
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 100, canvas.height - 100);
+            ctx.lineTo(canvas.width - 200, canvas.height - 100);
+            ctx.moveTo(canvas.width - 100, canvas.height - 100);
+            ctx.lineTo(canvas.width - 100, canvas.height - 200);
+            ctx.stroke();
+            
+            // Add hashtag
+            ctx.fillStyle = '#00ff88';
+            ctx.font = 'bold 24px sans-serif';
+            ctx.fillText('#CulturaBuilder', canvas.width - 200, canvas.height - 60);
+            
+            // Convert to image and download
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `certificado-cultura-builder-${userName.replace(/\s+/g, '-').toLowerCase()}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 'image/png');
         }
         
         document.addEventListener('cut', e => e.preventDefault());
