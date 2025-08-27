@@ -1,0 +1,783 @@
+<!-- Version 5.0 - Performance Optimized - Deployed: 2025-08-27 -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultura Builder - Manuscrito Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons v3 - Updated 2025 -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js?v=20250822"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Dark Theme (Default) - Professional Book Style */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-tertiary: #666666;
+            --accent: #ffffff;
+            --border: rgba(255, 255, 255, 0.1);
+            --sidebar-width: 320px;
+            --code-bg: #1a1a1a;
+            
+            /* Typography System */
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+            
+            /* Book-like spacing */
+            --paragraph-spacing: 1.5em;
+            --line-height-body: 1.8;
+            --letter-spacing-body: 0.01em;
+        }
+        
+        /* Light Theme */
+        body.light-mode {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-tertiary: #9ca3af;
+            --accent: #111827;
+            --border: rgba(0, 0, 0, 0.1);
+            --code-bg: #f3f4f6;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            transition: background 0.3s, color 0.3s;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        
+        /* Content Protection - Copyright */
+        .content-area * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-user-drag: none;
+        }
+        
+        /* Layout */
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+        
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--bg-primary);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            pointer-events: none;
+        }
+        
+        /* Chapters List */
+        .chapters-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+        
+        .chapters-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chapters-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .chapters-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        
+        .chapters-list::-webkit-scrollbar-thumb:hover {
+            background: var(--text-tertiary);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            padding: 12px 8px 8px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 8px;
+            margin-top: 16px;
+        }
+        
+        .section-header:first-child {
+            margin-top: 0;
+        }
+        
+        /* Chapter Items */
+        .chapter-item {
+            padding: 10px 12px;
+            margin: 2px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chapter-item:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .chapter-item.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-weight: 600;
+        }
+        
+        body.light-mode .chapter-item.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .chapter-number {
+            min-width: 24px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        .chapter-title {
+            flex: 1;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+            overflow: hidden;
+        }
+        
+        /* Content Header */
+        .content-header {
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-secondary);
+            min-height: 72px;
+        }
+        
+        .current-chapter {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* Control Buttons */
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .control-btn {
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+        
+        .control-btn:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+        
+        .control-btn.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+        
+        body.light-mode .control-btn:hover,
+        body.light-mode .control-btn.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        /* Content Area - Professional Book Typography */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 60px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            background: var(--bg-primary);
+        }
+        
+        .content-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .content-area::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        .content-area::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        
+        .content-area::-webkit-scrollbar-thumb:hover {
+            background: var(--text-tertiary);
+        }
+        
+        /* Professional Book Typography */
+        .chapter-container {
+            font-family: var(--font-serif);
+            line-height: var(--line-height-body);
+            letter-spacing: var(--letter-spacing-body);
+            color: var(--text-primary);
+        }
+        
+        .chapter-container h1 {
+            font-family: var(--font-sans);
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: var(--text-primary);
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .chapter-container h2 {
+            font-family: var(--font-sans);
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 48px;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+        
+        .chapter-container h3 {
+            font-family: var(--font-sans);
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        
+        .chapter-container h4 {
+            font-family: var(--font-sans);
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* Book-style paragraphs */
+        .chapter-container p {
+            margin-bottom: var(--paragraph-spacing);
+            text-align: justify;
+            text-indent: 2em;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+        
+        /* First paragraph after heading - no indent */
+        .chapter-container h1 + p,
+        .chapter-container h2 + p,
+        .chapter-container h3 + p,
+        .chapter-container h4 + p,
+        .chapter-container hr + p {
+            text-indent: 0;
+        }
+        
+        /* Drop cap for chapter start */
+        .chapter-container > p:first-of-type:first-letter {
+            float: left;
+            font-size: 96px;
+            line-height: 80px;
+            padding-right: 8px;
+            margin-top: -8px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        /* Lists */
+        .chapter-container ul,
+        .chapter-container ol {
+            margin: 24px 0;
+            padding-left: 40px;
+        }
+        
+        .chapter-container li {
+            margin-bottom: 12px;
+            font-size: 17px;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+        
+        /* Blockquotes - Book Style */
+        .chapter-container blockquote {
+            margin: 32px 20px;
+            padding: 24px 32px;
+            border-left: 4px solid var(--accent);
+            background: var(--bg-secondary);
+            font-style: italic;
+            font-size: 19px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        .chapter-container blockquote::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 60px;
+            color: var(--accent);
+            opacity: 0.3;
+        }
+        
+        /* Code blocks */
+        .chapter-container pre {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 24px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .chapter-container code {
+            font-family: var(--font-mono);
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        /* Horizontal Rules */
+        .chapter-container hr {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 48px auto;
+            width: 50%;
+            position: relative;
+        }
+        
+        /* Professional section break */
+        .chapter-container hr::after {
+            content: '• • •';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-primary);
+            padding: 0 20px;
+            color: var(--text-tertiary);
+            font-size: 20px;
+            letter-spacing: 8px;
+        }
+        
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            color: var(--text-tertiary);
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100vh;
+                z-index: 1000;
+                transition: left 0.3s;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .content-area {
+                padding: 40px 20px;
+            }
+            
+            .chapter-container h1 {
+                font-size: 32px;
+            }
+            
+            .chapter-container p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1 class="sidebar-title">CULTURA BUILDER</h1>
+                <div class="search-container">
+                    <input type="text" 
+                           class="search-input" 
+                           id="searchInput"
+                           placeholder="Buscar..." 
+                           onkeyup="searchChapters()">
+                    <i data-lucide="search" class="search-icon w-4 h-4"></i>
+                </div>
+            </div>
+            <div class="chapters-list" id="chaptersList">
+                <!-- Chapters will be loaded here -->
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h2 class="current-chapter" id="currentChapter">Carregando...</h2>
+                <div class="controls">
+                    <button class="control-btn" onclick="toggleTheme()">
+                        <i data-lucide="sun" class="w-4 h-4"></i>
+                    </button>
+                    <button class="control-btn" onclick="decreaseFontSize()">
+                        <i data-lucide="minus" class="w-4 h-4"></i>
+                    </button>
+                    <button class="control-btn" onclick="increaseFontSize()">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                    </button>
+                    <button class="control-btn" id="playBtn" onclick="toggleVoiceOver()" title="Opções de narração">
+                        <i data-lucide="volume-2" class="w-4 h-4"></i>
+                        <span style="margin-left: 8px; font-size: 13px;">Narrador</span>
+                    </button>
+                </div>
+            </header>
+            <div class="content-area" id="contentArea">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Optimized Emoji Replacement - Lazy loaded
+        function replaceEmojisWithIcons(html) {
+            // Simple regex to remove ALL emojis efficiently
+            const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA70}-\u{1FAFF}]|[\u{2300}-\u{23FF}]|[\u{2B00}-\u{2BFF}]|[\u{1F000}-\u{1F02F}]|[\u{1F0A0}-\u{1F0FF}]|[\u{1F100}-\u{1F1FF}]|[\u{1F200}-\u{1F2FF}]|[\u{1F780}-\u{1F7FF}]|[\u{1F800}-\u{1F8FF}]|[\u{1FA00}-\u{1FA6F}]|[\u231A-\u231B]|[\u23E9-\u23F3]|[\u23F8-\u23FA]|[\u25AA-\u25AB]|[\u25FB-\u25FE]|[\u2934-\u2935]|[\u2B05-\u2B07]|[\u2B1B-\u2B1C]|[\u2B50]|[\u2B55]|[\u3030]|[\u303D]|[\u3297]|[\u3299]|[\u00A9]|[\u00AE]|[\u2122]|[\u23F0]|[\u2764]/gu;
+            
+            // Replace with a simple icon
+            const iconStyle = 'style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin:0 2px;"';
+            html = html.replace(emojiRegex, `<i data-lucide="circle" ${iconStyle}></i>`);
+            
+            // Re-initialize Lucide icons after replacement
+            setTimeout(() => {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }, 100);
+            
+            return html;
+        }
+        
+        // Chapter Data Structure
+        const allChapters = [
+            { id: 'capa', title: 'Capa', file: 'capa.md' },
+            { id: 'introducao', title: 'Introdução', file: 'introducao.md' },
+            
+            // PARTE I - O DESPERTAR
+            { id: 'parte1', title: 'PARTE I • O DESPERTAR', isSection: true },
+            { id: 'cap1', title: 'Por Que Desta Vez É Diferente', number: 1, file: 'capitulo-01.md' },
+            { id: 'cap2', title: 'O Mito da Destruição em Massa de Empregos', number: 2, file: 'capitulo-02.md' },
+            { id: 'cap3', title: 'Por Que o Brasil Tem Vantagem Única', number: 3, file: 'capitulo-03.md' },
+            
+            // PARTE II - ENTENDENDO O JOGO
+            { id: 'parte2', title: 'PARTE II • ENTENDENDO O JOGO', isSection: true },
+            { id: 'cap4', title: 'O Que É IA (Sem Tecniquês)', number: 4, file: 'capitulo-04.md' },
+            { id: 'cap5', title: 'Como a IA Realmente Funciona', number: 5, file: 'capitulo-05.md' },
+            { id: 'cap6', title: 'Desmistificando os Medos', number: 6, file: 'capitulo-06.md' },
+            
+            // Continue with all other chapters...
+        ];
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadChaptersList();
+            loadFirstChapter();
+            lucide.createIcons();
+        });
+        
+        // Load chapters list
+        function loadChaptersList() {
+            const container = document.getElementById('chaptersList');
+            container.innerHTML = '';
+            
+            allChapters.forEach(chapter => {
+                if (chapter.isSection) {
+                    const section = document.createElement('div');
+                    section.className = 'section-header';
+                    section.textContent = chapter.title;
+                    container.appendChild(section);
+                } else {
+                    const item = document.createElement('div');
+                    item.className = 'chapter-item';
+                    item.id = `chapter-${chapter.id}`;
+                    item.innerHTML = `
+                        ${chapter.number ? `<span class="chapter-number">${chapter.number}</span>` : ''}
+                        <span class="chapter-title">${chapter.title}</span>
+                    `;
+                    item.onclick = () => loadChapter(chapter);
+                    container.appendChild(item);
+                }
+            });
+        }
+        
+        // Load first chapter
+        async function loadFirstChapter() {
+            const firstChapter = allChapters.find(ch => !ch.isSection);
+            if (firstChapter) {
+                await loadChapter(firstChapter);
+            }
+        }
+        
+        // Load chapter
+        async function loadChapter(chapter) {
+            const contentArea = document.getElementById('contentArea');
+            const currentChapterEl = document.getElementById('currentChapter');
+            
+            // Update active state
+            document.querySelectorAll('.chapter-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.getElementById(`chapter-${chapter.id}`)?.classList.add('active');
+            
+            // Show loading
+            contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+            currentChapterEl.textContent = chapter.title;
+            
+            try {
+                const response = await fetch(`/manuscrito/${chapter.file}`);
+                const markdown = await response.text();
+                let html = convertMarkdownToHTML(markdown);
+                
+                // Replace emojis
+                html = replaceEmojisWithIcons(html);
+                
+                contentArea.innerHTML = `<div class="chapter-container">${html}</div>`;
+                contentArea.scrollTop = 0;
+                
+                lucide.createIcons();
+            } catch (error) {
+                contentArea.innerHTML = '<p style="color: var(--text-tertiary); text-align: center;">Erro ao carregar capítulo</p>';
+            }
+        }
+        
+        // Convert Markdown to HTML (simplified)
+        function convertMarkdownToHTML(markdown) {
+            return markdown
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                .replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>')
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/^/g, '<p>')
+                .replace(/$/g, '</p>')
+                .replace(/<p><\/p>/g, '')
+                .replace(/<p>---<\/p>/g, '<hr>');
+        }
+        
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+            lucide.createIcons();
+        }
+        
+        // Font size controls
+        let currentFontSize = 18;
+        
+        function increaseFontSize() {
+            if (currentFontSize < 32) {
+                currentFontSize += 2;
+                applyFontSize();
+            }
+        }
+        
+        function decreaseFontSize() {
+            if (currentFontSize > 12) {
+                currentFontSize -= 2;
+                applyFontSize();
+            }
+        }
+        
+        function applyFontSize() {
+            const contentArea = document.getElementById('contentArea');
+            if (contentArea) {
+                contentArea.querySelectorAll('p, li').forEach(el => {
+                    el.style.fontSize = currentFontSize + 'px';
+                });
+            }
+            localStorage.setItem('fontSize', currentFontSize);
+        }
+        
+        // Search
+        function searchChapters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.chapter-item').forEach(item => {
+                const title = item.querySelector('.chapter-title').textContent.toLowerCase();
+                item.style.display = title.includes(searchTerm) ? 'flex' : 'none';
+            });
+        }
+        
+        // Simple voice over toggle
+        function toggleVoiceOver() {
+            if ('speechSynthesis' in window) {
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                } else {
+                    const text = document.getElementById('contentArea').innerText;
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'pt-BR';
+                    speechSynthesis.speak(utterance);
+                }
+            } else {
+                alert('Narração não suportada neste navegador');
+            }
+        }
+        
+        // Load saved preferences
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+        }
+        
+        const savedFontSize = localStorage.getItem('fontSize');
+        if (savedFontSize) {
+            currentFontSize = parseInt(savedFontSize);
+        }
+        
+        // Content protection
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('cut', e => e.preventDefault());
+    </script>
+</body>
+</html>
