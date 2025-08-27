@@ -1,4 +1,4 @@
-<!-- Version 5.1 - Complete with All 33 Chapters - Deployed: 2025-08-27 -->
+<!-- Version 5.2 - Infinite Scroll Added - Deployed: 2025-08-27 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -562,6 +562,9 @@
                     <button class="control-btn" onclick="increaseFontSize()">
                         <i data-lucide="plus" class="w-4 h-4"></i>
                     </button>
+                    <button class="control-btn" id="infiniteBtn" onclick="toggleInfiniteScroll()" title="Scroll Infinito">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                    </button>
                     <button class="control-btn" id="playBtn" onclick="toggleVoiceOver()" title="Opções de narração">
                         <i data-lucide="volume-2" class="w-4 h-4"></i>
                         <span style="margin-left: 8px; font-size: 13px;">Narrador</span>
@@ -595,6 +598,12 @@
             
             return html;
         }
+        
+        // Infinite Scroll Variables
+        let currentChapterIndex = 0;
+        let loadedChapters = [];
+        let isLoadingNext = false;
+        let infiniteScrollEnabled = true;
         
         // Chapter Data Structure
         const allChapters = [
@@ -676,6 +685,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadChaptersList();
             loadFirstChapter();
+            setupInfiniteScroll();
             lucide.createIcons();
         });
         
@@ -712,10 +722,19 @@
             }
         }
         
-        // Load chapter
+        // Load single chapter (replaces all content)
         async function loadChapter(chapter) {
             const contentArea = document.getElementById('contentArea');
             const currentChapterEl = document.getElementById('currentChapter');
+            
+            // Disable infinite scroll temporarily
+            infiniteScrollEnabled = false;
+            
+            // Clear loaded chapters
+            loadedChapters = [];
+            
+            // Update current chapter index
+            currentChapterIndex = allChapters.findIndex(ch => ch.id === chapter.id);
             
             // Update active state
             document.querySelectorAll('.chapter-item').forEach(item => {
@@ -735,13 +754,147 @@
                 // Replace emojis
                 html = replaceEmojisWithIcons(html);
                 
-                contentArea.innerHTML = `<div class="chapter-container">${html}</div>`;
+                contentArea.innerHTML = `
+                    <div class="chapter-container" data-chapter-id="${chapter.id}">
+                        ${html}
+                        <div style="text-align: center; padding: 40px 0; color: var(--text-tertiary); font-size: 14px;">
+                            Capítulo ${chapter.number || ''} • ${chapter.title}
+                        </div>
+                    </div>
+                `;
                 contentArea.scrollTop = 0;
                 
+                loadedChapters.push(chapter.id);
                 lucide.createIcons();
+                
+                // Re-enable infinite scroll after loading
+                setTimeout(() => {
+                    infiniteScrollEnabled = true;
+                }, 1000);
+                
             } catch (error) {
                 contentArea.innerHTML = '<p style="color: var(--text-tertiary); text-align: center;">Erro ao carregar capítulo</p>';
             }
+        }
+        
+        // Append next chapter for infinite scroll
+        async function loadNextChapter() {
+            if (isLoadingNext || !infiniteScrollEnabled) return;
+            
+            const nextIndex = currentChapterIndex + 1;
+            
+            // Skip section headers and check if we have more chapters
+            let nextChapter = null;
+            for (let i = nextIndex; i < allChapters.length; i++) {
+                if (!allChapters[i].isSection) {
+                    nextChapter = allChapters[i];
+                    currentChapterIndex = i;
+                    break;
+                }
+            }
+            
+            if (!nextChapter || loadedChapters.includes(nextChapter.id)) return;
+            
+            isLoadingNext = true;
+            const contentArea = document.getElementById('contentArea');
+            
+            // Add loading indicator
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'loading-next';
+            loadingDiv.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--text-tertiary);">
+                    <div class="loading-spinner" style="margin: 0 auto;"></div>
+                    <p style="margin-top: 20px;">Carregando próximo capítulo...</p>
+                </div>
+            `;
+            contentArea.appendChild(loadingDiv);
+            
+            try {
+                const response = await fetch(`/manuscrito-flat/${nextChapter.file}`);
+                const markdown = await response.text();
+                let html = convertMarkdownToHTML(markdown);
+                
+                // Replace emojis
+                html = replaceEmojisWithIcons(html);
+                
+                // Remove loading indicator
+                loadingDiv.remove();
+                
+                // Add separator
+                const separator = document.createElement('div');
+                separator.innerHTML = `
+                    <div style="text-align: center; padding: 60px 0;">
+                        <div style="width: 100px; height: 1px; background: var(--border); margin: 0 auto;"></div>
+                    </div>
+                `;
+                contentArea.appendChild(separator);
+                
+                // Add new chapter
+                const chapterDiv = document.createElement('div');
+                chapterDiv.className = 'chapter-container';
+                chapterDiv.setAttribute('data-chapter-id', nextChapter.id);
+                chapterDiv.innerHTML = `
+                    ${html}
+                    <div style="text-align: center; padding: 40px 0; color: var(--text-tertiary); font-size: 14px;">
+                        Capítulo ${nextChapter.number || ''} • ${nextChapter.title}
+                    </div>
+                `;
+                contentArea.appendChild(chapterDiv);
+                
+                // Update active chapter in sidebar
+                document.querySelectorAll('.chapter-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.getElementById(`chapter-${nextChapter.id}`)?.classList.add('active');
+                
+                // Update header
+                document.getElementById('currentChapter').textContent = nextChapter.title;
+                
+                loadedChapters.push(nextChapter.id);
+                lucide.createIcons();
+                
+            } catch (error) {
+                loadingDiv.innerHTML = '<p style="color: var(--text-tertiary); text-align: center;">Erro ao carregar próximo capítulo</p>';
+            }
+            
+            isLoadingNext = false;
+        }
+        
+        // Monitor scroll position
+        function setupInfiniteScroll() {
+            const contentArea = document.getElementById('contentArea');
+            
+            contentArea.addEventListener('scroll', () => {
+                if (!infiniteScrollEnabled || isLoadingNext) return;
+                
+                const scrollPosition = contentArea.scrollTop + contentArea.clientHeight;
+                const totalHeight = contentArea.scrollHeight;
+                
+                // Load next chapter when user is 500px from the bottom
+                if (scrollPosition > totalHeight - 500) {
+                    loadNextChapter();
+                }
+                
+                // Update active chapter based on scroll position
+                const chapters = contentArea.querySelectorAll('.chapter-container');
+                chapters.forEach(chapter => {
+                    const rect = chapter.getBoundingClientRect();
+                    if (rect.top < 200 && rect.bottom > 200) {
+                        const chapterId = chapter.getAttribute('data-chapter-id');
+                        const chapterData = allChapters.find(ch => ch.id === chapterId);
+                        if (chapterData) {
+                            // Update sidebar active state
+                            document.querySelectorAll('.chapter-item').forEach(item => {
+                                item.classList.remove('active');
+                            });
+                            document.getElementById(`chapter-${chapterId}`)?.classList.add('active');
+                            
+                            // Update header
+                            document.getElementById('currentChapter').textContent = chapterData.title;
+                        }
+                    }
+                });
+            });
         }
         
         // Convert Markdown to HTML (simplified)
@@ -803,6 +956,22 @@
             });
         }
         
+        // Toggle infinite scroll
+        function toggleInfiniteScroll() {
+            infiniteScrollEnabled = !infiniteScrollEnabled;
+            const btn = document.getElementById('infiniteBtn');
+            
+            if (infiniteScrollEnabled) {
+                btn.classList.add('active');
+                alert('Scroll infinito ativado! Os capítulos serão carregados automaticamente ao rolar.');
+            } else {
+                btn.classList.remove('active');
+                alert('Scroll infinito desativado.');
+            }
+            
+            localStorage.setItem('infiniteScroll', infiniteScrollEnabled);
+        }
+        
         // Simple voice over toggle
         function toggleVoiceOver() {
             if ('speechSynthesis' in window) {
@@ -828,6 +997,16 @@
         const savedFontSize = localStorage.getItem('fontSize');
         if (savedFontSize) {
             currentFontSize = parseInt(savedFontSize);
+        }
+        
+        const savedInfiniteScroll = localStorage.getItem('infiniteScroll');
+        if (savedInfiniteScroll !== null) {
+            infiniteScrollEnabled = savedInfiniteScroll === 'true';
+            if (infiniteScrollEnabled) {
+                setTimeout(() => {
+                    document.getElementById('infiniteBtn')?.classList.add('active');
+                }, 100);
+            }
         }
         
         // Content protection
