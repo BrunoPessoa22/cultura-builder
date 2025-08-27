@@ -722,6 +722,11 @@
             { id: 'bonus', title: 'BÔNUS • FERRAMENTAS BUILDER', isSection: true },
             { id: 'cap34', title: 'Dominando o Claude Code - Guia Completo', number: 34, file: 'capitulo-34.md' },
             
+            // AVALIAÇÃO FINAL
+            { id: 'avaliacao', title: '🎓 AVALIAÇÃO E CERTIFICADO', isSection: true },
+            { id: 'quiz', title: 'Teste de Conhecimento Builder', isQuiz: true },
+            { id: 'bonus-resources', title: '🎁 Recursos Bônus', isBonus: true },
+            
             // Epílogo e Referências
             { id: 'epilogo', title: 'Epílogo', file: 'epilogo.md' },
             { id: 'referencias', title: 'Referências', file: 'referencias.md' }
@@ -785,10 +790,36 @@
             });
             document.getElementById(`chapter-${chapter.id}`)?.classList.add('active');
             
-            // Show loading
+            // Show loading initially
             contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
             currentChapterEl.textContent = chapter.title;
             
+            // Handle special content (Quiz and Bonus)
+            if (chapter.isQuiz) {
+                contentArea.innerHTML = `
+                    <div class="chapter-container" data-chapter-id="${chapter.id}">
+                        ${createQuiz()}
+                    </div>
+                `;
+                contentArea.scrollTop = 0;
+                loadedChapters.push(chapter.id);
+                lucide.createIcons();
+                return;
+            }
+            
+            if (chapter.isBonus) {
+                contentArea.innerHTML = `
+                    <div class="chapter-container" data-chapter-id="${chapter.id}">
+                        ${createBonusSection()}
+                    </div>
+                `;
+                contentArea.scrollTop = 0;
+                loadedChapters.push(chapter.id);
+                lucide.createIcons();
+                return;
+            }
+            
+            // Normal chapter loading
             try {
                 const response = await fetch(`/manuscrito-flat/${chapter.file}`);
                 const markdown = await response.text();
@@ -1023,11 +1054,7 @@
                 }
             }
             
-            // Add quiz after Chapter 34
-            if (markdown.includes('Claude Code') && markdown.includes('hub.culturabuilder.com')) {
-                html += createQuiz();
-                html += createBonusSection();
-            }
+            // Quiz and Bonus are now separate menu items, not added to chapters
                 
             return html;
         }
