@@ -540,6 +540,11 @@
             to { transform: translateX(100%); opacity: 0; }
         }
         
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .sidebar {
@@ -930,8 +935,15 @@
             });
         }
         
-        // Convert Markdown to HTML with code block support
+        // Convert Markdown to HTML with enhanced features
         function convertMarkdownToHTML(markdown) {
+            // Track if we're in a chapter that might have exercises
+            const hasExercises = markdown.includes('## Exercício') || 
+                                 markdown.includes('### Exercício') ||
+                                 markdown.includes('**Exercício') ||
+                                 markdown.includes('## Atividade') ||
+                                 markdown.includes('### Atividade');
+            
             // First handle code blocks
             let html = markdown.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, lang, code) {
                 const codeId = 'code-' + Math.random().toString(36).substr(2, 9);
@@ -946,6 +958,17 @@
                 `;
             });
             
+            // Handle inline commands (text between backticks)
+            html = html.replace(/`([^`]+)`/g, function(match, command) {
+                // Check if it looks like a command (starts with /, contains special chars, etc)
+                if (command.startsWith('/') || command.includes('npm ') || command.includes('git ') || 
+                    command.includes('claude') || command.includes('curl') || command.includes('bash')) {
+                    const cmdId = 'cmd-' + Math.random().toString(36).substr(2, 9);
+                    return `<code id="${cmdId}" style="position: relative; padding-right: 24px; cursor: pointer;" onclick="copyInlineCode('${cmdId}')" title="Clique para copiar">${escapeHtml(command)}</code>`;
+                }
+                return `<code>${escapeHtml(command)}</code>`;
+            });
+            
             // Then handle other markdown
             html = html
                 .replace(/^### (.*$)/gim, '<h3>$1</h3>')
@@ -954,12 +977,56 @@
                 .replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>')
                 .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.+?)\*/g, '<em>$1</em>')
-                .replace(/`([^`]+)`/g, '<code>$1</code>')
                 .replace(/\n\n/g, '</p><p>')
                 .replace(/^/g, '<p>')
                 .replace(/$/g, '</p>')
                 .replace(/<p><\/p>/g, '')
                 .replace(/<p>---<\/p>/g, '<hr>');
+            
+            // Add exercise areas for specific chapters
+            if (hasExercises) {
+                // Chapter 13 - Creativity exercises
+                if (markdown.includes('Cultural Remix') || markdown.includes('Remix Cultural')) {
+                    html += createExerciseArea('ch13-remix', 'Exercício Cultural Remix: Escolha uma obra clássica e reimagine em um contexto moderno.');
+                }
+                if (markdown.includes('Criatividade com Restrições') || markdown.includes('Constraint Creativity')) {
+                    html += createExerciseArea('ch13-constraint', 'Exercício de Restrições: Crie algo com limitações absurdas. Qual foi seu resultado?');
+                }
+                if (markdown.includes('Fusão de Estilos')) {
+                    html += createExerciseArea('ch13-fusion', 'Exercício de Fusão: Combine dois estilos impossíveis. Descreva sua criação.');
+                }
+                if (markdown.includes('Mudança de Perspectiva')) {
+                    html += createExerciseArea('ch13-perspective', 'Exercício de Perspectiva: Pegue uma ideia e explore de 3 pontos de vista diferentes.');
+                }
+                
+                // Chapter 16 - Work activities
+                if (markdown.includes('mapeamento') && markdown.includes('atividades')) {
+                    html += createExerciseArea('ch16-mapping', 'Liste suas atividades de trabalho e avalie o potencial de automação por IA (0-100%).');
+                }
+                
+                // Chapter 22 - Ethics assessment
+                if (markdown.includes('Mapeamento de Stakeholders')) {
+                    html += createExerciseArea('ch22-stakeholders', 'Mapeie os stakeholders do seu projeto e seus interesses.');
+                }
+                if (markdown.includes('Avaliação de Impacto')) {
+                    html += createExerciseArea('ch22-impact', 'Avalie o impacto potencial do seu projeto em diferentes grupos.');
+                }
+                
+                // Chapter 26 - Career transformation
+                if (markdown.includes('Mapeamento de Ativos')) {
+                    html += createExerciseArea('ch26-assets', 'Liste seus conhecimentos, habilidades e vantagens competitivas.');
+                }
+                
+                // Chapter 31 - Builder assessment
+                if (markdown.includes('Avaliação Builder') || markdown.includes('100 pontos')) {
+                    html += createExerciseArea('ch31-assessment', 'Complete sua auto-avaliação Builder (0-100 pontos) e identifique áreas de melhoria.');
+                }
+            }
+            
+            // Add quiz after Chapter 34
+            if (markdown.includes('Claude Code') && markdown.includes('hub.culturabuilder.com')) {
+                html += createQuiz();
+            }
                 
             return html;
         }
@@ -987,6 +1054,60 @@
                 });
             } else {
                 fallbackCopy(text, codeElement);
+            }
+        }
+        
+        // Copy inline code/command
+        function copyInlineCode(cmdId) {
+            const codeElement = document.getElementById(cmdId);
+            if (!codeElement) return;
+            
+            const text = codeElement.textContent;
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    // Visual feedback
+                    const originalBg = codeElement.style.background;
+                    codeElement.style.background = 'rgba(0, 255, 136, 0.2)';
+                    codeElement.style.transition = 'background 0.3s';
+                    
+                    setTimeout(() => {
+                        codeElement.style.background = originalBg;
+                    }, 1000);
+                    
+                    // Show tooltip
+                    const tooltip = document.createElement('span');
+                    tooltip.textContent = 'Copiado!';
+                    tooltip.style.cssText = `
+                        position: absolute;
+                        top: -30px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: var(--accent);
+                        color: var(--bg-primary);
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        font-size: 12px;
+                        white-space: nowrap;
+                        z-index: 1000;
+                    `;
+                    
+                    // Create wrapper to position tooltip
+                    const wrapper = document.createElement('span');
+                    wrapper.style.cssText = 'position: relative; display: inline-block;';
+                    codeElement.parentNode.insertBefore(wrapper, codeElement);
+                    wrapper.appendChild(codeElement);
+                    wrapper.appendChild(tooltip);
+                    
+                    setTimeout(() => {
+                        tooltip.remove();
+                        // Unwrap element
+                        if (wrapper.parentNode) {
+                            wrapper.parentNode.insertBefore(codeElement, wrapper);
+                            wrapper.remove();
+                        }
+                    }, 1000);
+                });
             }
         }
         
@@ -1072,14 +1193,28 @@
             });
         }
         
-        // Enhanced Voice Over with Better Controls
+        // Enhanced Voice Over with Optimized Defaults
         let currentUtterance = null;
         let isReading = false;
         let isPaused = false;
-        let speechRate = 0.85; // Slower default speed
-        let speechPitch = 1.0;
+        let speechRate = 0.65; // Optimal audiobook speed for Portuguese
+        let speechPitch = 0.9; // Natural pitch for narrator voice
         let speechVolume = 1.0;
         let selectedVoice = null;
+        let preferredVoiceNames = [
+            // Best Brazilian Portuguese voices (in order of preference)
+            'Microsoft Maria - Portuguese (Brazil)',
+            'Google português do Brasil',
+            'Luciana',
+            'Felipe', 
+            'Fernanda',
+            'Daniel',
+            'Vitória',
+            'Ricardo',
+            'Microsoft Daniel - Portuguese (Brazil)',
+            'Portuguese Brazil',
+            'Brazilian Portuguese'
+        ];
         
         // Toggle voice over with better controls
         function toggleVoiceOver() {
@@ -1117,11 +1252,16 @@
                 width: 90%;
             `;
             
-            // Get available voices
+            // Get available voices and auto-select best one
             const voices = speechSynthesis.getVoices();
             const ptBRVoices = voices.filter(v => v.lang.includes('pt-BR') || v.lang.includes('pt_BR'));
             const ptVoices = voices.filter(v => v.lang.includes('pt') && !v.lang.includes('pt-BR'));
             const otherVoices = voices.filter(v => !v.lang.includes('pt'));
+            
+            // Auto-select best voice based on preference list
+            if (!selectedVoice && voices.length > 0) {
+                selectBestVoice(voices);
+            }
             
             modal.innerHTML = `
                 <h3 style="margin-bottom: 16px; font-size: 18px; font-weight: 600;">Configurações do Narrador</h3>
@@ -1163,17 +1303,17 @@
                 
                 <div style="margin-bottom: 20px;">
                     <label style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary);">
-                        Velocidade: <span id="speedValue">0.85x</span>
+                        Velocidade: <span id="speedValue">0.65x</span>
                     </label>
-                    <input type="range" id="speedRange" min="0.5" max="1.5" step="0.05" value="0.85" 
+                    <input type="range" id="speedRange" min="0.5" max="1.5" step="0.05" value="0.65" 
                            style="width: 100%; height: 6px; background: var(--bg-tertiary); border-radius: 3px; outline: none;">
                 </div>
                 
                 <div style="margin-bottom: 20px;">
                     <label style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary);">
-                        Tom de Voz: <span id="pitchValue">1.0</span>
+                        Tom de Voz: <span id="pitchValue">0.9</span>
                     </label>
-                    <input type="range" id="pitchRange" min="0.5" max="2" step="0.1" value="1.0"
+                    <input type="range" id="pitchRange" min="0.5" max="2" step="0.1" value="0.9"
                            style="width: 100%; height: 6px; background: var(--bg-tertiary); border-radius: 3px; outline: none;">
                 </div>
                 
@@ -1376,6 +1516,343 @@
             if (e.target.closest('.code-block-wrapper') || e.target.closest('.copy-button')) return;
             e.preventDefault();
         });
+        
+        document.addEventListener('cut', e => e.preventDefault());
+        
+        // Exercise response system
+        function createExerciseArea(exerciseId, prompt) {
+            return `
+                <div class="exercise-area" style="background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin: 20px 0;">
+                    <h4 style="color: var(--accent); margin-bottom: 12px; font-size: 16px; font-weight: 600;">
+                        <i data-lucide="edit-3" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>
+                        Exercício
+                    </h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 14px;">${prompt}</p>
+                    <textarea 
+                        id="exercise-${exerciseId}" 
+                        placeholder="Digite sua resposta aqui..."
+                        style="width: 100%; min-height: 120px; padding: 12px; background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; resize: vertical;"
+                        onchange="saveExerciseResponse('${exerciseId}', this.value)"
+                    ></textarea>
+                    <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+                        <span id="save-status-${exerciseId}" style="color: var(--text-secondary); font-size: 12px;"></span>
+                        <button onclick="clearExercise('${exerciseId}')" style="padding: 8px 16px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-size: 13px;">
+                            Limpar
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function saveExerciseResponse(exerciseId, value) {
+            localStorage.setItem(`exercise-${exerciseId}`, value);
+            const statusEl = document.getElementById(`save-status-${exerciseId}`);
+            if (statusEl) {
+                statusEl.textContent = 'Resposta salva automaticamente';
+                setTimeout(() => {
+                    statusEl.textContent = '';
+                }, 2000);
+            }
+        }
+        
+        function loadExerciseResponse(exerciseId) {
+            const saved = localStorage.getItem(`exercise-${exerciseId}`);
+            if (saved) {
+                const textarea = document.getElementById(`exercise-${exerciseId}`);
+                if (textarea) textarea.value = saved;
+            }
+        }
+        
+        function clearExercise(exerciseId) {
+            if (confirm('Tem certeza que deseja limpar sua resposta?')) {
+                localStorage.removeItem(`exercise-${exerciseId}`);
+                const textarea = document.getElementById(`exercise-${exerciseId}`);
+                if (textarea) textarea.value = '';
+            }
+        }
+        
+        // Quiz system
+        const quizQuestions = [
+            {
+                question: "O que é Cultura Builder segundo o livro?",
+                options: [
+                    "Uma empresa de tecnologia",
+                    "Um movimento de transformação através da tecnologia e IA",
+                    "Um curso online de programação",
+                    "Uma ferramenta de inteligência artificial"
+                ],
+                correct: 1,
+                explanation: "Cultura Builder é um movimento de transformação que combina tecnologia, IA e mentalidade empreendedora para criar um novo Brasil."
+            },
+            {
+                question: "Qual a principal mensagem sobre o futuro do trabalho?",
+                options: [
+                    "Todos serão substituídos por IA",
+                    "A tecnologia não afetará os empregos",
+                    "Quem souber usar IA terá vantagem sobre quem não souber",
+                    "Apenas programadores terão emprego"
+                ],
+                correct: 2,
+                explanation: "O livro enfatiza que não é a IA que vai substituir você, mas sim alguém que sabe usar IA."
+            },
+            {
+                question: "O que significa ser um 'Builder'?",
+                options: [
+                    "Ser um programador profissional",
+                    "Construir casas e edifícios",
+                    "Criar soluções e transformar ideias em realidade usando tecnologia",
+                    "Trabalhar em uma startup"
+                ],
+                correct: 2,
+                explanation: "Um Builder é alguém que constrói o futuro, transformando ideias em realidade através da tecnologia e IA."
+            },
+            {
+                question: "Qual ferramenta de IA é apresentada no Capítulo 34?",
+                options: [
+                    "ChatGPT",
+                    "Claude Code",
+                    "GitHub Copilot",
+                    "Google Gemini"
+                ],
+                correct: 1,
+                explanation: "O Capítulo 34 ensina como instalar e usar o Claude Code, ferramenta que permite programar conversando em português."
+            },
+            {
+                question: "Segundo o livro, qual é a barreira que caiu com a IA?",
+                options: [
+                    "A barreira financeira",
+                    "A barreira geográfica",
+                    "A barreira do inglês e do código",
+                    "A barreira educacional"
+                ],
+                correct: 2,
+                explanation: "A IA derrubou a barreira do inglês e do código, permitindo que qualquer pessoa crie tecnologia em português."
+            },
+            {
+                question: "O que é o 'efeito ChatGPT' mencionado no livro?",
+                options: [
+                    "Um bug no sistema",
+                    "A transformação radical causada pelo lançamento do ChatGPT",
+                    "Um plugin do navegador",
+                    "Uma técnica de programação"
+                ],
+                correct: 1,
+                explanation: "O efeito ChatGPT refere-se à transformação radical que começou em novembro de 2022 com o lançamento do ChatGPT."
+            },
+            {
+                question: "Qual é a abordagem recomendada para usar IA na criatividade?",
+                options: [
+                    "Substituir completamente a criatividade humana",
+                    "Não usar IA em processos criativos",
+                    "Usar IA como parceira para amplificar a criatividade humana",
+                    "Copiar exatamente o que a IA sugere"
+                ],
+                correct: 2,
+                explanation: "O livro recomenda usar IA como parceira criativa, combinando a criatividade humana com as capacidades da IA."
+            },
+            {
+                question: "O que é LGPD mencionada no capítulo sobre privacidade?",
+                options: [
+                    "Lei Geral de Proteção de Dados",
+                    "Liga Geral de Programadores e Desenvolvedores",
+                    "Linguagem Geral de Programação Distribuída",
+                    "Lista Geral de Projetos Digitais"
+                ],
+                correct: 0,
+                explanation: "LGPD é a Lei Geral de Proteção de Dados, fundamental para quem trabalha com tecnologia no Brasil."
+            },
+            {
+                question: "Qual é o conceito de 'Stack Overflow brasileiro'?",
+                options: [
+                    "Um site de perguntas em português",
+                    "A ideia de criar soluções locais para problemas globais",
+                    "Um erro comum em programação",
+                    "Uma empresa de tecnologia"
+                ],
+                correct: 1,
+                explanation: "Refere-se à oportunidade de criar versões brasileiras de sucessos globais, adaptadas à nossa realidade."
+            },
+            {
+                question: "Segundo o livro, qual é o momento atual do Brasil em relação à tecnologia?",
+                options: [
+                    "Estamos muito atrasados e sem esperança",
+                    "Estamos no mesmo nível dos países desenvolvidos",
+                    "Estamos em um momento único de oportunidade e transformação",
+                    "Não há oportunidades no Brasil"
+                ],
+                correct: 2,
+                explanation: "O livro enfatiza que o Brasil está em um momento único de oportunidade, onde podemos liderar a transformação tecnológica."
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let score = 0;
+        let answeredQuestions = new Set();
+        
+        function createQuiz() {
+            return `
+                <div id="quiz-container" style="background: var(--bg-secondary); border: 2px solid var(--accent); border-radius: 16px; padding: 32px; margin: 40px 0;">
+                    <h2 style="color: var(--accent); margin-bottom: 24px; text-align: center; font-size: 24px;">
+                        <i data-lucide="award" style="width: 28px; height: 28px; display: inline-block; vertical-align: middle; margin-right: 12px;"></i>
+                        Teste Seus Conhecimentos
+                    </h2>
+                    <div id="quiz-content">
+                        <div style="text-align: center; padding: 40px;">
+                            <p style="font-size: 18px; color: var(--text-primary); margin-bottom: 24px;">
+                                Pronto para testar o que aprendeu com o Manuscrito Cultura Builder?
+                            </p>
+                            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 32px;">
+                                São 10 perguntas de múltipla escolha sobre os principais conceitos do livro.
+                            </p>
+                            <button onclick="startQuiz()" style="padding: 16px 32px; background: var(--accent); color: var(--bg-primary); border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;">
+                                Começar Quiz
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function startQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            answeredQuestions = new Set();
+            showQuestion();
+        }
+        
+        function showQuestion() {
+            const q = quizQuestions[currentQuestion];
+            const quizContent = document.getElementById('quiz-content');
+            
+            quizContent.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <span style="color: var(--text-secondary); font-size: 14px;">Pergunta ${currentQuestion + 1} de ${quizQuestions.length}</span>
+                    <div style="background: var(--bg-tertiary); height: 8px; border-radius: 4px; margin-top: 8px; overflow: hidden;">
+                        <div style="background: var(--accent); height: 100%; width: ${((currentQuestion + 1) / quizQuestions.length) * 100}%; transition: width 0.3s;"></div>
+                    </div>
+                </div>
+                
+                <h3 style="font-size: 20px; color: var(--text-primary); margin-bottom: 24px;">${q.question}</h3>
+                
+                <div id="quiz-options" style="display: flex; flex-direction: column; gap: 12px;">
+                    ${q.options.map((option, index) => `
+                        <button 
+                            onclick="selectAnswer(${index})" 
+                            class="quiz-option"
+                            style="padding: 16px; background: var(--bg-tertiary); color: var(--text-primary); border: 2px solid var(--border); border-radius: 8px; text-align: left; cursor: pointer; transition: all 0.2s;">
+                            <span style="display: inline-block; width: 32px; height: 32px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 50%; text-align: center; line-height: 32px; margin-right: 12px; font-weight: 600;">
+                                ${String.fromCharCode(65 + index)}
+                            </span>
+                            ${option}
+                        </button>
+                    `).join('')}
+                </div>
+                
+                <div id="quiz-feedback" style="margin-top: 24px;"></div>
+            `;
+        }
+        
+        function selectAnswer(index) {
+            if (answeredQuestions.has(currentQuestion)) return;
+            
+            answeredQuestions.add(currentQuestion);
+            const q = quizQuestions[currentQuestion];
+            const isCorrect = index === q.correct;
+            
+            if (isCorrect) score++;
+            
+            // Visual feedback
+            const options = document.querySelectorAll('.quiz-option');
+            options[index].style.border = isCorrect ? '2px solid #00ff88' : '2px solid #ff4444';
+            options[index].style.background = isCorrect ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 68, 68, 0.1)';
+            options[q.correct].style.border = '2px solid #00ff88';
+            options[q.correct].style.background = 'rgba(0, 255, 136, 0.1)';
+            
+            // Disable all options
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+            
+            // Show feedback
+            const feedbackDiv = document.getElementById('quiz-feedback');
+            feedbackDiv.innerHTML = `
+                <div style="padding: 16px; background: ${isCorrect ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 68, 68, 0.1)'}; border: 1px solid ${isCorrect ? '#00ff88' : '#ff4444'}; border-radius: 8px;">
+                    <p style="font-weight: 600; color: ${isCorrect ? '#00ff88' : '#ff4444'}; margin-bottom: 8px;">
+                        ${isCorrect ? '✓ Correto!' : '✗ Incorreto'}
+                    </p>
+                    <p style="color: var(--text-secondary); font-size: 14px;">${q.explanation}</p>
+                </div>
+                
+                <button 
+                    onclick="${currentQuestion < quizQuestions.length - 1 ? 'nextQuestion()' : 'showResults()'}"
+                    style="margin-top: 20px; padding: 12px 24px; background: var(--accent); color: var(--bg-primary); border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                    ${currentQuestion < quizQuestions.length - 1 ? 'Próxima Pergunta' : 'Ver Resultados'}
+                </button>
+            `;
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            showQuestion();
+        }
+        
+        function showResults() {
+            const percentage = (score / quizQuestions.length) * 100;
+            let message, emoji;
+            
+            if (percentage === 100) {
+                message = "Perfeito! Você domina os conceitos da Cultura Builder!";
+                emoji = "🏆";
+            } else if (percentage >= 80) {
+                message = "Excelente! Você entendeu muito bem o conteúdo!";
+                emoji = "🎉";
+            } else if (percentage >= 60) {
+                message = "Bom trabalho! Você captou os principais conceitos!";
+                emoji = "👍";
+            } else if (percentage >= 40) {
+                message = "Legal! Considere reler alguns capítulos para fortalecer seu conhecimento.";
+                emoji = "📚";
+            } else {
+                message = "Continue estudando! A jornada Builder está apenas começando.";
+                emoji = "🚀";
+            }
+            
+            const quizContent = document.getElementById('quiz-content');
+            quizContent.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="font-size: 72px; margin-bottom: 24px;">${emoji}</div>
+                    <h3 style="font-size: 32px; color: var(--accent); margin-bottom: 16px;">
+                        ${score} de ${quizQuestions.length}
+                    </h3>
+                    <div style="background: var(--bg-tertiary); height: 20px; border-radius: 10px; margin: 24px auto; max-width: 300px; overflow: hidden;">
+                        <div style="background: linear-gradient(90deg, var(--accent), #00ff88); height: 100%; width: ${percentage}%; transition: width 1s;"></div>
+                    </div>
+                    <p style="font-size: 18px; color: var(--text-primary); margin-bottom: 32px;">${message}</p>
+                    <div style="display: flex; gap: 16px; justify-content: center;">
+                        <button onclick="startQuiz()" style="padding: 12px 24px; background: var(--accent); color: var(--bg-primary); border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                            Tentar Novamente
+                        </button>
+                        <button onclick="shareResults()" style="padding: 12px 24px; background: transparent; color: var(--accent); border: 2px solid var(--accent); border-radius: 8px; font-weight: 600; cursor: pointer;">
+                            Compartilhar Resultado
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function shareResults() {
+            const percentage = (score / quizQuestions.length) * 100;
+            const text = `Completei o Quiz do Manuscrito Cultura Builder com ${percentage.toFixed(0)}% de acerto! 🚀 #CulturaBuilder`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Quiz Cultura Builder',
+                    text: text
+                });
+            } else {
+                // Fallback to copy to clipboard
+                navigator.clipboard.writeText(text);
+                alert('Resultado copiado para a área de transferência!');
+            }
+        }
         
         document.addEventListener('cut', e => e.preventDefault());
     </script>

@@ -468,15 +468,23 @@ Sugira 5 funcionalidades úteis
 
 ### Onde Aprender Mais
 
-**YouTube em Português**:
-- "Claude Code Brasil" - Tutoriais práticos
-- "Dev com IA" - Projetos do zero
-- "Programador Builder" - Casos reais
+**Hub Cultura Builder**:
+Acesse [hub.culturabuilder.com](https://hub.culturabuilder.com) para:
+- Tutoriais exclusivos em português
+- Comunidade ativa de Builders
+- Templates prontos para usar
+- Casos de sucesso reais
+- Suporte direto da equipe
 
-**Comunidades**:
-- Discord: Cultura Builder
-- WhatsApp: Grupos locais de dev
-- LinkedIn: Siga #ClaudeCode
+**YouTube Recomendado**:
+- Busque por "Claude Code Tutorial"
+- Veja casos práticos de IA no Brasil
+- Acompanhe #CulturaBuilder
+
+**LinkedIn**:
+- Siga #CulturaBuilder
+- Conecte com outros Builders
+- Compartilhe seus projetos
 
 ### Prompts Prontos para Copiar
 
@@ -569,8 +577,9 @@ E você, o que vai construir hoje?
 ---
 
 *Continue sua jornada:*
+- **Hub**: [hub.culturabuilder.com](https://hub.culturabuilder.com)
 - **Instagram**: @culturabuilder
+- **LinkedIn**: #CulturaBuilder
 - **Site**: culturabuilder.com
-- **Comunidade**: discord.gg/culturabuilder
 
 **#CulturaBuilder #ClaudeCode #OFuturoÉAgora**
